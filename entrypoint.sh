@@ -144,24 +144,34 @@ await_docker() {
 
 # Gracefully stop Docker daemon.
 stop_docker() {
+  local rc docker_pid start duration
+
+  rc="${1:-}"
+
+  if [ "$rc" != "0" ]
+  then
+    echo >&2 "Build failed (${rc}), not stopping docker."
+    return "$rc"
+  fi
+
   if ! [[ -f "${DOCKERD_PID_FILE}" ]]; then
     return 0
   fi
-  local docker_pid="$(cat ${DOCKERD_PID_FILE})"
+  docker_pid="$(cat ${DOCKERD_PID_FILE})"
   if [[ -z "${docker_pid}" ]]; then
     return 0
   fi
   echo >&2 "Terminating Docker daemon."
-  kill -TERM ${docker_pid}
-  local start=${SECONDS}
+  kill -TERM "${docker_pid}"
+  start=${SECONDS}
   echo >&2 "Waiting for Docker daemon to exit..."
-  wait ${docker_pid}
-  local duration=$(( SECONDS - start ))
+  wait "${docker_pid}"
+  duration=$(( SECONDS - start ))
   echo >&2 "Docker exited after ${duration} seconds."
 }
 
 start_docker
-trap stop_docker EXIT
+trap 'stop_docker "$?"' EXIT
 await_docker
 
 # do not exec, because exec disables traps
