@@ -2,23 +2,23 @@ FROM alpine:3.9
 
 ARG DOCKER_CHANNEL=stable
 ARG DOCKER_VERSION=18.09.6
-ARG DOCKER_COMPOSE_VERSION=1.24.0
-ARG DOCKER_SQUASH=0.2.0
 
-ARG RUNTIME_APKS='bash curl device-mapper py-pip iptables ca-certificates'
-ARG BUILDTIME_APKS='gcc python2-dev musl-dev libffi-dev openssl-dev make'
+# general packages to get docker up and running
+ARG RUNTIME_APKS='bash curl device-mapper iptables ca-certificates'
+# packages needed to run kind and compile kind's images from k8s src
+ARG K8S_APKS='iproute2 tar rsync make git tzdata'
 
 # Install Docker, Docker Compose, Docker Squash
-RUN apk --update --no-cache add $RUNTIME_APKS $BUILDTIME_APKS && \
+RUN apk --update --no-cache add $RUNTIME_APKS $K8S_APKS && \
     apk upgrade && \
-    pip install docker-compose==${DOCKER_COMPOSE_VERSION} && \
     curl -fL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" | tar zx && \
     mv /docker/* /bin/ && chmod +x /bin/docker* && \
-    curl -fL "https://github.com/jwilder/docker-squash/releases/download/v${DOCKER_SQUASH}/docker-squash-linux-amd64-v${DOCKER_SQUASH}.tar.gz" | tar zx && \
-    mv /docker-squash* /bin/ && chmod +x /bin/docker-squash* && \
-    apk del $BUILDTIME_APKS && \
     rm -rf /var/cache/apk/* && \
     rm -rf /root/.cache
+
+# setup time stuff ... compiling k8s needs /etc/localtime for some reason
+ARG TIMEZONE=UTC
+RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo "${TIMEZONE}" > /etc/timezone
 
 COPY entrypoint.sh /bin/entrypoint.sh
 
