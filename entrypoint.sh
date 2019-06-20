@@ -104,6 +104,12 @@ start_docker() {
     docker_opts+=' --data-root /scratch/docker'
   fi
 
+  # Set storage driver to overlay2 by default
+  # https://kind.sigs.k8s.io/docs/user/known-issues/#docker-on-btrfs
+  if [[ "${docker_opts}" != *'--storage-driver'* ]]; then
+    docker_opts+=' --storage-driver overlay2'
+  fi
+
   rm -f "${DOCKERD_PID_FILE}"
   touch "${DOCKERD_LOG_FILE}"
 
