@@ -1,64 +1,132 @@
-# Concourse Docker-Compose-in-Docker
+# `KINDONC!!` a.k.a. `kind-on-c` a.k.a. `kind on concourse`
 
-Optimized for use with [Concourse CI](http://concourse.ci/).
+![KINDONC!! POW!!][logo]
 
-The image is Alpine based, and includes Docker, Docker Compose, and Docker Squash, as well as Bash.
+[logo]: kindonc.jpg
 
-Image published to Docker Hub: [karlkfi/concourse-dcind](https://hub.docker.com/r/karlkfi/concourse-dcind/).
+This is a [concourse] [task][concourse-task] which uses [kind] to start a
+[kubernetes] cluster locally for users to run their tests against.
 
-Inspired by [meAmidos/dcind](https://github.com/meAmidos/dcind),  [concourse/docker-image-resource](https://github.com/concourse/docker-image-resource/blob/master/assets/common.sh), and [mesosphere/mesos-slave-dind](https://github.com/mesosphere/mesos-slave-dind).
+Users can choose to run whichever [kubernetes] version [kind] uses by default,
+or use a specific [kubernetes] version by providing the [kubernetes] source
+tree checked out at a specific version. 
 
-## Features
+It is heavily based on [concourse-dcind] and of course uses [kind]. This is really just plumbing ...
 
-Unlike meAmidos/dcind, this image...
+# Usage
 
-- Does not require the user to manually start docker.
-- Uses errexit, pipefail, and nounset.
-- Configures timeout (`DOCKERD_TIMEOUT`) on dockerd start to account for mis-configuration (docker log will be output).
-- Accepts arbitrary dockerd arguments via optional `DOCKER_OPTS` environment variable.
-- Passes through `--garden-mtu` from the parent Gardian container if `--mtu` is not specified in `DOCKER_OPTS`.
-- Sets `--data-root /scratch/docker` to bypass the graph filesystem if `--data-root` is not specified in `DOCKER_OPTS`.
-
-## Build
-
-```
-docker build -t karlkfi/concourse-dcind .
-```
-
-## Example
-
-Here is an example of a Concourse [job](http://concourse.ci/concepts.html) that uses ```karlkfi/concourse-dcind``` image to run a bunch of containers in a task, and then runs the integration test suite. You can find a full version of this example in the [```example```](example) directory.
+## Run whatever `kind` thinks is cool ...
 
 ```yaml
 jobs:
-- name: integration
+- name: kind
   plan:
-  - get: code
-    params:
-      depth: 1
-    passed:
-    - unit-tests
-    trigger: true
-  - task: integration-tests
+  - in_parallel:
+    - get: kind-on-c
+    - get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+  - task: run-kind
     privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: karlkfi/concourse-dcind
-      inputs:
-      - name: code
-      run:
-        path: entrypoint.sh
-        args:
-        - bash
-        - -ceux
-        - |
-          # start containers
-          docker-compose -f code/example/integration.yml run tests
-          # stop and remove containers
-          docker-compose -f code/example/integration.yml down
-          # remove volumes
-          docker volume rm $(docker volume ls -q)
+    file: kind-on-c/kind.yaml
+    params:
+      KIND_TESTS: |
+        # your actual tests go here!
+        kubectl get nodes -o wide
+
+resources:
+- name: kind-release
+  type: github-release
+  source:
+    owner: kubernetes-sigs
+    repository: kind
+    access_token: <some github token>
+    pre_release: true
+- name: kind-on-c
+  type: git
+  source:
+    uri: https://github.com/pivotal-k8s/kind-on-c
 ```
+
+This uses the `kind` binary, provided by the `kind-release` resource, to create
+a kubernetes cluster. It will use the [node image] from the kind team.
+The version of `kind` in use and thus, indirectly, the kubernetes version
+deployed can be controlled by pinning the `kind-release` resource to a specific
+version.
+
+When the cluster is up and running, any commands configured in `$KIND_TESTS`
+will run. The environment is setup with `$KUBECONFIG` which points to the
+client configuration for the deployed kubernetes cluster. Also the most recent
+(stable) version of kubectl will be downloaded and put into the `$PATH`,
+therefore `kubectl <something>` will *just work™️*.
+
+## Build and run your own kubernetes ...
+
+```yaml
+jobs:
+- name: kind
+  plan:
+  - in_parallel:
+    - get: k8s-src
+    - get: kind-on-c
+    - get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+  - task: run-kind
+    privileged: true
+    file: kind-on-c/kind.yaml
+    params:
+      KIND_TESTS: |
+        # your actual tests go here!
+        kubectl get nodes -o wide
+
+resources:
+- name: k8s-src
+  type: git
+  source:
+    uri: https://github.com/kubernetes/kubernetes
+- name: kind-release
+  type: github-release
+  source:
+    owner: kubernetes-sigs
+    repository: kind
+    access_token: <some github token>
+    pre_release: true
+- name: kind-on-c
+  type: git
+  source:
+    uri: https://github.com/pivotal-k8s/kind-on-c
+```
+
+If the task finds an [task input] named `k8s-src` it treats that as a
+kubernetes source tree and tells kind to create a [node image] off of that. You
+can just use a git resource, and pin it to a specific commit if need be, if you
+want to run a specific kubernetes version.
+
+In this case, also `kubectl` is compiled on the fly and therefore exactly
+matches the version of kubernetes deployed.
+
+# User configurations
+
+- `KIND_TESTS`  
+  ... this is the important piece: configure, what YOU actually want to run against the cluster!
+- `DOCKERD_OPTS`  
+  ... if you need to add some configs when starting the docker daemon
+- `DOCKERD_TIMEOUT`  
+  ... how long do you want to wait for docker to come up?
+- `KINDONC_DEBUG`  
+  ... if you want to see all the ugly things that are happening to bring up docker and to run kind
+- `KIND_LOGLEVEL`  
+  ... make kind more or less verbose when it is doing its business
+- `KIND_CLUSTER_NAME`  
+  ... in case you want to change kind's cluster name -- you actually should not need to do that ...
+
+[concourse-dcind]: https://github.com/karlkfi/concourse-dcind
+[concourse]: https://concourse-ci.org/
+[concourse-task]: https://concourse-ci.org/tasks.html
+[task input]: https://concourse-ci.org/tasks.html#task-inputs
+[kind]: https://kind.sigs.k8s.io/
+[kubernetes]: https://kubernetes.io/
+[node image]: https://kind.sigs.k8s.io/docs/design/node-image/

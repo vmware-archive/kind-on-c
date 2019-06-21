@@ -5,12 +5,12 @@
 
 set -o errexit -o pipefail -o nounset
 
-[ -z "${KIND_DEBUG:-}" ] || set -x
+[ -z "${KINDONC_DEBUG:-}" ] || set -x
 
 # Waits DOCKERD_TIMEOUT seconds for startup (default: 60)
 DOCKERD_TIMEOUT="${DOCKERD_TIMEOUT:-60}"
 # Accepts optional DOCKER_OPTS (default: --data-root /scratch/docker --storage-driver overlay2)
-DOCKER_OPTS="${DOCKER_OPTS:-}"
+DOCKERD_OPTS="${DOCKER_OPTS:-}"
 
 # Constants
 DOCKERD_PID_FILE="/tmp/docker.pid"
