@@ -5,22 +5,34 @@
 
 set -o errexit -o pipefail -o nounset
 
+[ -z "${KIND_DEBUG:-}" ] || set -x
+
 # Waits DOCKERD_TIMEOUT seconds for startup (default: 60)
 DOCKERD_TIMEOUT="${DOCKERD_TIMEOUT:-60}"
-# Accepts optional DOCKER_OPTS (default: --data-root /scratch/docker)
+# Accepts optional DOCKER_OPTS (default: --data-root /scratch/docker --storage-driver overlay2)
 DOCKER_OPTS="${DOCKER_OPTS:-}"
 
 # Constants
 DOCKERD_PID_FILE="/tmp/docker.pid"
 DOCKERD_LOG_FILE="/tmp/docker.log"
 
-sanitize_cgroups() {
+_colr="$( tput  -Txterm-color setaf 1 )"
+_colg="$( tput  -Txterm-color setaf 2 )"
+_colb="$( tput  -Txterm-color setaf 4 )"
+_nocol="$( tput -Txterm-color sgr0 )"
+
+log::_log()  { local x="$1"; shift; echo "$*" | sed "s/^/${x} /g" >&2 ; }
+log::info()  { log::_log "${_colg}[INF]${_nocol}" "$*" ; }
+log::warn()  { log::_log "${_colb}[WRN]${_nocol}" "$*" ; }
+log::error() { log::_log "${_colr}[ERR]${_nocol}" "$*" ; }
+
+cgroups::sanitize() {
   local cgroup="/sys/fs/cgroup"
 
   mkdir -p "${cgroup}"
   if ! mountpoint -q "${cgroup}"; then
     if ! mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup "${cgroup}"; then
-      echo >&2 "Could not make a tmpfs mount. Did you use --privileged?"
+      log::error "Could not make a tmpfs mount. Did you use --privileged?"
       exit 1
     fi
   fi
@@ -33,8 +45,8 @@ sanitize_cgroups() {
   # Mount /sys/kernel/security
   if [[ -d /sys/kernel/security ]] && ! mountpoint -q /sys/kernel/security; then
     if ! mount -t securityfs none /sys/kernel/security; then
-      echo >&2 "Could not mount /sys/kernel/security."
-      echo >&2 "AppArmor detection and --privileged mode might break."
+      log::error "Could not mount /sys/kernel/security."
+      log::error "AppArmor detection and --privileged mode might break."
     fi
   fi
 
@@ -79,12 +91,12 @@ sanitize_cgroups() {
 }
 
 # Setup container environment and start docker daemon in the background.
-start_docker() {
-  echo >&2 "Setting up Docker environment..."
+docker::start() {
+  log::info "Setting up Docker environment..."
   mkdir -p /var/log
   mkdir -p /var/run
 
-  sanitize_cgroups
+  cgroups::sanitize
 
   # check for /proc/sys being mounted readonly, as systemd does
   if grep '/proc/sys\s\+\w\+\s\+ro,' /proc/mounts >/dev/null; then
@@ -113,50 +125,50 @@ start_docker() {
   rm -f "${DOCKERD_PID_FILE}"
   touch "${DOCKERD_LOG_FILE}"
 
-  echo >&2 "Starting Docker..."
+  log::info "Starting Docker..."
   dockerd ${docker_opts} &>"${DOCKERD_LOG_FILE}" &
   echo "$!" > "${DOCKERD_PID_FILE}"
 }
 
 # Wait for docker daemon to be healthy
 # Timeout after DOCKERD_TIMEOUT seconds
-await_docker() {
+docker::await() {
   local timeout="${DOCKERD_TIMEOUT}"
-  echo >&2 "Waiting ${timeout} seconds for Docker to be available..."
+  log::info "Waiting ${timeout} seconds for Docker to be available..."
   local start=${SECONDS}
   timeout=$(( timeout + start ))
   until docker info &>/dev/null; do
     if (( SECONDS >= timeout )); then
-      echo >&2 'Timed out trying to connect to docker daemon.'
+      log::error 'Timed out trying to connect to docker daemon.'
       if [[ -f "${DOCKERD_LOG_FILE}" ]]; then
-        echo >&2 '---DOCKERD LOGS---'
-        cat >&2 "${DOCKERD_LOG_FILE}"
+        log::error '---DOCKERD LOGS---'
+        log::error "$(cat "${DOCKERD_LOG_FILE}")"
       fi
       exit 1
     fi
     if [[ -f "${DOCKERD_PID_FILE}" ]] && ! kill -0 $(cat "${DOCKERD_PID_FILE}"); then
-      echo >&2 'Docker daemon failed to start.'
+      log::error 'Docker daemon failed to start.'
       if [[ -f "${DOCKERD_LOG_FILE}" ]]; then
-        echo >&2 '---DOCKERD LOGS---'
-        cat >&2 "${DOCKERD_LOG_FILE}"
+        log::error '---DOCKERD LOGS---'
+        log::error "$(cat "${DOCKERD_LOG_FILE}")"
       fi
       exit 1
     fi
     sleep 1
   done
   local duration=$(( SECONDS - start ))
-  echo >&2 "Docker available after ${duration} seconds."
+  log::info "Docker available after ${duration} seconds."
 }
 
 # Gracefully stop Docker daemon.
-stop_docker() {
+docker::stop() {
   local rc docker_pid start duration
 
   rc="${1:-}"
 
   if [ "$rc" != "0" ]
   then
-    echo >&2 "Build failed (${rc}), not stopping docker."
+    log::error "Build failed (${rc}), not stopping docker."
     return "$rc"
   fi
 
@@ -167,18 +179,134 @@ stop_docker() {
   if [[ -z "${docker_pid}" ]]; then
     return 0
   fi
-  echo >&2 "Terminating Docker daemon."
+  log::info "Terminating Docker daemon."
   kill -TERM "${docker_pid}"
   start=${SECONDS}
-  echo >&2 "Waiting for Docker daemon to exit..."
+  log::info "Waiting for Docker daemon to exit..."
   wait "${docker_pid}"
   duration=$(( SECONDS - start ))
-  echo >&2 "Docker exited after ${duration} seconds."
+  log::info "Docker exited after ${duration} seconds."
 }
 
-start_docker
-trap 'stop_docker "$?"' EXIT
-await_docker
+# Starting with k8s 1.15 nodes need to have /dev/kmsg available, otherwise the
+# kubelet will fail to start.
+# For systems which don't have /dev/kmsg, we try to symlink to /dev/console.
+# This is implemented by injecting a systemd service override file into the
+# image in question, which does the symlinking (if needed) before the kubelet
+# is started.
+kind::hack::inject_kmsg_linking() {
+  local imgName="$1"
+  (
+    tmpDir="$(mktemp -d)"
+    trap 'rm -rf -- "$tmpDir"' EXIT
+
+    cd "$tmpDir"
+    {
+      echo '[Service]'
+      echo 'ExecStartPre=/bin/sh -c "[ -e /dev/kmsg ] || ln -s /dev/console /dev/kmsg"'
+    } > 10-kmsg.conf
+    {
+      echo "FROM ${imgName}"
+      echo "COPY 10-kmsg.conf /etc/systemd/system/kubelet.service.d/10-kmsg.conf"
+    } > Dockerfile
+
+    docker build -t "$imgName" .
+  )
+}
+
+# Build a node image off of the k8s source and start kind
+kind::start::fromSource() {
+  local clusterName k8sSrcDir gitTag imageName
+
+  clusterName="$1"
+  k8sSrcDir="$2"
+
+  gitTag="$( cd "${k8sSrcDir}" && git describe --dirty )"
+  imageName="kind/local-image:${gitTag}"
+
+  log::info "found '${k8sSrcDir}', building node image off of '${gitTag}'"
+
+  # create the node image
+  GOPATH="$(pwd)/go" \
+    kind build node-image --image "$imageName"
+  kind::hack::inject_kmsg_linking "$imageName"
+
+  # bring up kind
+  kind create cluster --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
+
+  # get the (compiled) version of kubectl
+  cp ./go/src/k8s.io/kubernetes/_output/dockerized/bin/linux/amd64/kubectl ./bin/kubectl
+}
+
+# Start kind with the (latest) node image published by kind upstream
+kind::start::fromUpstream() {
+  local clusterName="$1"
+
+  log::warn "no k8s source found, using newest node image from kind upstream"
+
+  kind create cluster --name "$clusterName" --loglevel "$loglevel" --retain
+
+  # get kubectl from upstream
+  kubectl::download ./bin/kubectl
+}
+
+kubectl::download() {
+  local urlVer urlKubectl kubectlVer curler tmpFile
+
+  curler="curl -sL"
+  urlVer='https://storage.googleapis.com/kubernetes-release/release/stable.txt'
+  kubectlVer="$( $curler "$urlVer" )"
+  urlKubectl="https://storage.googleapis.com/kubernetes-release/release/${kubectlVer}/bin/linux/amd64/kubectl"
+  (
+    tmpFile="$( mktemp )"
+    trap 'rm "$tmpFile"' EXIT
+    $curler -o "$tmpFile" "$urlKubectl"
+    install -m 07500 "$tmpFile" "$1"
+  )
+}
+
+kind::start() {
+  mkdir ./bin
+  PATH="${PATH}:$(pwd)/bin"
+  export PATH
+
+  local clusterName="${KIND_CLUSTER_NAME:-kind}"
+  local loglevel="${KIND_LOG_LEVEL:-error}"
+
+  local kindBin='./kind-release/kind-linux-amd64'
+  [ -f "$kindBin" ] || {
+    log::error "'kind-release' input not configured"
+    log::error "   expected the kind binary at '${kindBin}'"
+    return 1
+  }
+
+  # install kind itself
+  install -m 0750 "$kindBin" ./bin/kind
+  log::info "$(command -v kind): $(kind version)"
+
+  local k8sSrcDir='./go/src/k8s.io/kubernetes'
+  if [ -d "$k8sSrcDir" ]
+  then
+    kind::start::fromSource "$clusterName" "$k8sSrcDir"
+  else
+    kind::start::fromUpstream "$clusterName"
+  fi
+
+  # make kubeconfig available
+  KUBECONFIG="$(kind get kubeconfig-path --name "$clusterName")"
+  export KUBECONFIG
+
+  # tell 'em!
+  log::info "kind is available"
+  log::info "'\$KUBECONFIG' is setup: ${KUBECONFIG}"
+  log::info "$(command -v kubectl): $(kubectl version --short --client)"
+}
+
+docker::start
+trap 'docker::stop "$?"' EXIT
+
+docker::await
+kind::start
 
 # do not exec, because exec disables traps
 if [[ "$#" != "0" ]]; then
