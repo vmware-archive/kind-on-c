@@ -302,15 +302,21 @@ kind::start() {
   log::info "$(command -v kubectl): $(kubectl version --short --client)"
 }
 
-docker::start
-trap 'docker::stop "$?"' EXIT
+main() {
+  if [ -z "${KIND_TESTS:-}" ] ; then
+    # shellcheck disable=SC2016
+    log::error '"$KIND_TESTS" not sepcified. Not really running any tests then ¯\_(ツ)_/¯ ...'
+    exit 42
+  fi
 
-docker::await
-kind::start
+  docker::start
+  trap 'docker::stop "$?"' EXIT
+  docker::await
+  kind::start
 
-# do not exec, because exec disables traps
-if [[ "$#" != "0" ]]; then
-  "$@"
-else
-  bash --login
-fi
+  # shellcheck disable=SC2016
+  log::info 'Running tests from "$KIND_TESTS"'
+  bash -c "$KIND_TESTS"
+}
+
+main
