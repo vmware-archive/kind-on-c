@@ -215,21 +215,14 @@ kind::hack::inject_kmsg_linking() {
 }
 
 # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
-# To do so, we also need to use a custom kind config, see: kind::getConfig()
+# To do so, we also need to use a custom kind config when starting kind.
 # See also:
 # - https://github.com/kubernetes-sigs/kind/issues/626
 # - https://github.com/kubernetes-sigs/kind/pull/633
 kind::hack::install_flannel() {
-  local flannelManifestURL='https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube-flannel.yml'
-  kubectl apply -f "${flannelManifestURL}"
+  kubectl apply -f /kind-on-c/flannel.yaml
 }
-
-kind::getConfig() {
-  echo 'kind: Cluster'
-  echo 'apiVersion: kind.sigs.k8s.io/v1alpha3'
-  echo 'networking:'
-  echo '  disableDefaultCNI: true'
-}
+readonly KIND_CONFIG=/kind-on-c/kind-config.yaml
 
 # Build a node image off of the k8s source and start kind
 kind::start::fromSource() {
@@ -249,7 +242,7 @@ kind::start::fromSource() {
   kind::hack::inject_kmsg_linking "$imageName"
 
   # bring up kind
-  kind create cluster --config <(kind::getConfig) --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
+  kind create cluster --config "$KIND_CONFIG" --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
 
   # get the (compiled) version of kubectl
   cp ./go/src/k8s.io/kubernetes/_output/dockerized/bin/linux/amd64/kubectl ./bin/kubectl
@@ -261,7 +254,7 @@ kind::start::fromUpstream() {
 
   log::warn "no k8s source found, using newest node image from kind upstream"
 
-  kind create cluster --config <(kind::getConfig) --name "$clusterName" --loglevel "$loglevel" --retain
+  kind create cluster --config "$KIND_CONFIG" --name "$clusterName" --loglevel "$loglevel" --retain
 
   # get kubectl from upstream
   kubectl::download ./bin/kubectl

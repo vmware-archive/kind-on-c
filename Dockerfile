@@ -20,6 +20,8 @@ RUN apk --update --no-cache add $RUNTIME_APKS $K8S_APKS && \
 ARG TIMEZONE=UTC
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo "${TIMEZONE}" > /etc/timezone
 
+COPY flannel.yaml /kind-on-c/flannel.yaml
+COPY kind-config.yaml /kind-on-c/kind-config.yaml
 COPY entrypoint.sh /bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
