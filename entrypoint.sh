@@ -282,6 +282,30 @@ kubectl::download() {
   )
 }
 
+retry() {
+  local retryCount="$1"
+  local retrySleep="$2"
+  shift 2
+
+  local loopCount=$retryCount
+  local rc output
+
+  while (( loopCount-- ))
+  do
+    rc=0
+    output="$( "$@" 2>&1 )" || rc=$?
+
+    [ "$rc" = '0' ] && return 0
+
+    sleep "$retrySleep"
+  done
+
+  log::error "Tried '$*' for $retryCount times every $retrySleep, last error:"
+  # shellcheck disable=SC2001
+  log::error "$( echo "$output" | sed 's/^/  /g' )"
+  return $rc
+}
+
 kind::start() {
   mkdir ./bin
   PATH="${PATH}:$(pwd)/bin"
@@ -312,6 +336,11 @@ kind::start() {
   # make kubeconfig available
   KUBECONFIG="$(kind get kubeconfig-path --name "$clusterName")"
   export KUBECONFIG
+
+  # wait until the default service account is available, so pods can actually
+  # be scheduled
+  log::info 'Waiting for the default serviceaccount'
+  retry 60 1 kubectl -n default get serviceaccount default -o name
 
   # install flannel as an alternative CNI
   log::info 'Installing flannel'
