@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:latest
 
 ARG DOCKER_CHANNEL=stable
 ARG DOCKER_VERSION=18.09.6

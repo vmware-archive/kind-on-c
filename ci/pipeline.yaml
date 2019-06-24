@@ -1,0 +1,128 @@
+resources:
+- name: alpine-image
+  type: registry-image
+  source:
+    repository: alpine
+- name: kind-on-c-image
+  type: registry-image
+  source:
+    repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+    username: ((registry.username))
+    password: ((registry.password))
+- name: builder-task
+  type: git
+  source:
+    uri: https://github.com/concourse/builder-task
+- name: kind-on-c
+  type: git
+  source:
+    uri: https://github.com/pivotal-k8s/kind-on-c
+- name: kind-release
+  type: github-release
+  source:
+    owner: kubernetes-sigs
+    repository: kind
+    access_token: ((github.token))
+    pre_release: true
+- name: k8s-git-1.14
+  type: git
+  source:
+    uri: https://github.com/kubernetes/kubernetes
+    branch: release-1.14
+- name: k8s-git-1.15
+  type: git
+  source:
+    uri: https://github.com/kubernetes/kubernetes
+    branch: release-1.15
+- name: k8s-git-master
+  type: git
+  source:
+    uri: https://github.com/kubernetes/kubernetes
+    branch: master
+
+jobs:
+- name: update-image
+  plan:
+  - in_parallel:
+      fail_fast: true
+      steps:
+      - get: builder-task
+      - get: alpine-image
+        trigger: true
+      - get: kind-on-c
+        trigger: true
+  - task: build-image
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: concourse/builder-task
+      params:
+        REPOSITORY: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+        TAG: latest
+        CONTEXT: kind-on-c
+      inputs:
+      - name: builder-task
+      - name: kind-on-c
+      outputs:
+      - name: rootfs # to use in the following tasks
+      - name: image  # OCI image to push
+      caches:
+      - path: cache
+      run:
+        path: builder-task/build
+  - get: kind-release
+    trigger: true
+    params:
+      globs:
+      - kind-linux-amd64
+  - in_parallel:
+      fail_fast: true
+      steps:
+      - &testTask
+        task: run-kindonc-simple
+        file: kind-on-c/kind.yaml
+        image: rootfs
+        privileged: true
+        params:
+          KIND_TESTS: |
+            set -eux
+            kubectl get nodes -o wide
+            kubectl get all --all-namespaces
+            kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
+              echo 'The pod says: the kubernetes cluster sure works!'
+      - do:
+        - get: k8s-git-1.14
+        - <<: *testTask
+          task: run-kindonc-k8s-1.14
+          input_mapping:
+            k8s-git: k8s-git-1.14
+      - do:
+        - get: k8s-git-1.15
+        - <<: *testTask
+          task: run-kindonc-k8s-1.15
+          input_mapping:
+            k8s-git: k8s-git-1.15
+      - do:
+        - get: k8s-git-master
+        - <<: *testTask
+          task: run-kindonc-k8s-master
+          input_mapping:
+            k8s-git: k8s-git-master
+  - put: kind-on-c-image
+    params:
+      image: image/image.tar
+
+- name: simple-test
+  plan:
+  - in_parallel:
+    - get: kind-on-c
+    - get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+  - <<: *testTask
+    image: ''
+
