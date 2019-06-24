@@ -68,7 +68,7 @@ jobs:
 - name: kind
   plan:
   - in_parallel:
-    - get: k8s-src
+    - get: k8s-git
     - get: kind-on-c
     - get: kind-release
       params:
@@ -83,7 +83,7 @@ jobs:
         kubectl get nodes -o wide
 
 resources:
-- name: k8s-src
+- name: k8s-git
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
@@ -100,7 +100,7 @@ resources:
     uri: https://github.com/pivotal-k8s/kind-on-c
 ```
 
-If the task finds an [task input] named `k8s-src` it treats that as a
+If the task finds an [task input] named `k8s-git` it treats that as a
 kubernetes source tree and tells kind to create a [node image] off of that. You
 can just use a git resource, and pin it to a specific commit if need be, if you
 want to run a specific kubernetes version.
