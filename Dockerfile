@@ -3,13 +3,10 @@ FROM alpine:latest
 ARG DOCKER_CHANNEL=stable
 ARG DOCKER_VERSION=18.09.6
 
-# general packages to get docker up and running
-ARG RUNTIME_APKS='bash curl device-mapper iptables ca-certificates ncurses util-linux'
-# packages needed to run kind and compile kind's images from k8s src
-ARG K8S_APKS='iproute2 tar rsync make git tzdata'
+ARG PKGS='bash curl device-mapper iptables ca-certificates ncurses util-linux iproute2 tar rsync make git tzdata'
 
-# Install Docker, Docker Compose, Docker Squash
-RUN apk --update --no-cache add $RUNTIME_APKS $K8S_APKS && \
+# Install the docker engine and any other deps
+RUN apk --update --no-cache add $PKGS && \
     apk upgrade && \
     curl -fL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" | tar zx && \
     mv /docker/* /bin/ && chmod +x /bin/docker* && \
