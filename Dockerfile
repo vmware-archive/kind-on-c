@@ -4,7 +4,7 @@ ARG DOCKER_CHANNEL=stable
 ARG DOCKER_VERSION=18.09.6
 
 # general packages to get docker up and running
-ARG RUNTIME_APKS='bash curl device-mapper iptables ca-certificates ncurses'
+ARG RUNTIME_APKS='bash curl device-mapper iptables ca-certificates ncurses util-linux'
 # packages needed to run kind and compile kind's images from k8s src
 ARG K8S_APKS='iproute2 tar rsync make git tzdata'
 
