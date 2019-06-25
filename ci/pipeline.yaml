@@ -1,14 +1,21 @@
 resources:
-- name: alpine-image
+- name: base-image
   type: registry-image
   source:
     repository: alpine
-- name: kind-on-c-image
+- name: image
   type: registry-image
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
     username: ((registry.username))
     password: ((registry.password))
+- name: dev-image
+  type: registry-image
+  source:
+    repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+    username: ((registry.username))
+    password: ((registry.password))
+    tag: ci-rc
 - name: builder-task
   type: git
   source:
@@ -24,6 +31,11 @@ resources:
     repository: kind
     access_token: ((github.token))
     pre_release: true
+- name: k8s-git-1.13
+  type: git
+  source:
+    uri: https://github.com/kubernetes/kubernetes
+    branch: release-1.13
 - name: k8s-git-1.14
   type: git
   source:
@@ -41,17 +53,19 @@ resources:
     branch: master
 
 jobs:
-- name: update-image
+- name: build dev-image
   plan:
   - in_parallel:
       fail_fast: true
       steps:
       - get: builder-task
-      - get: alpine-image
+      - get: base-image
         trigger: true
       - get: kind-on-c
         trigger: true
-  - task: build-image
+      - get: kind-release
+        trigger: true
+  - task: build
     privileged: true
     config:
       platform: linux
@@ -61,68 +75,135 @@ jobs:
           repository: concourse/builder-task
       params:
         REPOSITORY: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
-        TAG: latest
         CONTEXT: kind-on-c
       inputs:
+      - name: kind-release
+      - name: base-image
       - name: builder-task
       - name: kind-on-c
       outputs:
-      - name: rootfs # to use in the following tasks
-      - name: image  # OCI image to push
+      - name: image
       caches:
       - path: cache
       run:
-        path: builder-task/build
-  - get: kind-release
-    trigger: true
-    params:
-      globs:
-      - kind-linux-amd64
-  - in_parallel:
-      fail_fast: true
-      steps:
-      - &testTask
-        task: run-kindonc-simple
-        file: kind-on-c/kind.yaml
-        image: rootfs
-        privileged: true
-        params:
-          KIND_TESTS: |
-            set -eux
-            kubectl get nodes -o wide
-            kubectl get all --all-namespaces
-            kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
-              echo 'The pod says: the kubernetes cluster sure works!'
-      - do:
-        - get: k8s-git-1.14
-        - <<: *testTask
-          task: run-kindonc-k8s-1.14
-          input_mapping:
-            k8s-git: k8s-git-1.14
-      - do:
-        - get: k8s-git-1.15
-        - <<: *testTask
-          task: run-kindonc-k8s-1.15
-          input_mapping:
-            k8s-git: k8s-git-1.15
-      - do:
-        - get: k8s-git-master
-        - <<: *testTask
-          task: run-kindonc-k8s-master
-          input_mapping:
-            k8s-git: k8s-git-master
-  - put: kind-on-c-image
+        path: bash
+        args:
+        - -c
+        - |
+          tagParts=(
+            "$( cut -d: -f2- base-image/digest )" # alpine / base image version
+            "$( git --git-dir=kind-on-c/.git describe --always --tags )" # kind-on-c version
+            "$( cat kind-release/commit_sha )" # kind version
+          )
+          export TAG="$( IFS='-'; echo "${tagParts[*]}" )"
+
+          echo "$TAG" > image/additional_tags
+
+          builder-task/build
+  - put: push
+    resource: dev-image
     params:
       image: image/image.tar
-
-- name: simple-test
+      additional_tags: image/additional_tags
+- name: test
   plan:
   - in_parallel:
-    - get: kind-on-c
-    - get: kind-release
+    - &fromDevImageBuild
+      get: kind-on-c
+      passed: [ build dev-image ]
+      trigger: true
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromDevImageBuild
+      get: kind-release
       params:
         globs:
         - kind-linux-amd64
-  - <<: *testTask
-    image: ''
-
+  - &testTask
+    task: run-tests
+    file: kind-on-c/kind.yaml
+    image: dev-image
+    privileged: true
+    params:
+      KIND_TESTS: |
+        set -eux
+        kubectl get nodes -o wide
+        kubectl get all --all-namespaces
+        kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
+          echo 'The pod says: the kubernetes cluster sure works!'
+- name: test with k8s-master
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromDevImageBuild
+      get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+    - get: k8s-git
+      resource: k8s-git-master
+  - << : *testTask
+- name: test with k8s-1.15
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromDevImageBuild
+      get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+    - get: k8s-git
+      resource: k8s-git-1.15
+  - << : *testTask
+- name: test with k8s-1.14
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromDevImageBuild
+      get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+    - get: k8s-git
+      resource: k8s-git-1.14
+  - << : *testTask
+- name: test with k8s-1.13
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromDevImageBuild
+      get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+    - get: k8s-git
+      resource: k8s-git-1.13
+  - << : *testTask
+- name: promote image
+  plan:
+  - get: dev-image
+    trigger: true
+    passed:
+    - test
+    - test with k8s-master
+    - test with k8s-1.15
+    - test with k8s-1.14
+    - test with k8s-1.13
+    params:
+      format: oci
+  - put: promote
+    resource: image
+    params:
+      image: dev-image/image.tar
