@@ -222,28 +222,22 @@ kind::start::fromSource() {
   cp ./go/src/k8s.io/kubernetes/_output/dockerized/bin/linux/amd64/kubectl ./bin/kubectl
 }
 
-kind::hack::kmsg_linker() {
-  local node nodeCmd clusterName sleepDur tries
+kind::hack::kmsg_linker::runner() {
+  local node nodeCmd clusterName
 
   clusterName="$1"
   nodeCmd='set -e; [ -e /dev/kmsg ] || ln -s /dev/console /dev/kmsg'
-  sleepDur="1s"
-  tries=300
 
+  node="$(kind get nodes --name "$clusterName" 2>/dev/null)" || return 1
+  docker exec "$node" sh -c "$nodeCmd" 2>/dev/null || return 2
+}
+
+kind::hack::kmsg_linker() {
   log::info 'kmsg-linker starting in the background'
 
-  while (( tries-- ))
-  do
-    sleep "$sleepDur"
-    node="$(kind get nodes --name "$clusterName" 2>/dev/null)" || continue
-    docker exec "$node" sh -c "$nodeCmd" 2>/dev/null || continue
+  retry 300 1 kind::hack::kmsg_linker::runner "$1"
 
-    log::info 'kmsg-linker was successful, exiting'
-    return
-  done
-
-  log::error "kmsg-linker failed after ${tries} tries"
-  return 1
+  log::info 'kmsg-linker successful, shutting down'
 }
 
 # Start kind with the (latest) node image published by kind upstream
