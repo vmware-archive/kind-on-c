@@ -114,12 +114,24 @@ jobs:
         args:
         - -c
         - |
-          tagParts=(
-            "$( cut -d: -f2- base-image/digest )" # alpine / base image version
-            "$( git --git-dir=kind-on-c/.git describe --always --tags )" # kind-on-c version
-            "$( cat kind-release/commit_sha )" # kind version
-          )
-          export TAG="$( IFS='-'; echo "${tagParts[*]}" )"
+          set -e
+          set -u
+          set -o pipefail
+
+          cat <<EOF > image/build_args
+          BUILD_DATE=$( date -Iseconds )
+          KIND-ON-C_VERSION=$( git --git-dir=kind-on-c/.git describe --always --tags )
+          KIND_VERSION=$( cat kind-release/commit_sha )
+          ALPINE_VERSION=$( cat base-image/digest )
+          EOF
+
+          export BUILD_ARGS_FILE=image/build_args
+          export TAG="$( sha3sum image/build_args | cut -d' ' -f1 )"
+
+          echo '----'
+          echo "building image '${TAG}' with build args:"
+          cat image/build_args | sed 's/^/  /g'
+          echo '----'
 
           echo "$TAG" > image/additional_tags
 
