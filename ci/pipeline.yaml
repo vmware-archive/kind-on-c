@@ -371,7 +371,7 @@ groups:
   - test with kind-master and k8s-1.14
   - test with kind-master and k8s-1.15
   - test with kind-master and k8s-master
-- name: kind from upstream
+- name: kind release
   jobs:
   - build dev-image
   - test
@@ -379,7 +379,7 @@ groups:
   - test with k8s-1.15
   - test with k8s-1.14
   - test with k8s-1.13
-- name: kind from master
+- name: kind master
   jobs:
   - build dev-image
   - build kind from master
