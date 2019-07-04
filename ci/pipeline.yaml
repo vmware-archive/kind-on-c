@@ -89,6 +89,9 @@ jobs:
         trigger: true
       - get: kind-release
         trigger: true
+        params:
+          globs:
+          - kind-linux-amd64
   - task: build
     privileged: true
     config:
