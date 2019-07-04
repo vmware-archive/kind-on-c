@@ -31,6 +31,6 @@ LABEL org.opencontainers.image.created      "${BUILD_DATE}"
 LABEL org.opencontainers.image.x-dep.alpine "${ALPINE_VERSION}"
 LABEL org.opencontainers.image.x-dep.kind   "${KIND_VERSION}"
 LABEL org.opencontainers.image.x-dep.docker "${DOCKER_CHANNEL}/${DOCKER_VERSION}"
-LABEL org.opencontainers.image.description  "Run kind deplpoyed kubernetes clusters in your concourse task"
+LABEL org.opencontainers.image.description  "Run kind deployed kubernetes clusters in your concourse task"
 
 ENTRYPOINT ["entrypoint.sh"]

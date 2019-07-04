@@ -238,7 +238,7 @@ kind::hack::kmsg_linker() {
     node="$(kind get nodes --name "$clusterName" 2>/dev/null)" || continue
     docker exec "$node" sh -c "$nodeCmd" 2>/dev/null || continue
 
-    log::info 'kms-linker was successful, exiting'
+    log::info 'kmsg-linker was successful, exiting'
     return
   done
 
