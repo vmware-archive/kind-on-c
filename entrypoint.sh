@@ -188,32 +188,6 @@ docker::stop() {
   log::info "Docker exited after ${duration} seconds."
 }
 
-# Starting with k8s 1.15 nodes need to have /dev/kmsg available, otherwise the
-# kubelet will fail to start.
-# For systems which don't have /dev/kmsg, we try to symlink to /dev/console.
-# This is implemented by injecting a systemd service override file into the
-# image in question, which does the symlinking (if needed) before the kubelet
-# is started.
-kind::hack::inject_kmsg_linking() {
-  local imgName="$1"
-  (
-    tmpDir="$(mktemp -d)"
-    trap 'rm -rf -- "$tmpDir"' EXIT
-
-    cd "$tmpDir"
-    {
-      echo '[Service]'
-      echo 'ExecStartPre=/bin/sh -c "[ -e /dev/kmsg ] || ln -s /dev/console /dev/kmsg"'
-    } > 10-kmsg.conf
-    {
-      echo "FROM ${imgName}"
-      echo "COPY 10-kmsg.conf /etc/systemd/system/kubelet.service.d/10-kmsg.conf"
-    } > Dockerfile
-
-    docker build -t "$imgName" .
-  )
-}
-
 # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
 # To do so, we also need to use a custom kind config when starting kind.
 # See also:
@@ -239,13 +213,37 @@ kind::start::fromSource() {
   # create the node image
   GOPATH="$(pwd)/go" \
     kind build node-image --image "$imageName"
-  kind::hack::inject_kmsg_linking "$imageName"
 
   # bring up kind
+  kind::hack::kmsg_linker "$clusterName" &
   kind create cluster --config "$KIND_CONFIG" --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
 
   # get the (compiled) version of kubectl
   cp ./go/src/k8s.io/kubernetes/_output/dockerized/bin/linux/amd64/kubectl ./bin/kubectl
+}
+
+kind::hack::kmsg_linker() {
+  local node nodeCmd clusterName sleepDur tries
+
+  clusterName="$1"
+  nodeCmd='set -e; [ -e /dev/kmsg ] || ln -s /dev/console /dev/kmsg'
+  sleepDur="1s"
+  tries=300
+
+  log::info 'kmsg-linker starting in the background'
+
+  while (( tries-- ))
+  do
+    sleep "$sleepDur"
+    node="$(kind get nodes --name "$clusterName" 2>/dev/null)" || continue
+    docker exec "$node" sh -c "$nodeCmd" 2>/dev/null || continue
+
+    log::info 'kms-linker was successful, exiting'
+    return
+  done
+
+  log::error "kmsg-linker failed after ${tries} tries"
+  return 1
 }
 
 # Start kind with the (latest) node image published by kind upstream
@@ -254,6 +252,7 @@ kind::start::fromUpstream() {
 
   log::warn "no k8s source found, using newest node image from kind upstream"
 
+  kind::hack::kmsg_linker "$clusterName" &
   kind create cluster --config "$KIND_CONFIG" --name "$clusterName" --loglevel "$loglevel" --retain
 
   # get kubectl from upstream
