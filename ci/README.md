@@ -8,6 +8,12 @@
 [wings]: https://wings.pivotal.io/teams/k8s-c10s/pipelines/kind 
 [hush-house]: https://hush-house.pivotal.io/teams/k8s-c10s/pipelines/kind
 
+## Pipeline setup
+
+The pipeline runs on changes of the `dev` branch of this repo, runs its test, and finally when all tests are green:
+- promotes the container image which has been built in the pipeline and used in the tests
+- pushes the commits from the `dev` branch into the `master` branch
+
 ## `./set-pipeline.sh`
 
 This is a helper, that pulls credentials as a secure note from lastpass and it as a vars file when setting the pipeline.
@@ -17,10 +23,13 @@ The secure note should have a notes field like:
 ```text
 ---
 github:
-  token: <the github token>
+  token: <the github token for pulling the kind releases> 
+  push_key: <private SSH key for pushing into kind-on-c's master>
 registry:
-  username: <the registry username>
-  password: <the registry password>
+  username: <the container registry's username>
+  password: <the container registry's password>
+bucket:
+  key: <the service account key json for the google bucket>
 ```
 
 By default

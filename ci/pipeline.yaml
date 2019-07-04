@@ -1,3 +1,9 @@
+resource_types:
+- name: google-cloud-storage
+  type: registry-image
+  source:
+    repository: frodenas/gcs-resource
+
 resources:
 - name: base-image
   type: registry-image
@@ -16,6 +22,12 @@ resources:
     username: ((registry.username))
     password: ((registry.password))
     tag: ci-rc
+- name: kind-build
+  type: google-cloud-storage
+  source:
+    bucket: kind-on-c-pipeline
+    json_key: ((bucket.key))
+    versioned_file: "pipeline-builds/kind-linux-amd64"
 - name: builder-task
   type: git
   source:
@@ -28,8 +40,9 @@ resources:
 - name: kind-on-c-master
   type: git
   source:
-    uri: https://github.com/pivotal-k8s/kind-on-c
+    uri: git@github.com:pivotal-k8s/kind-on-c
     branch: master
+    private_key: ((github.push_key))
 - name: kind-release
   type: github-release
   source:
@@ -116,6 +129,7 @@ jobs:
     params:
       image: image/image.tar
       additional_tags: image/additional_tags
+
 - name: test
   plan:
   - in_parallel:
@@ -202,27 +216,28 @@ jobs:
     - get: k8s-git
       resource: k8s-git-1.13
   - << : *testTask
+
 - name: promote
   plan:
   - in_parallel:
     - get: dev-image
       trigger: true
-      passed:
+      passed: &allTestJobs
       - test
       - test with k8s-master
       - test with k8s-1.15
       - test with k8s-1.14
       - test with k8s-1.13
+      - test with kind-master
+      - test with kind-master and k8s-1.13
+      - test with kind-master and k8s-1.14
+      - test with kind-master and k8s-1.15
+      - test with kind-master and k8s-master
       params:
         format: oci
     - get: kind-on-c
       trigger: true
-      passed:
-      - test
-      - test with k8s-master
-      - test with k8s-1.15
-      - test with k8s-1.14
-      - test with k8s-1.13
+      passed: *allTestJobs
   - in_parallel:
     - put: kind-on-c-master
       params:
@@ -231,3 +246,136 @@ jobs:
       resource: image
       params:
         image: dev-image/image.tar
+
+- name: build kind from master
+  plan:
+  - get: kind-git-master
+    trigger: true
+  - task: build
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: "golang"
+          tag: "1.12"
+      inputs:
+      - name: kind-git-master
+        path: src
+      outputs:
+      - name: kind-bin
+      params:
+        CGO_ENABLED: 0
+        GO111MODULE: "on"
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          set -e
+
+          cd ./src
+          go get -d ./...
+          go build main.go
+
+          mv main "../kind-bin/kind-linux-amd64"
+
+          ls -l ../kind-bin/
+  - put: kind-build
+    params:
+      file: kind-bin/kind-linux-amd64
+
+- name: test with kind-master
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - &fromKindRelease
+      get: kind-release
+      passed: [ build kind from master ]
+      resource: kind-build
+      trigger: true
+  - *testTask
+- name: test with kind-master and k8s-1.13
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromKindRelease
+    - get: k8s-git
+      resource: k8s-git-1.13
+  - << : *testTask
+- name: test with kind-master and k8s-1.14
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromKindRelease
+    - get: k8s-git
+      resource: k8s-git-1.14
+  - << : *testTask
+- name: test with kind-master and k8s-1.15
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromKindRelease
+    - get: k8s-git
+      resource: k8s-git-1.15
+  - << : *testTask
+- name: test with kind-master and k8s-master
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromKindRelease
+    - get: k8s-git
+      resource: k8s-git-master
+  - << : *testTask
+
+groups:
+- name: all
+  jobs:
+  - promote
+  - build dev-image
+  - test
+  - test with k8s-master
+  - test with k8s-1.15
+  - test with k8s-1.14
+  - test with k8s-1.13
+  - build kind from master
+  - test with kind-master
+  - test with kind-master and k8s-1.13
+  - test with kind-master and k8s-1.14
+  - test with kind-master and k8s-1.15
+  - test with kind-master and k8s-master
+- name: kind from upstream
+  jobs:
+  - build dev-image
+  - test
+  - test with k8s-master
+  - test with k8s-1.15
+  - test with k8s-1.14
+  - test with k8s-1.13
+- name: kind from master
+  jobs:
+  - build dev-image
+  - build kind from master
+  - test with kind-master
+  - test with kind-master and k8s-1.13
+  - test with kind-master and k8s-1.14
+  - test with kind-master and k8s-1.15
+  - test with kind-master and k8s-master
+- name: promote
+  jobs:
+  - promote
