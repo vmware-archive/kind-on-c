@@ -24,6 +24,12 @@ resources:
   type: git
   source:
     uri: https://github.com/pivotal-k8s/kind-on-c
+    branch: dev
+- name: kind-on-c-master
+  type: git
+  source:
+    uri: https://github.com/pivotal-k8s/kind-on-c
+    branch: master
 - name: kind-release
   type: github-release
   source:
@@ -31,6 +37,11 @@ resources:
     repository: kind
     access_token: ((github.token))
     pre_release: true
+- name: kind-git-master
+  type: git
+  source:
+    uri: https://github.com/kubernetes-sigs/kind
+    branch: master
 - name: k8s-git-1.13
   type: git
   source:
@@ -191,19 +202,32 @@ jobs:
     - get: k8s-git
       resource: k8s-git-1.13
   - << : *testTask
-- name: promote image
+- name: promote
   plan:
-  - get: dev-image
-    trigger: true
-    passed:
-    - test
-    - test with k8s-master
-    - test with k8s-1.15
-    - test with k8s-1.14
-    - test with k8s-1.13
-    params:
-      format: oci
-  - put: promote
-    resource: image
-    params:
-      image: dev-image/image.tar
+  - in_parallel:
+    - get: dev-image
+      trigger: true
+      passed:
+      - test
+      - test with k8s-master
+      - test with k8s-1.15
+      - test with k8s-1.14
+      - test with k8s-1.13
+      params:
+        format: oci
+    - get: kind-on-c
+      trigger: true
+      passed:
+      - test
+      - test with k8s-master
+      - test with k8s-1.15
+      - test with k8s-1.14
+      - test with k8s-1.13
+  - in_parallel:
+    - put: kind-on-c-master
+      params:
+        repository: kind-on-c
+    - put: promote
+      resource: image
+      params:
+        image: dev-image/image.tar
