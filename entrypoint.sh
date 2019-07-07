@@ -214,13 +214,46 @@ kind::start::fromSource() {
 }
 
 kind::hack::kmsg_linker::runner() {
-  local node nodeCmd clusterName
+  local nodes0 nodes1 nodeCmd clusterName \
+    nodes=() node pids=() pid
 
   clusterName="$1"
   nodeCmd='set -e; [ -e /dev/kmsg ] || ln -s /dev/console /dev/kmsg'
 
-  node="$(kind get nodes --name "$clusterName" 2>/dev/null)" || return 1
-  docker exec "$node" sh -c "$nodeCmd" 2>/dev/null || return 2
+  # get all the nodes currently known by kind
+  # remember those nodes for a bit
+  nodes0="$( kind get nodes --name "$clusterName" | sort )" || return 1
+
+  mapfile -t nodes <<< "$nodes0"
+
+  # we expect at least 1 node
+  [ "${#nodes[@]}" -ge 1 ] || return 2
+
+  # for each node, spawn a background process for doing the linking for one node
+  # keep track of the PIDs
+  for node in "${nodes[@]}"
+  do
+    docker exec "$node" sh -c "$nodeCmd" &
+    pids+=( $! )
+  done
+
+  # wait for all linking processes in the background
+  # bail out if anyone of those failed
+  for pid in "${pids[@]}"
+  do
+    wait "$pid" || return 3
+  done
+
+  # wait a bit, give kind a chance to bring up more nodes
+  sleep 5
+
+  # check again which nodes kind knows about
+  # if that is different then the list of nodes from the beginning, consider
+  # this run failed
+  nodes1="$( kind get nodes --name "$clusterName" | sort )" || return 4
+  [ "$nodes0" = "$nodes1" ] || return 5
+
+  return 0
 }
 
 kind::hack::kmsg_linker() {
