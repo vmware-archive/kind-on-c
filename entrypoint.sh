@@ -9,8 +9,8 @@ set -o errexit -o pipefail -o nounset
 
 # Waits DOCKERD_TIMEOUT seconds for startup (default: 60)
 DOCKERD_TIMEOUT="${DOCKERD_TIMEOUT:-60}"
-# Accepts optional DOCKER_OPTS (default: --data-root /scratch/docker --storage-driver overlay2)
-DOCKERD_OPTS="${DOCKER_OPTS:-}"
+# Accepts optional DOCKERD_OPTS (default: --data-root /scratch/docker --storage-driver overlay2)
+DOCKERD_OPTS="${DOCKERD_OPTS:-}"
 
 # Constants
 DOCKERD_PID_FILE="/tmp/docker.pid"
@@ -103,7 +103,7 @@ docker::start() {
     mount -o remount,rw /proc/sys
   fi
 
-  local docker_opts="${DOCKER_OPTS:-}"
+  local docker_opts="${DOCKERD_OPTS:-}"
 
   # Pass through `--garden-mtu` from gardian container
   if [[ "${docker_opts}" != *'--mtu'* ]]; then
