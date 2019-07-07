@@ -231,6 +231,24 @@ kind::hack::kmsg_linker() {
   log::info 'kmsg-linker successful, shutting down'
 }
 
+kind::hack::gen_config() {
+  log::info 'patching kind config'
+
+  local orgConf patchedConf
+  orgConf="$1"
+  patchedConf="$( mktemp )"
+
+  # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
+  # To do so, we also need to make sure kind does not deploy its default CNI.
+  # See also:
+  # - https://github.com/kubernetes-sigs/kind/issues/626
+  # - https://github.com/kubernetes-sigs/kind/pull/633
+  log::info ' - ensure the default CNI is not deployed'
+  yq -y '.networking.disableDefaultCNI = true' "$orgConf" > "$patchedConf"
+
+  echo "$patchedConf"
+}
+
 # Start kind with the (latest) node image published by kind upstream
 kind::start::fromUpstream() {
   local clusterName="$1"
@@ -307,6 +325,9 @@ kind::start() {
   install -m 0750 "$kindBin" ./bin/kind
   log::info "$(command -v kind): $(kind version)"
 
+  # patch kind config
+  kindConfig="$( kind::hack::gen_config "$kindConfig" )"
+
   local kindStartFunc='kind::start::fromUpstream'
   [ ! -d "$k8sSrcDir" ] || kindStartFunc='kind::start::fromSource'
   "$kindStartFunc" "$clusterName" "$kindConfig" "$kindLoglevel" "$k8sSrcDir"
@@ -323,7 +344,7 @@ kind::start() {
   # install flannel as an alternative CNI
   #
   # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
-  # To do so, we also need to use a custom kind config when starting kind.
+  # To do so, we also need to make sure kind does not deploy its default CNI.
   # See also:
   # - https://github.com/kubernetes-sigs/kind/issues/626
   # - https://github.com/kubernetes-sigs/kind/pull/633
