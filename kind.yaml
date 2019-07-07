@@ -5,10 +5,11 @@ image_resource:
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
 inputs:
+- name: kind-on-c
 - name: kind-release
   optional: true
 - name: k8s-git
   optional: true
   path: go/src/k8s.io/kubernetes
 run:
-  path: entrypoint.sh
+  path: kind-on-c/entrypoint.sh

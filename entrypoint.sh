@@ -188,23 +188,14 @@ docker::stop() {
   log::info "Docker exited after ${duration} seconds."
 }
 
-# Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
-# To do so, we also need to use a custom kind config when starting kind.
-# See also:
-# - https://github.com/kubernetes-sigs/kind/issues/626
-# - https://github.com/kubernetes-sigs/kind/pull/633
-kind::hack::install_flannel() {
-  kubectl apply -f /kind-on-c/flannel.yaml
-}
-readonly KIND_CONFIG=/kind-on-c/kind-config.yaml
-
 # Build a node image off of the k8s source and start kind
 kind::start::fromSource() {
-  local clusterName k8sSrcDir gitTag imageName
+  local clusterName="$1"
+  local kindConfig="$2"
+  local loglevel="$3"
+  local k8sSrcDir="$4"
 
-  clusterName="$1"
-  k8sSrcDir="$2"
-
+  local gitTag imageName
   gitTag="$( cd "${k8sSrcDir}" && git describe --dirty )"
   imageName="kind/local-image:${gitTag}"
 
@@ -216,10 +207,10 @@ kind::start::fromSource() {
 
   # bring up kind
   kind::hack::kmsg_linker "$clusterName" &
-  kind create cluster --config "$KIND_CONFIG" --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
+  kind create cluster --config "$kindConfig" --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
 
   # get the (compiled) version of kubectl
-  cp ./go/src/k8s.io/kubernetes/_output/dockerized/bin/linux/amd64/kubectl ./bin/kubectl
+  cp "${k8sSrcDir}/_output/dockerized/bin/linux/amd64/kubectl" ./bin/kubectl
 }
 
 kind::hack::kmsg_linker::runner() {
@@ -243,11 +234,13 @@ kind::hack::kmsg_linker() {
 # Start kind with the (latest) node image published by kind upstream
 kind::start::fromUpstream() {
   local clusterName="$1"
+  local kindConfig="$2"
+  local loglevel="$3"
 
   log::warn "no k8s source found, using newest node image from kind upstream"
 
   kind::hack::kmsg_linker "$clusterName" &
-  kind create cluster --config "$KIND_CONFIG" --name "$clusterName" --loglevel "$loglevel" --retain
+  kind create cluster --config "$kindConfig" --name "$clusterName" --loglevel "$loglevel" --retain
 
   # get kubectl from upstream
   kubectl::download ./bin/kubectl
@@ -298,9 +291,12 @@ kind::start() {
   export PATH
 
   local clusterName="${KIND_CLUSTER_NAME:-kind}"
-  local loglevel="${KIND_LOG_LEVEL:-error}"
+  local kindLoglevel="${KIND_LOG_LEVEL:-error}"
+  local kindConfig="${PWD}/kind-on-c/kind-config.yaml"
+  local flannelConfig="${PWD}/kind-on-c/flannel.yaml"
+  local k8sSrcDir="${PWD}/go/src/k8s.io/kubernetes"
+  local kindBin="${PWD}/kind-release/kind-linux-amd64"
 
-  local kindBin='./kind-release/kind-linux-amd64'
   [ -f "$kindBin" ] || {
     log::error "'kind-release' input not configured"
     log::error "   expected the kind binary at '${kindBin}'"
@@ -311,13 +307,9 @@ kind::start() {
   install -m 0750 "$kindBin" ./bin/kind
   log::info "$(command -v kind): $(kind version)"
 
-  local k8sSrcDir='./go/src/k8s.io/kubernetes'
-  if [ -d "$k8sSrcDir" ]
-  then
-    kind::start::fromSource "$clusterName" "$k8sSrcDir"
-  else
-    kind::start::fromUpstream "$clusterName"
-  fi
+  local kindStartFunc='kind::start::fromUpstream'
+  [ ! -d "$k8sSrcDir" ] || kindStartFunc='kind::start::fromSource'
+  "$kindStartFunc" "$clusterName" "$kindConfig" "$kindLoglevel" "$k8sSrcDir"
 
   # make kubeconfig available
   KUBECONFIG="$(kind get kubeconfig-path --name "$clusterName")"
@@ -329,8 +321,14 @@ kind::start() {
   retry 60 1 kubectl -n default get serviceaccount default -o name
 
   # install flannel as an alternative CNI
+  #
+  # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
+  # To do so, we also need to use a custom kind config when starting kind.
+  # See also:
+  # - https://github.com/kubernetes-sigs/kind/issues/626
+  # - https://github.com/kubernetes-sigs/kind/pull/633
   log::info 'Installing flannel'
-  kind::hack::install_flannel
+  retry 1 1 kubectl apply -f "$flannelConfig"
 
   # tell 'em!
   log::info "kind is available"

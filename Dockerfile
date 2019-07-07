@@ -22,10 +22,6 @@ RUN apk --update --no-cache add $PKGS && \
 ARG TIMEZONE=UTC
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo "${TIMEZONE}" > /etc/timezone
 
-COPY flannel.yaml /kind-on-c/flannel.yaml
-COPY kind-config.yaml /kind-on-c/kind-config.yaml
-COPY entrypoint.sh /bin/entrypoint.sh
-
 LABEL org.opencontainers.image.title        "kind-on-c"
 LABEL org.opencontainers.image.created      "${BUILD_DATE}"
 LABEL org.opencontainers.image.x-dep.alpine "${ALPINE_VERSION}"
