@@ -430,7 +430,7 @@ main() {
 
   # shellcheck disable=SC2016
   log::info 'Running tests from "$KIND_TESTS"'
-  bash -c "$KIND_TESTS"
+  bash -e -u -c "$KIND_TESTS"
 }
 
 main
