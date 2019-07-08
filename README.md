@@ -115,12 +115,12 @@ matches the version of kubernetes deployed.
   against the cluster! E.g.:
   ```yaml
   KIND_TESTS: |
-    set -eu
     kubectl get nodes -o jsonpath="{..name}" | grep -q 'worker2' || {
       echo >&2 "Expected node 'worker2' not found"
       return 1
     }
   ```
+  _Note_: The tests will run in bash with the options `errexit` & `nounset`
 - `KIND_CONFIG`  
   ... is the config kind when creating the cluster. Optional. If not specified,
   the [default config](kind-default-config.yaml) is used, but can be
