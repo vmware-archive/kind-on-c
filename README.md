@@ -111,7 +111,33 @@ matches the version of kubernetes deployed.
 # User configurations
 
 - `KIND_TESTS`  
-  ... this is the important piece: configure, what YOU actually want to run against the cluster!
+  ... this is the important piece: configure, what YOU actually want to run
+  against the cluster! E.g.:
+  ```yaml
+  KIND_TESTS: |
+    set -eu
+    kubectl get nodes -o jsonpath="{..name}" | grep -q 'worker2' || {
+      echo >&2 "Expected node 'worker2' not found"
+      return 1
+    }
+  ```
+- `KIND_CONFIG`  
+  ... is the config kind when creating the cluster. Optional. If not specified,
+  the [default config](kind-default-config.yaml) is used, but can be
+  overwritten with something like:
+  ```yaml
+  KIND_CONFIG: |
+    kind: Cluster
+    apiVersion: kind.sigs.k8s.io/v1alpha3
+    nodes:
+    - role: control-plane
+    - role: worker
+    - role: worker
+  ```
+  _Note_: potentially the config you specify will be patched with things that
+  are essential for kind-on-c to work properly (We currently force kind to
+  **not** deploy its own CNI, but to use flannel. Patches like that might be
+  added and removed as needed.)
 - `DOCKERD_OPTS`  
   ... if you need to add some configs when starting the docker daemon
 - `DOCKERD_TIMEOUT`  

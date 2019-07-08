@@ -248,6 +248,7 @@ jobs:
       - test with kind-master and k8s-1.14
       - test with kind-master and k8s-1.15
       - test with kind-master and k8s-master
+      - test custom kind config
       params:
         format: oci
     - get: kind-on-c
@@ -358,6 +359,35 @@ jobs:
       resource: k8s-git-master
   - << : *testTask
 
+# additional "feature" tests
+- name: test custom kind config
+  plan:
+  - in_parallel:
+    - <<: *fromDevImageBuild
+      get: kind-on-c
+    - <<: *fromDevImageBuild
+      get: dev-image
+    - <<: *fromDevImageBuild
+      get: kind-release
+      params:
+        globs:
+        - kind-linux-amd64
+  - << : *testTask
+    params:
+      KIND_CONFIG: |
+        kind: Cluster
+        apiVersion: kind.sigs.k8s.io/v1alpha3
+        nodes:
+        - role: control-plane
+        - role: worker
+      KIND_TESTS: |
+        set -eu
+        nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
+        [[ $nrOfNodes -eq 2 ]] || {
+          echo "Expectd 2 nodes, found $nrOfNodes"
+          return 1
+        }
+
 groups:
 - name: all
   jobs:
@@ -374,6 +404,7 @@ groups:
   - test with kind-master and k8s-1.14
   - test with kind-master and k8s-1.15
   - test with kind-master and k8s-master
+  - test custom kind config
 - name: kind release
   jobs:
   - build dev-image
@@ -394,3 +425,6 @@ groups:
 - name: promote
   jobs:
   - promote
+- name: additional tests
+  jobs:
+  - test custom kind config

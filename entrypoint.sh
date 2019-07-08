@@ -267,19 +267,37 @@ kind::hack::kmsg_linker() {
 kind::hack::gen_config() {
   log::info 'patching kind config'
 
-  local orgConf patchedConf
-  orgConf="$1"
-  patchedConf="$( mktemp )"
+  local defaultConfFile="$1"
+  local userConf="$2"
+
+  local orgConfFile patchedConfFile
+  orgConfFile="$( mktemp )"
+
+  if [ -n "$userConf" ]
+  then
+    echo "$userConf" > "$orgConfFile"
+  else
+    cat "$defaultConfFile" > "$orgConfFile"
+  fi
+
+  patchedConfFile="$( mktemp )"
 
   # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
   # To do so, we also need to make sure kind does not deploy its default CNI.
   # See also:
   # - https://github.com/kubernetes-sigs/kind/issues/626
   # - https://github.com/kubernetes-sigs/kind/pull/633
-  log::info ' - ensure the default CNI is not deployed'
-  yq -y '.networking.disableDefaultCNI = true' "$orgConf" > "$patchedConf"
+  yq -y -e -s '
+    if . == [] then null else .[] end
+      | .networking=(.networking + {disableDefaultCNI: true}) # ensure the default CNI is disabled
+  ' "$orgConfFile"  > "$patchedConfFile"
 
-  echo "$patchedConf"
+  log::info 'kind config generated:'
+  log::info '----'
+  log::info "$( cat "$patchedConfFile" )"
+  log::info '----'
+
+  echo "$patchedConfFile"
 }
 
 # Start kind with the (latest) node image published by kind upstream
@@ -337,16 +355,15 @@ retry() {
 }
 
 kind::start() {
-  mkdir ./bin
-  PATH="${PATH}:$(pwd)/bin"
-  export PATH
-
   local clusterName="${KIND_CLUSTER_NAME:-kind}"
   local kindLoglevel="${KIND_LOG_LEVEL:-error}"
-  local kindConfig="${PWD}/kind-on-c/kind-config.yaml"
+  local userKindConfig="${KIND_CONFIG:-}"
+
+  local binPath="${PWD}/bin"
   local flannelConfig="${PWD}/kind-on-c/flannel.yaml"
   local k8sSrcDir="${PWD}/go/src/k8s.io/kubernetes"
   local kindBin="${PWD}/kind-release/kind-linux-amd64"
+  local defaultKindConfigFile="${PWD}/kind-on-c/kind-default-config.yaml"
 
   [ -f "$kindBin" ] || {
     log::error "'kind-release' input not configured"
@@ -354,16 +371,20 @@ kind::start() {
     return 1
   }
 
+  mkdir -p "$binPath"
+  export PATH="${PATH}:${binPath}"
+
   # install kind itself
   install -m 0750 "$kindBin" ./bin/kind
   log::info "$(command -v kind): $(kind version)"
 
-  # patch kind config
-  kindConfig="$( kind::hack::gen_config "$kindConfig" )"
+  # generate the config for kind
+  local kindConfigFile
+  kindConfigFile="$( kind::hack::gen_config "$defaultKindConfigFile" "$userKindConfig" )"
 
   local kindStartFunc='kind::start::fromUpstream'
   [ ! -d "$k8sSrcDir" ] || kindStartFunc='kind::start::fromSource'
-  "$kindStartFunc" "$clusterName" "$kindConfig" "$kindLoglevel" "$k8sSrcDir"
+  "$kindStartFunc" "$clusterName" "$kindConfigFile" "$kindLoglevel" "$k8sSrcDir"
 
   # make kubeconfig available
   KUBECONFIG="$(kind get kubeconfig-path --name "$clusterName")"
