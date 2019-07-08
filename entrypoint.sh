@@ -264,6 +264,11 @@ kind::hack::kmsg_linker() {
   log::info 'kmsg-linker successful, shutting down'
 }
 
+# Generate a config file for kind
+# - by default, use the kind-on-c/kind-default-config
+# - if we find a user-provided config in the env ($KIND_CONFIG), we use that
+# - in any case, we patch in certain things, we definitely need (e.g. disable
+#   default CNI)
 kind::hack::gen_config() {
   log::info 'patching kind config'
 
