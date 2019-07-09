@@ -4,6 +4,16 @@ resource_types:
   source:
     repository: frodenas/gcs-resource
 
+config:
+- &imageRepo
+  gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+- &kindOnCGitSource
+  uri: git@github.com:pivotal-k8s/kind-on-c
+  branch: dev
+  private_key: ((github.push_key))
+- &imageBuildingFiles
+  - Dockerfile
+
 resources:
 - name: base-image
   type: registry-image
@@ -12,16 +22,10 @@ resources:
 - name: image
   type: registry-image
   source:
-    repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+    repository: *imageRepo
     username: ((registry.username))
     password: ((registry.password))
-- name: dev-image
-  type: registry-image
-  source:
-    repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
-    username: ((registry.username))
-    password: ((registry.password))
-    tag: ci-rc
+    tag: ci
 - name: kind-build
   type: google-cloud-storage
   source:
@@ -32,17 +36,21 @@ resources:
   type: git
   source:
     uri: https://github.com/concourse/builder-task
-- name: kind-on-c
+- name: dockerfile
   type: git
   source:
-    uri: https://github.com/pivotal-k8s/kind-on-c
-    branch: dev
+    << : *kindOnCGitSource
+    paths: *imageBuildingFiles
+- name: kind-on-c-dev
+  type: git
+  source:
+    << : *kindOnCGitSource
+    ignore_paths: *imageBuildingFiles
 - name: kind-on-c-master
   type: git
   source:
-    uri: git@github.com:pivotal-k8s/kind-on-c
+    << : *kindOnCGitSource
     branch: master
-    private_key: ((github.push_key))
 - name: kind-release
   type: github-release
   source:
@@ -77,7 +85,7 @@ resources:
     branch: master
 
 jobs:
-- name: build dev-image
+- name: update image
   plan:
   - in_parallel:
       fail_fast: true
@@ -85,13 +93,9 @@ jobs:
       - get: builder-task
       - get: base-image
         trigger: true
-      - get: kind-on-c
+      - get: dockerfile
         trigger: true
-      - get: kind-release
-        trigger: true
-        params:
-          globs:
-          - kind-linux-amd64
+      - get: kind-on-c-dev
   - task: build
     privileged: true
     config:
@@ -101,15 +105,17 @@ jobs:
         source:
           repository: concourse/builder-task
       params:
-        REPOSITORY: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
-        CONTEXT: kind-on-c
+        REPOSITORY: *imageRepo
+        CONTEXT: dockerfile
+        TAG: ci
       inputs:
-      - name: kind-release
       - name: base-image
       - name: builder-task
-      - name: kind-on-c
+      - name: dockerfile
       outputs:
       - name: image
+      - name: rootfs
+      - name: tag
       caches:
       - path: cache
       run:
@@ -121,147 +127,144 @@ jobs:
           set -u
           set -o pipefail
 
+          kind_on_c_ver="$( git --git-dir=dockerfile/.git describe --always --tags )"
+          alpine_ver="$( cat base-image/digest )"
+
           cat <<EOF > image/build_args
-          BUILD_DATE=$( date -Iseconds )
-          KIND-ON-C_VERSION=$( git --git-dir=kind-on-c/.git describe --always --tags )
-          KIND_VERSION=$( cat kind-release/commit_sha )
-          ALPINE_VERSION=$( cat base-image/digest )
+          KIND_ON_C_VERSION=${kind_on_c_ver}
+          ALPINE_VERSION=${alpine_ver}
           EOF
 
           export BUILD_ARGS_FILE=image/build_args
-          export TAG="$( sha3sum image/build_args | cut -d' ' -f1 )"
-
-          echo '----'
-          echo "building image '${TAG}' with build args:"
-          cat image/build_args | sed 's/^/  /g'
-          echo '----'
-
-          echo "$TAG" > image/additional_tags
+          echo "$TAG" > tag/tag
 
           builder-task/build
-  - put: push
-    resource: dev-image
+
+          img ls -s /scratch/state \
+            | awk -vimg="${REPOSITORY}:${TAG}" '$0 ~ img { print $NF }' \
+            | sed 's/:/-/g' \
+            > tag/tag
+  - put: image
     params:
       image: image/image.tar
-      additional_tags: image/additional_tags
+      additional_tags: tag/tag
+  # - task: test new image ## TODO
+  - task: update image revision
+    image: rootfs # use image from the builder task
+    config:
+      platform: linux
+      params:
+        GIT_AUTHOR_NAME: "kind-on-c pipeline"
+        GIT_AUTHOR_EMAIL: "hhorl+kindonc@pivotal.io"
+      inputs:
+      - name: tag
+      - name: kind-on-c-dev
+      outputs:
+      - name: kind-on-c-dev
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          set -e
+          set -u
+          set -o pipefail
 
-- name: test
+          tag="$( cat tag/tag )"
+          taskConf="${PWD}/kind-on-c-dev/kind.yaml"
+          tmpFile="$(mktemp)"
+          trap 'rm -f -- "$tmpFile"' EXIT
+
+          cd kind-on-c-dev
+
+          yq -y --arg tag "$tag" '.image_resource.source.tag = $tag' "$taskConf" > "$tmpFile"
+          cat "$tmpFile" > "$taskConf"
+
+          git config --global user.email "$GIT_AUTHOR_EMAIL"
+          git config --global user.name "$GIT_AUTHOR_NAME"
+
+          git add "$taskConf"
+          git diff --quiet && git diff --staged --quiet || {
+            git commit --quiet --message "Update container image to '${tag}'"
+            git show -1 | cat
+          }
+  - put: kind-on-c-dev
+    params:
+      repository: kind-on-c-dev
+
+- name: latest kind release
   plan:
-  - in_parallel:
-    - &fromDevImageBuild
-      get: kind-on-c
-      passed: [ build dev-image ]
+  - in_parallel: &commonTestInputsForKindRelease
+    - get: kind-on-c
+      resource: kind-on-c-dev
       trigger: true
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromDevImageBuild
-      get: kind-release
+    - get: kind-release
+      trigger: true
       params:
         globs:
         - kind-linux-amd64
   - &testTask
     task: run-tests
     file: kind-on-c/kind.yaml
-    image: dev-image
     privileged: true
     params:
       KIND_TESTS: |
-        set -eux
+        set -x
         kubectl get nodes -o wide
         kubectl get all --all-namespaces
         kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
           echo 'The pod says: the kubernetes cluster sure works!'
-- name: test with k8s-master
+- name: latest kind release with k8s-master
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromDevImageBuild
-      get: kind-release
-      params:
-        globs:
-        - kind-linux-amd64
+    - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-master
   - << : *testTask
-- name: test with k8s-1.15
+- name: latest kind release with k8s-1.15
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromDevImageBuild
-      get: kind-release
-      params:
-        globs:
-        - kind-linux-amd64
+    - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-1.15
   - << : *testTask
-- name: test with k8s-1.14
+- name: latest kind release with k8s-1.14
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromDevImageBuild
-      get: kind-release
-      params:
-        globs:
-        - kind-linux-amd64
+    - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-1.14
   - << : *testTask
-- name: test with k8s-1.13
+- name: latest kind release with k8s-1.13
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromDevImageBuild
-      get: kind-release
-      params:
-        globs:
-        - kind-linux-amd64
+    - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-1.13
   - << : *testTask
 
 - name: promote
   plan:
-  - in_parallel:
-    - get: dev-image
-      trigger: true
-      passed: &allTestJobs
-      - test
-      - test with k8s-master
-      - test with k8s-1.15
-      - test with k8s-1.14
-      - test with k8s-1.13
-      - test with kind-master
-      - test with kind-master and k8s-1.13
-      - test with kind-master and k8s-1.14
-      - test with kind-master and k8s-1.15
-      - test with kind-master and k8s-master
-      - test custom kind config
-      params:
-        format: oci
-    - get: kind-on-c
-      trigger: true
-      passed: *allTestJobs
-  - in_parallel:
-    - put: kind-on-c-master
-      params:
-        repository: kind-on-c
-    - put: promote
-      resource: image
-      params:
-        image: dev-image/image.tar
+  - get: kind-on-c-dev
+    trigger: true
+    passed:
+    # all tests for the kind release
+    - latest kind release
+    - latest kind release with k8s-master
+    - latest kind release with k8s-1.15
+    - latest kind release with k8s-1.14
+    - latest kind release with k8s-1.13
+    # all tests for kind master
+    - kind master
+    - kind master with k8s-1.13
+    - kind master with k8s-1.14
+    - kind master with k8s-1.15
+    - kind master with k8s-master
+    # all other tests
+    - latest kind release with custom config
+  - put: kind-on-c-master
+    params:
+      repository: kind-on-c-dev
 
 - name: build kind from master
   plan:
@@ -301,77 +304,50 @@ jobs:
     params:
       file: kind-bin/kind-linux-amd64
 
-- name: test with kind-master
+- name: kind master
   plan:
-  - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - &fromKindRelease
-      get: kind-release
+  - in_parallel: &commonTestInputsForKindMaster
+    - get: kind-on-c
+      resource: kind-on-c-dev
+      trigger: true
+    - get: kind-release
       passed: [ build kind from master ]
       resource: kind-build
       trigger: true
   - *testTask
-- name: test with kind-master and k8s-1.13
+- name: kind master with k8s-1.13
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromKindRelease
+    - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-1.13
   - << : *testTask
-- name: test with kind-master and k8s-1.14
+- name: kind master with k8s-1.14
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromKindRelease
+    - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-1.14
   - << : *testTask
-- name: test with kind-master and k8s-1.15
+- name: kind master with k8s-1.15
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromKindRelease
+    - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-1.15
   - << : *testTask
-- name: test with kind-master and k8s-master
+- name: kind master with k8s-master
   plan:
   - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromKindRelease
+    - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-master
   - << : *testTask
 
 # additional "feature" tests
-- name: test custom kind config
+- name: latest kind release with custom config
   plan:
-  - in_parallel:
-    - <<: *fromDevImageBuild
-      get: kind-on-c
-    - <<: *fromDevImageBuild
-      get: dev-image
-    - <<: *fromDevImageBuild
-      get: kind-release
-      params:
-        globs:
-        - kind-linux-amd64
+  - in_parallel: *commonTestInputsForKindRelease
   - << : *testTask
     params:
       KIND_CONFIG: |
@@ -381,7 +357,7 @@ jobs:
         - role: control-plane
         - role: worker
       KIND_TESTS: |
-        set -eu
+        set -x
         nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $nrOfNodes -eq 2 ]] || {
           echo "Expectd 2 nodes, found $nrOfNodes"
@@ -392,39 +368,39 @@ groups:
 - name: all
   jobs:
   - promote
-  - build dev-image
-  - test
-  - test with k8s-master
-  - test with k8s-1.15
-  - test with k8s-1.14
-  - test with k8s-1.13
+  - latest kind release
+  - latest kind release with k8s-master
+  - latest kind release with k8s-1.15
+  - latest kind release with k8s-1.14
+  - latest kind release with k8s-1.13
   - build kind from master
-  - test with kind-master
-  - test with kind-master and k8s-1.13
-  - test with kind-master and k8s-1.14
-  - test with kind-master and k8s-1.15
-  - test with kind-master and k8s-master
-  - test custom kind config
+  - kind master
+  - kind master with k8s-1.13
+  - kind master with k8s-1.14
+  - kind master with k8s-1.15
+  - kind master with k8s-master
+  - latest kind release with custom config
+- name: image
+  jobs:
+  - update image
 - name: kind release
   jobs:
-  - build dev-image
-  - test
-  - test with k8s-master
-  - test with k8s-1.15
-  - test with k8s-1.14
-  - test with k8s-1.13
+  - latest kind release
+  - latest kind release with k8s-master
+  - latest kind release with k8s-1.15
+  - latest kind release with k8s-1.14
+  - latest kind release with k8s-1.13
 - name: kind master
   jobs:
-  - build dev-image
   - build kind from master
-  - test with kind-master
-  - test with kind-master and k8s-1.13
-  - test with kind-master and k8s-1.14
-  - test with kind-master and k8s-1.15
-  - test with kind-master and k8s-master
+  - kind master
+  - kind master with k8s-1.13
+  - kind master with k8s-1.14
+  - kind master with k8s-1.15
+  - kind master with k8s-master
+- name: additional tests
+  jobs:
+  - latest kind release with custom config
 - name: promote
   jobs:
   - promote
-- name: additional tests
-  jobs:
-  - test custom kind config

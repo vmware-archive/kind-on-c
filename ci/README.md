@@ -10,9 +10,19 @@
 
 ## Pipeline setup
 
-The pipeline runs on changes of the `dev` branch of this repo, runs its test, and finally when all tests are green:
-- promotes the container image which has been built in the pipeline and used in the tests
-- pushes the commits from the `dev` branch into the `master` branch
+On changes to the [Dockerfile](../Dockerfile) or a new upstream alpine image we
+build a new images and tag it with a unique hash. (We use a tag and not the
+digest directly, because we cannot pin a task image to a digest yet, but only
+to a tag). After the image is built and pushed to the registry, we update the
+[task config](../kind.yaml) to use this new tag in the `dev` branch.
+
+This new commit triggers the pipeline with all the tests. When all tests come
+back green, the pipeline promotes the current state by merging `dev` into
+`master`.
+
+To summarize:
+Push your changes into the `dev` branch, if all tests come back green theses
+changes will be automatically merged into `master`.
 
 ## `./set-pipeline.sh`
 
