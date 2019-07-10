@@ -345,6 +345,36 @@ jobs:
   - << : *testTask
 
 # additional "feature" tests
+- name: latest kind release with HA control plane
+  plan:
+  - in_parallel: *commonTestInputsForKindRelease
+  - << : *testTask
+    params:
+      KIND_CONFIG: |
+        kind: Cluster
+        apiVersion: kind.sigs.k8s.io/v1alpha3
+        nodes:
+        - role: control-plane
+        - role: control-plane
+        - role: control-plane
+        - role: worker
+      KIND_TESTS: |
+        set -x
+
+        expectedNrOfNodes=4      # 1 worker + 3 control plane nodes
+        expectedNrOfContainers=5 # 1 worker + 3 control plane + 1 loadbalancer
+
+        actualNrOfContainers=$( kind get nodes | wc -l )
+        [[ $expectedNrOfContainers -eq $actualNrOfContainers ]] || {
+          echo "Expectd to find ${expectedNrOfContainers} kubernetes nodes, found ${actualNrOfContainers}"
+          exit 1
+        }
+
+        actualNrOfNodes=$( kubectl get nodes --no-headers | wc -l )
+        [[ $expectedNrOfNodes -eq $actualNrOfNodes ]] || {
+          echo "Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
+          exit 2
+        }
 - name: latest kind release with custom config
   plan:
   - in_parallel: *commonTestInputsForKindRelease
@@ -361,7 +391,7 @@ jobs:
         nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $nrOfNodes -eq 2 ]] || {
           echo "Expectd 2 nodes, found $nrOfNodes"
-          return 1
+          exit 1
         }
 
 groups:
@@ -401,6 +431,7 @@ groups:
 - name: additional tests
   jobs:
   - latest kind release with custom config
+  - latest kind release with HA control plane
 - name: promote
   jobs:
   - promote
