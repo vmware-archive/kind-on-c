@@ -188,6 +188,54 @@ docker::stop() {
   log::info "Docker exited after ${duration} seconds."
 }
 
+image::export::image() {
+  local imgType="$1"
+  local imgName="$2"
+
+  log::info "Exporting ${imgType} image"
+
+  local destDir="${PWD}/kind-image/${imgType}"
+  local destName='image.tar'
+
+  mkdir -p "$destDir"
+
+  docker save -o "${destDir}/${destName}" "$imgName"
+}
+
+image::export::rootfs() {
+  local imgType="$1"
+  local imgName="$2"
+
+  log::info "Exporting ${imgType} rootfs"
+
+  (
+    local cid
+
+    local destDir="${PWD}/kind-rootfs/${imgType}"
+    local destDirRootfs="${destDir}/rootfs"
+
+    mkdir -p "$destDirRootfs"
+
+    cid="$( docker create "$imgName" )"
+    trap 'docker rm "$cid"' EXIT
+
+    docker inspect "$cid" \
+      | jq '.[0] | { user: .Config.User, env: .Config.Env }' \
+      > "${destDir}/metadata.json"
+
+    docker export "$cid" \
+      | tar -C "$destDirRootfs" -xf -
+  )
+}
+
+image::export() {
+  local imgType="$1"
+  local imgName="$2"
+
+  [[ ! ${KIND_EXPORT_ROOTFS+x} ]] || image::export::rootfs "$imgType" "$imgName"
+  [[ ! ${KIND_EXPORT_IMAGE+x} ]]  || image::export::image  "$imgType" "$imgName"
+}
+
 # Build a node image off of the k8s source and start kind
 kind::start::fromSource() {
   local clusterName="$1"
@@ -204,6 +252,8 @@ kind::start::fromSource() {
   # create the node image
   GOPATH="$(pwd)/go" \
     kind build node-image --image "$imageName"
+
+  image::export 'node' "$imageName"
 
   # bring up kind
   kind::hack::kmsg_linker "$clusterName" &
