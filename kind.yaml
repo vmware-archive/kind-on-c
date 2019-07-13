@@ -11,5 +11,8 @@ inputs:
 - name: k8s-git
   optional: true
   path: go/src/k8s.io/kubernetes
+outputs:
+- name: kind-rootfs
+- name: kind-image
 run:
   path: kind-on-c/entrypoint.sh
