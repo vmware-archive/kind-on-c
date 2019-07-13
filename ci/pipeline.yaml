@@ -198,11 +198,19 @@ jobs:
     - get: kind-on-c
       resource: kind-on-c-dev
       trigger: true
+      passed:
+      - latest kind release with custom config
+      - latest kind release with HA control plane
+      - latest kind outputs the node image
     - get: kind-release
       trigger: true
       params:
         globs:
         - kind-linux-amd64
+      passed:
+      - latest kind release with custom config
+      - latest kind release with HA control plane
+      - latest kind outputs the node image
   - &testTask
     task: run-tests
     file: kind-on-c/kind.yaml
@@ -234,6 +242,8 @@ jobs:
     - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-1.14
+      passed:
+      - latest kind outputs the node image
   - << : *testTask
 - name: latest kind release with k8s-1.13
   plan:
@@ -260,8 +270,6 @@ jobs:
     - kind master with k8s-1.14
     - kind master with k8s-1.15
     - kind master with k8s-master
-    # all other tests
-    - latest kind release with custom config
   - put: kind-on-c-master
     params:
       repository: kind-on-c-dev
@@ -310,6 +318,10 @@ jobs:
     - get: kind-on-c
       resource: kind-on-c-dev
       trigger: true
+      passed:
+      - latest kind release with custom config
+      - latest kind release with HA control plane
+      - latest kind outputs the node image
     - get: kind-release
       passed: [ build kind from master ]
       resource: kind-build
@@ -347,7 +359,15 @@ jobs:
 # additional "feature" tests
 - name: latest kind release with HA control plane
   plan:
-  - in_parallel: *commonTestInputsForKindRelease
+  - in_parallel: &commonTestInputsForFeatures
+    - get: kind-on-c
+      resource: kind-on-c-dev
+      trigger: true
+    - get: kind-release
+      trigger: true
+      params:
+        globs:
+        - kind-linux-amd64
   - << : *testTask
     params:
       KIND_CONFIG: |
@@ -377,7 +397,7 @@ jobs:
         }
 - name: latest kind release with custom config
   plan:
-  - in_parallel: *commonTestInputsForKindRelease
+  - in_parallel: *commonTestInputsForFeatures
   - << : *testTask
     params:
       KIND_CONFIG: |
@@ -393,6 +413,50 @@ jobs:
           echo "Expectd 2 nodes, found $nrOfNodes"
           exit 1
         }
+- name: latest kind outputs the node image
+  plan:
+  - in_parallel:
+    - in_parallel: *commonTestInputsForFeatures
+    - get: k8s-git
+      resource: k8s-git-1.14
+  - << : *testTask
+    params:
+      KIND_EXPORT_IMAGE: 1
+      KIND_EXPORT_ROOTFS: 1
+      KIND_TESTS: exit 0
+  - task: extract node image only
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: concourse/git-resource # any image, that is probably on the worker and has `cp`
+      inputs:
+      - name: kind-rootfs
+      outputs:
+      - name: node-rootfs
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          cp -a kind-rootfs/node/* node-rootfs/
+  - task: run rootfs
+    image: node-rootfs # the rootfs, extracted by the previous task, the node image built by kind
+    config:
+      platform: linux
+      inputs:
+      - name: kind-image
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          expImg='kind-image/node/image.tar'
+          test -e "$expImg" || {
+            echo >&2 "'${expImg}' not found. What's with that\!?"
+            exit 1
+          }
 
 groups:
 - name: all
@@ -410,6 +474,8 @@ groups:
   - kind master with k8s-1.15
   - kind master with k8s-master
   - latest kind release with custom config
+  - latest kind release with HA control plane
+  - latest kind outputs the node image
 - name: image
   jobs:
   - update image
@@ -428,10 +494,11 @@ groups:
   - kind master with k8s-1.14
   - kind master with k8s-1.15
   - kind master with k8s-master
-- name: additional tests
+- name: features
   jobs:
   - latest kind release with custom config
   - latest kind release with HA control plane
+  - latest kind outputs the node image
 - name: promote
   jobs:
   - promote
