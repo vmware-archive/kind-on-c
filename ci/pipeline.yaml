@@ -438,38 +438,21 @@ jobs:
       resource: k8s-git-1.14
   - << : *testTask
     params:
-      KIND_EXPORT_IMAGE: 1
-      KIND_EXPORT_ROOTFS: 1
+      EXPORT_NODE_IMAGE: 1
+      EXPORT_NODE_ROOTFS: 1
       KIND_TESTS: exit 0
-  - task: extract node image only
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: concourse/git-resource # any image, that is probably on the worker and has `cp`
-      inputs:
-      - name: kind-rootfs
-      outputs:
-      - name: node-rootfs
-      run:
-        path: bash
-        args:
-        - -xeuc
-        - |
-          cp -a kind-rootfs/node/* node-rootfs/
   - task: run rootfs
-    image: node-rootfs # the rootfs, extracted by the previous task, the node image built by kind
+    image: exported-node-rootfs # the rootfs of the node image built by kind, from the previous task
     config:
       platform: linux
       inputs:
-      - name: kind-image
+      - name: exported-node-image
       run:
         path: bash
         args:
         - -xeuc
         - |
-          expImg='kind-image/node/image.tar'
+          expImg='exported-node-image/image.tar'
           test -e "$expImg" || {
             echo >&2 "ERR: '${expImg}' not found. What's with that\!?"
             exit 1

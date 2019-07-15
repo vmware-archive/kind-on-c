@@ -12,7 +12,7 @@ inputs:
   optional: true
   path: go/src/k8s.io/kubernetes
 outputs:
-- name: kind-rootfs
-- name: kind-image
+- name: exported-node-rootfs
+- name: exported-node-image
 run:
   path: kind-on-c/entrypoint.sh
