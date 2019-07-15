@@ -378,16 +378,15 @@ jobs:
         - role: control-plane
         - role: control-plane
         - role: control-plane
-        - role: worker
       KIND_TESTS: |
         set -x
 
-        expectedNrOfNodes=4      # 1 worker + 3 control plane nodes
-        expectedNrOfContainers=5 # 1 worker + 3 control plane + 1 loadbalancer
+        expectedNrOfNodes=3      # 0 worker + 3 control plane nodes
+        expectedNrOfContainers=4 # 0 worker + 3 control plane + 1 loadbalancer
 
         actualNrOfContainers=$( kind get nodes | wc -l )
         [[ $expectedNrOfContainers -eq $actualNrOfContainers ]] || {
-          echo "Expectd to find ${expectedNrOfContainers} kubernetes nodes, found ${actualNrOfContainers}"
+          echo "Expectd to find ${expectedNrOfContainers} kind nodes, found ${actualNrOfContainers}"
           exit 1
         }
 
