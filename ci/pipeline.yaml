@@ -386,13 +386,13 @@ jobs:
 
         actualNrOfContainers=$( kind get nodes | wc -l )
         [[ $expectedNrOfContainers -eq $actualNrOfContainers ]] || {
-          echo "Expectd to find ${expectedNrOfContainers} kind nodes, found ${actualNrOfContainers}"
+          echo "ERR: Expectd to find ${expectedNrOfContainers} kind nodes, found ${actualNrOfContainers}"
           exit 1
         }
 
         actualNrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $expectedNrOfNodes -eq $actualNrOfNodes ]] || {
-          echo "Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
+          echo "ERR: Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
           exit 2
         }
 - name: latest kind release with custom config
@@ -410,7 +410,7 @@ jobs:
         set -x
         nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $nrOfNodes -eq 2 ]] || {
-          echo "Expectd 2 nodes, found $nrOfNodes"
+          echo "ERR: Expectd 2 nodes, found $nrOfNodes"
           exit 1
         }
 - name: latest kind outputs the node image
@@ -438,7 +438,7 @@ jobs:
       run:
         path: bash
         args:
-        - -euc
+        - -xeuc
         - |
           cp -a kind-rootfs/node/* node-rootfs/
   - task: run rootfs
@@ -450,11 +450,11 @@ jobs:
       run:
         path: bash
         args:
-        - -euc
+        - -xeuc
         - |
           expImg='kind-image/node/image.tar'
           test -e "$expImg" || {
-            echo >&2 "'${expImg}' not found. What's with that\!?"
+            echo >&2 "ERR: '${expImg}' not found. What's with that\!?"
             exit 1
           }
 
