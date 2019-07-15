@@ -440,7 +440,7 @@ jobs:
     params:
       EXPORT_NODE_IMAGE: 1
       EXPORT_NODE_ROOTFS: 1
-      KIND_TESTS: exit 0
+      KIND_TESTS: '' # skip bringing up the cluster, only create the image
   - task: run rootfs
     image: exported-node-rootfs # the rootfs of the node image built by kind, from the previous task
     config:
@@ -457,6 +457,23 @@ jobs:
             echo >&2 "ERR: '${expImg}' not found. What's with that\!?"
             exit 1
           }
+  - << : *testTask
+    input_mapping:
+      node-image: exported-node-image
+    params:
+      KIND_CONFIG: |
+        kind: Cluster
+        apiVersion: kind.sigs.k8s.io/v1alpha3
+        nodes:
+        - role: control-plane
+      KIND_TESTS: |
+        set -x
+        expectedVer='^v1\.14\.'
+        actualVer="$( kubectl get nodes -o json | jq -r .items[0].status.nodeInfo.kubeletVersion )"
+        [[ $actualVer =~ $expectedVer ]] || {
+          echo >&2 "Expected APIServer to match version '${expectedVer}', got '${actualVer}'"
+          exit 1
+        }
 
 groups:
 - name: all
