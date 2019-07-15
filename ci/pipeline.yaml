@@ -13,6 +13,17 @@ config:
   private_key: ((github.push_key))
 - &imageBuildingFiles
   - Dockerfile
+- &testTask
+  task: run-tests
+  file: kind-on-c/kind.yaml
+  privileged: true
+  params:
+    KIND_TESTS: |
+      set -x
+      kubectl get nodes -o wide
+      kubectl get all --all-namespaces
+      kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
+        echo 'The pod says: the kubernetes cluster sure works!'
 
 resources:
 - name: base-image
@@ -211,17 +222,7 @@ jobs:
       - latest kind release with custom config
       - latest kind release with HA control plane
       - latest kind outputs the node image
-  - &testTask
-    task: run-tests
-    file: kind-on-c/kind.yaml
-    privileged: true
-    params:
-      KIND_TESTS: |
-        set -x
-        kubectl get nodes -o wide
-        kubectl get all --all-namespaces
-        kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
-          echo 'The pod says: the kubernetes cluster sure works!'
+  - *testTask
 - name: latest kind release with k8s-master
   plan:
   - in_parallel:
