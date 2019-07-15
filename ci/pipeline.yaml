@@ -24,6 +24,7 @@ config:
       kubectl get all --all-namespaces
       kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
         echo 'The pod says: the kubernetes cluster sure works!'
+- jobs-are-public: &jobsArePublic true
 
 resources:
 - name: base-image
@@ -97,6 +98,7 @@ resources:
 
 jobs:
 - name: update image
+  public: *jobsArePublic
   plan:
   - in_parallel:
       fail_fast: true
@@ -204,6 +206,7 @@ jobs:
       repository: kind-on-c-dev
 
 - name: latest kind release
+  public: *jobsArePublic
   plan:
   - in_parallel: &commonTestInputsForKindRelease
     - get: kind-on-c
@@ -224,6 +227,7 @@ jobs:
       - latest kind outputs the node image
   - *testTask
 - name: latest kind release with k8s-master
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -231,6 +235,7 @@ jobs:
       resource: k8s-git-master
   - << : *testTask
 - name: latest kind release with k8s-1.15
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -238,6 +243,7 @@ jobs:
       resource: k8s-git-1.15
   - << : *testTask
 - name: latest kind release with k8s-1.14
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -247,6 +253,7 @@ jobs:
       - latest kind outputs the node image
   - << : *testTask
 - name: latest kind release with k8s-1.13
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -255,6 +262,7 @@ jobs:
   - << : *testTask
 
 - name: promote
+  public: *jobsArePublic
   plan:
   - get: kind-on-c-dev
     trigger: true
@@ -276,6 +284,7 @@ jobs:
       repository: kind-on-c-dev
 
 - name: build kind from master
+  public: *jobsArePublic
   plan:
   - get: kind-git-master
     trigger: true
@@ -314,6 +323,7 @@ jobs:
       file: kind-bin/kind-linux-amd64
 
 - name: kind master
+  public: *jobsArePublic
   plan:
   - in_parallel: &commonTestInputsForKindMaster
     - get: kind-on-c
@@ -329,6 +339,7 @@ jobs:
       trigger: true
   - *testTask
 - name: kind master with k8s-1.13
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -336,6 +347,7 @@ jobs:
       resource: k8s-git-1.13
   - << : *testTask
 - name: kind master with k8s-1.14
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -343,6 +355,7 @@ jobs:
       resource: k8s-git-1.14
   - << : *testTask
 - name: kind master with k8s-1.15
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -350,6 +363,7 @@ jobs:
       resource: k8s-git-1.15
   - << : *testTask
 - name: kind master with k8s-master
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -359,6 +373,7 @@ jobs:
 
 # additional "feature" tests
 - name: latest kind release with HA control plane
+  public: *jobsArePublic
   plan:
   - in_parallel: &commonTestInputsForFeatures
     - get: kind-on-c
@@ -396,6 +411,7 @@ jobs:
           exit 2
         }
 - name: latest kind release with custom config
+  public: *jobsArePublic
   plan:
   - in_parallel: *commonTestInputsForFeatures
   - << : *testTask
@@ -414,6 +430,7 @@ jobs:
           exit 1
         }
 - name: latest kind outputs the node image
+  public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForFeatures
