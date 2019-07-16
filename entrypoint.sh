@@ -189,18 +189,28 @@ docker::stop() {
 }
 
 export::node::image() {
-  local imgName="$1"
+  local imageName="$1"
+
+  [ -n "$imageName" ] || {
+    log::warn "not exporting node image, we use the upstream's node image"
+    return
+  }
 
   log::info "Exporting node image"
 
   local destDir="${PWD}/exported-node-image"
   local destName="${destDir}/image.tar"
 
-  docker save -o "$destName" "$imgName"
+  docker save -o "$destName" "$imageName"
 }
 
 export::node::rootfs() {
-  local imgName="$1"
+  local imageName="$1"
+
+  [ -n "$imageName" ] || {
+    log::warn "not exporting node rootfs, we use the upstream's node image"
+    return
+  }
 
   log::info "Exporting node rootfs"
 
@@ -212,7 +222,7 @@ export::node::rootfs() {
 
     mkdir -p "$destDirRootfs"
 
-    cid="$( docker create "$imgName" )"
+    cid="$( docker create "$imageName" )"
     trap 'docker rm "$cid"' EXIT
 
     docker inspect "$cid" \
@@ -225,37 +235,10 @@ export::node::rootfs() {
 }
 
 export::node() {
-  local imgName="$1"
+  local imageName="$1"
 
-  [[ ! ${EXPORT_NODE_ROOTFS+x} ]] || export::node::rootfs "$imgName"
-  [[ ! ${EXPORT_NODE_IMAGE+x} ]]  || export::node::image  "$imgName"
-}
-
-# Build a node image off of the k8s source and start kind
-kind::start::fromSource() {
-  local clusterName="$1"
-  local kindConfig="$2"
-  local loglevel="$3"
-  local k8sSrcDir="$4"
-
-  local gitTag imageName
-  gitTag="$( cd "${k8sSrcDir}" && git describe --dirty )"
-  imageName="kind/local-image:${gitTag}"
-
-  log::info "found '${k8sSrcDir}', building node image off of '${gitTag}'"
-
-  # create the node image
-  GOPATH="$(pwd)/go" \
-    kind build node-image --image "$imageName"
-
-  export::node "$imageName"
-
-  # bring up kind
-  kind::hack::kmsg_linker "$clusterName" &
-  kind create cluster --config "$kindConfig" --image "$imageName" --name "$clusterName" --loglevel "$loglevel" --retain
-
-  # get the (compiled) version of kubectl
-  cp "${k8sSrcDir}/_output/dockerized/bin/linux/amd64/kubectl" ./bin/kubectl
+  [[ ! ${EXPORT_NODE_ROOTFS+x} ]] || export::node::rootfs "$imageName"
+  [[ ! ${EXPORT_NODE_IMAGE+x} ]]  || export::node::image  "$imageName"
 }
 
 kind::hack::kmsg_linker::runner() {
@@ -315,8 +298,6 @@ kind::hack::kmsg_linker() {
 # - in any case, we patch in certain things, we definitely need (e.g. disable
 #   default CNI)
 kind::hack::gen_config() {
-  log::info 'patching kind config'
-
   local defaultConfFile="$1"
   local userConf="$2"
 
@@ -342,42 +323,12 @@ kind::hack::gen_config() {
       | .networking=(.networking + {disableDefaultCNI: true}) # ensure the default CNI is disabled
   ' "$orgConfFile"  > "$patchedConfFile"
 
-  log::info 'kind config generated:'
+  log::info 'patched kind config generated:'
   log::info '----'
   log::info "$( cat "$patchedConfFile" )"
   log::info '----'
 
   echo "$patchedConfFile"
-}
-
-# Start kind with the (latest) node image published by kind upstream
-kind::start::fromUpstream() {
-  local clusterName="$1"
-  local kindConfig="$2"
-  local loglevel="$3"
-
-  log::warn "no k8s source found, using newest node image from kind upstream"
-
-  kind::hack::kmsg_linker "$clusterName" &
-  kind create cluster --config "$kindConfig" --name "$clusterName" --loglevel "$loglevel" --retain
-
-  # get kubectl from upstream
-  kubectl::download ./bin/kubectl
-}
-
-kubectl::download() {
-  local urlVer urlKubectl kubectlVer curler tmpFile
-
-  curler="curl -sL"
-  urlVer='https://storage.googleapis.com/kubernetes-release/release/stable.txt'
-  kubectlVer="$( $curler "$urlVer" )"
-  urlKubectl="https://storage.googleapis.com/kubernetes-release/release/${kubectlVer}/bin/linux/amd64/kubectl"
-  (
-    tmpFile="$( mktemp )"
-    trap 'rm "$tmpFile"' EXIT
-    $curler -o "$tmpFile" "$urlKubectl"
-    install -m 07500 "$tmpFile" "$1"
-  )
 }
 
 retry() {
@@ -404,16 +355,34 @@ retry() {
   return $rc
 }
 
-kind::start() {
-  local clusterName="${KIND_CLUSTER_NAME:-kind}"
-  local kindLoglevel="${KIND_LOG_LEVEL:-error}"
-  local userKindConfig="${KIND_CONFIG:-}"
+kubectl::install() {
+  local binDir="$1"
 
-  local binPath="${PWD}/bin"
-  local flannelConfig="${PWD}/kind-on-c/flannel.yaml"
-  local k8sSrcDir="${PWD}/go/src/k8s.io/kubernetes"
+  local compiledKubectl="${PWD}/go/src/k8s.io/kubernetes/_output/dockerized/bin/linux/amd64/kubectl"
+
+  if [ -e "$compiledKubectl" ]
+  then
+    install -m 0750 "$compiledKubectl" "${binDir}/kubectl"
+    return 0
+  fi
+
+  local urlVer urlKubectl kubectlVer curler tmpFile
+
+  curler="curl -sL"
+  urlVer='https://storage.googleapis.com/kubernetes-release/release/stable.txt'
+  kubectlVer="$( $curler "$urlVer" )"
+  urlKubectl="https://storage.googleapis.com/kubernetes-release/release/${kubectlVer}/bin/linux/amd64/kubectl"
+  (
+    tmpFile="$( mktemp )"
+    trap 'rm "$tmpFile"' EXIT
+    $curler -o "$tmpFile" "$urlKubectl"
+    install -m 07500 "$tmpFile" "${binDir}/kubectl"
+  )
+}
+
+kind::install() {
+  local binDir="$1"
   local kindBin="${PWD}/kind-release/kind-linux-amd64"
-  local defaultKindConfigFile="${PWD}/kind-on-c/kind-default-config.yaml"
 
   [ -f "$kindBin" ] || {
     log::error "'kind-release' input not configured"
@@ -421,20 +390,32 @@ kind::start() {
     return 1
   }
 
-  mkdir -p "$binPath"
-  export PATH="${PATH}:${binPath}"
-
   # install kind itself
-  install -m 0750 "$kindBin" ./bin/kind
-  log::info "$(command -v kind): $(kind version)"
+  install -m 0750 "$kindBin" "${binDir}/kind"
+}
+
+kind::start() {
+  local imageName="${1}"
+
+  local clusterName="${KIND_CLUSTER_NAME:-kind}"
+  local kindLogLevel="${KIND_LOG_LEVEL:-error}"
+  local userKindConfig="${KIND_CONFIG:-}"
+
+  local flannelConfig="${PWD}/kind-on-c/flannel.yaml"
+  local defaultKindConfigFile="${PWD}/kind-on-c/kind-default-config.yaml"
 
   # generate the config for kind
   local kindConfigFile
   kindConfigFile="$( kind::hack::gen_config "$defaultKindConfigFile" "$userKindConfig" )"
 
-  local kindStartFunc='kind::start::fromUpstream'
-  [ ! -d "$k8sSrcDir" ] || kindStartFunc='kind::start::fromSource'
-  "$kindStartFunc" "$clusterName" "$kindConfigFile" "$kindLoglevel" "$k8sSrcDir"
+  # prepare kind opts
+  local kindOpts
+  kindOpts=( --config "$kindConfigFile" --name "$clusterName" --loglevel "$kindLogLevel" --retain )
+  [ -z "$imageName" ] || kindOpts+=( --image "$imageName" )
+
+  # start the cluster
+  kind::hack::kmsg_linker "$clusterName" &
+  kind create cluster "${kindOpts[@]}"
 
   # make kubeconfig available
   KUBECONFIG="$(kind get kubeconfig-path --name "$clusterName")"
@@ -461,21 +442,84 @@ kind::start() {
   log::info "$(command -v kubectl): $(kubectl version --short --client)"
 }
 
-main() {
-  if [ -z "${KIND_TESTS:-}" ] ; then
-    # shellcheck disable=SC2016
-    log::error '"$KIND_TESTS" not sepcified. Not really running any tests then ¯\_(ツ)_/¯ ...'
-    exit 42
+kind::image::prepare() {
+  local nodeImagePath="${PWD}/node-image/image.tar"
+  local k8sSrcPath="${PWD}/go/src/k8s.io/kubernetes"
+  local imageName
+
+  # If we have a node image as an input, we will use that, this has precedence
+  if [ -e "$nodeImagePath" ]
+  then
+    log::info "found '${nodeImagePath}', will import and use that as a node image"
+
+    nodeImageName="$( docker image load -q -i "$nodeImagePath" | sed 's/^Loaded image: //' )"
+
+    echo "$nodeImageName"
+    return 0
   fi
 
+  # Else, if we have a kubernetes source tree as an input, we will build a node
+  # image off of that
+  if [ -d "$k8sSrcPath" ]
+  then
+    log::info "found '${k8sSrcPath}', will use that source tree to build a node image off of"
+
+    local gitTag
+    gitTag="$( cd "${k8sSrcPath}" && git describe --dirty )"
+    imageName="kind/local-image:${gitTag}"
+
+    GOPATH="${PWD}/go" \
+      kind build node-image --image "$imageName" \
+      >&2
+
+    echo "$imageName"
+    return 0
+  fi
+
+  # Fallback to not using a special node image, use the default from kind
+  # upstream
+  log::info "will use kind upstream's node image"
+  return 0
+}
+
+main() {
   docker::start
   trap 'docker::stop "$?"' EXIT
   docker::await
-  kind::start
+
+  # setup bin dir & path
+  local binPath="${PWD}/bin"
+  mkdir -p "$binPath"
+  export PATH="${PATH}:${binPath}"
+
+  # install kind
+  kind::install "$binPath"
+  log::info "$(command -v kind): $(kind version)"
+
+  # prepare the node image, if configured
+  local imageName
+  imageName="$( kind::image::prepare )"
+
+  # export the node image, if configured
+  export::node "$imageName"
+
+  if [ -z "${KIND_TESTS:-}" ]
+  then
+    # shellcheck disable=SC2016
+    log::warn '"$KIND_TESTS" not sepcified. Not really running any tests.'
+    return 0
+  fi
+
+  # install kubectl
+  kubectl::install "$binPath"
+  log::info "$(command -v kubectl): $(kubectl version --client)"
+
+  # start the cluster
+  kind::start "$imageName"
 
   # shellcheck disable=SC2016
   log::info 'Running tests from "$KIND_TESTS"'
   bash -e -u -c "$KIND_TESTS"
 }
 
-main
+main "$@"

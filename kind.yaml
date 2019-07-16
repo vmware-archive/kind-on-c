@@ -8,6 +8,8 @@ inputs:
 - name: kind-on-c
 - name: kind-release
   optional: true
+- name: node-image
+  optional: true
 - name: k8s-git
   optional: true
   path: go/src/k8s.io/kubernetes
