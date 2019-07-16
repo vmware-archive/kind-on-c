@@ -227,20 +227,20 @@ jobs:
       resource: kind-on-c-dev
       trigger: true
       passed:
-      - latest kind release with custom config
-      - latest kind release with HA control plane
-      - latest kind outputs the node image
-      - latest kind allows user inputs and outputs
+      - custom kind config
+      - HA control plane
+      - output node image & rootfs
+      - user inputs & outputs
     - get: kind-release
       trigger: true
       params:
         globs:
         - kind-linux-amd64
       passed:
-      - latest kind release with custom config
-      - latest kind release with HA control plane
-      - latest kind outputs the node image
-      - latest kind allows user inputs and outputs
+      - custom kind config
+      - HA control plane
+      - output node image & rootfs
+      - user inputs & outputs
   - *testTask
 - name: latest kind release with k8s-master
   public: *jobsArePublic
@@ -266,7 +266,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-1.14
       passed:
-      - latest kind outputs the node image
+      - output node image & rootfs
   - << : *testTask
 - name: latest kind release with k8s-1.13
   public: *jobsArePublic
@@ -341,9 +341,9 @@ jobs:
       resource: kind-on-c-dev
       trigger: true
       passed:
-      - latest kind release with custom config
-      - latest kind release with HA control plane
-      - latest kind outputs the node image
+      - custom kind config
+      - HA control plane
+      - output node image & rootfs
     - get: kind-release
       passed: [ build kind from master ]
       resource: kind-build
@@ -383,7 +383,7 @@ jobs:
   - << : *testTask
 
 # additional "feature" tests
-- name: latest kind release with HA control plane
+- name: HA control plane
   public: *jobsArePublic
   plan:
   - in_parallel: &commonTestInputsForFeatures
@@ -421,7 +421,7 @@ jobs:
           echo "ERR: Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
           exit 2
         }
-- name: latest kind release with custom config
+- name: custom kind config
   public: *jobsArePublic
   plan:
   - in_parallel: *commonTestInputsForFeatures
@@ -440,7 +440,7 @@ jobs:
           echo "ERR: Expectd 2 nodes, found $nrOfNodes"
           exit 1
         }
-- name: latest kind outputs the node image
+- name: output node image & rootfs
   public: *jobsArePublic
   plan:
   - in_parallel:
@@ -487,7 +487,7 @@ jobs:
           echo >&2 "Expected APIServer to match version '${expectedVer}', got '${actualVer}'"
           exit 1
         }
-- name: latest kind allows user inputs and outputs
+- name: user inputs & outputs
   public: *jobsArePublic
   plan:
   - in_parallel:
@@ -554,10 +554,10 @@ groups:
   - kind master with k8s-1.14
   - kind master with k8s-1.15
   - kind master with k8s-master
-  - latest kind release with custom config
-  - latest kind release with HA control plane
-  - latest kind outputs the node image
-  - latest kind allows user inputs and outputs
+  - custom kind config
+  - HA control plane
+  - output node image & rootfs
+  - user inputs & outputs
 - name: image
   jobs:
   - update image
@@ -578,10 +578,10 @@ groups:
   - kind master with k8s-master
 - name: features
   jobs:
-  - latest kind release with custom config
-  - latest kind release with HA control plane
-  - latest kind outputs the node image
-  - latest kind allows user inputs and outputs
+  - custom kind config
+  - HA control plane
+  - output node image & rootfs
+  - user inputs & outputs
 - name: promote
   jobs:
   - promote
