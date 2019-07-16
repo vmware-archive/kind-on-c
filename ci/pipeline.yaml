@@ -25,6 +25,20 @@ config:
       kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
         echo 'The pod says: the kubernetes cluster sure works!'
 - jobs-are-public: &jobsArePublic true
+- tasks_configs:
+  - &bashTaskConf
+    platform: linux
+    image_resource:
+      type: registry-image
+      source:
+        repository: bash
+  - &golangTaskConf
+    platform: linux
+    image_resource:
+      type: registry-image
+      source:
+        repository: "golang"
+        tag: "1.12"
 
 resources:
 - name: base-image
@@ -216,6 +230,7 @@ jobs:
       - latest kind release with custom config
       - latest kind release with HA control plane
       - latest kind outputs the node image
+      - latest kind allows user inputs and outputs
     - get: kind-release
       trigger: true
       params:
@@ -225,6 +240,7 @@ jobs:
       - latest kind release with custom config
       - latest kind release with HA control plane
       - latest kind outputs the node image
+      - latest kind allows user inputs and outputs
   - *testTask
 - name: latest kind release with k8s-master
   public: *jobsArePublic
@@ -290,12 +306,7 @@ jobs:
     trigger: true
   - task: build
     config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: "golang"
-          tag: "1.12"
+      << : *golangTaskConf
       inputs:
       - name: kind-git-master
         path: src
@@ -476,6 +487,57 @@ jobs:
           echo >&2 "Expected APIServer to match version '${expectedVer}', got '${actualVer}'"
           exit 1
         }
+- name: latest kind allows user inputs and outputs
+  public: *jobsArePublic
+  plan:
+  - in_parallel:
+    - in_parallel: *commonTestInputsForFeatures
+    # those are just random inputs, to show how one could aggregate multiple
+    # inputs and prepare them for kind-on-c
+    - { get: input-1 , resource: builder-task }
+    - { get: input-2 , resource: dockerfile }
+  - task: aggregate inputs
+    config:
+      << : *bashTaskConf
+      inputs:
+      - name: input-1
+      - name: input-2
+      outputs:
+      - name: agg-inputs
+      run:
+        path: bash
+        args:
+        - -xeuc
+        - |
+          cp -a input-1 agg-inputs/
+          cp -a input-2 agg-inputs/
+  - << : *testTask
+    task: use inputs & populate outputs
+    params:
+      KIND_PRE_START: |
+        set -x
+        cp -a inputs/input-1 outputs/eins
+        cp -a inputs/input-2 outputs/zwei
+    input_mapping:
+      inputs: agg-inputs
+  - task: check aggregated outputs
+    config:
+      << : *bashTaskConf
+      inputs:
+      - name: outputs
+      run:
+        path: bash
+        args:
+        - -xeuc
+        - |
+          expectedOutputs=( outputs/eins outputs/zwei )
+          for o in "${expectedOutputs[@]}"
+          do
+            [ -d "$o" ] || {
+              echo >&2 "ERR: expected output '$o' to exist"
+              exit 1
+            }
+          done
 
 groups:
 - name: all
@@ -495,6 +557,7 @@ groups:
   - latest kind release with custom config
   - latest kind release with HA control plane
   - latest kind outputs the node image
+  - latest kind allows user inputs and outputs
 - name: image
   jobs:
   - update image
@@ -518,6 +581,7 @@ groups:
   - latest kind release with custom config
   - latest kind release with HA control plane
   - latest kind outputs the node image
+  - latest kind allows user inputs and outputs
 - name: promote
   jobs:
   - promote

@@ -500,7 +500,15 @@ main() {
   local imageName
   imageName="$( kind::image::prepare )"
 
-  # export the node image, if configured
+  # run pre start stuff
+  if [ -n "${KIND_PRE_START:-}" ]
+  then
+    # shellcheck disable=SC2016
+    log::info 'Running pre start commands from "$KIND_PRE_START"'
+    bash -e -u -c "$KIND_PRE_START"
+  fi
+
+  # export the node image/rootfs, if configured
   export::node "$imageName"
 
   if [ -z "${KIND_TESTS:-}" ]

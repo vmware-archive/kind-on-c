@@ -13,8 +13,11 @@ inputs:
 - name: k8s-git
   optional: true
   path: go/src/k8s.io/kubernetes
+- name: inputs
+  optional: true
 outputs:
 - name: exported-node-rootfs
 - name: exported-node-image
+- name: outputs
 run:
   path: kind-on-c/entrypoint.sh
