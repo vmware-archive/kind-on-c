@@ -138,6 +138,30 @@ matches the version of kubernetes deployed.
   are essential for kind-on-c to work properly (We currently force kind to
   **not** deploy its own CNI, but to use flannel. Patches like that might be
   added and removed as needed.)
+- <a id="out-rootfs"></a> `EXPORT_NODE_ROOTFS`  
+  If this parameter is set, the [node image] built by kind is made
+  available as an output in the format of a rootfs.
+  This output can be consumed by other steps and used to run a task off of.  
+  See also [the ouput `exported-node-rootfs`](#out-exported-node-rootfs).  
+  _Note_: If the task is configured to use upstream kind's default [node image],
+  this feature is not available. A warning is printed and the output is kept
+  empty.
+- <a id="out-oci"></a> `EXPORT_NODE_IMAGE`  
+  If this parameter is set, the [node image] built by kind is made
+  available as an output in the format of an OCI image.
+  This output can be consumed by other steps and e.g. pushed to a registry.
+  This might come in handy if you want to run multiple tests against the same
+  version of kubernetes in parallel. You could have one step which builds the
+  [node image], exports it as and OCI image, and pushes it to a registry and then
+  some more parallel jobs that consume that image. With that approach you don't
+  need to compile the smae [node image] over and over.  
+  See also [the ouput `exported-node-image`](#out-exported-node-image).  
+  _Note_: If the task is configured to use upstream kind's default [node image],
+  this feature is not available. A warning is printed and the output is kept
+  empty.
+- `KIND_PRE_START`  
+  ... if you want or need to run something just before the kind cluster is
+  started
 - `DOCKERD_OPTS`  
   ... if you need to add some configs when starting the docker daemon
 - `DOCKERD_TIMEOUT`  
@@ -148,6 +172,202 @@ matches the version of kubernetes deployed.
   ... make kind more or less verbose when it is doing its business
 - `KIND_CLUSTER_NAME`  
   ... in case you want to change kind's cluster name -- you actually should not need to do that ...
+
+# Well known task inputs & outputs
+
+## Inputs
+
+- `kind-on-c`, _mandatory_  
+  The file tree of this repo. At least the [task file](./kind.yaml) and [the
+  entrypoint](./entrypoint.sh) will (or should) be used from this input, in
+  future potentially more.
+  This input is typically provided by a git resource that is pulling this very
+  git repo.
+- `kind-releae`, _mandatory_  
+  Must prrovide the kind binary, named `kind-linux-amd64`.
+  This should either be backed by a github-release resource or a earlier task
+  that compiles kind from the source.
+- `k8s-git`, _optional_  
+  Must provide a git source tree of kubernetes. When configured, the [node image]
+  will be built off of the checked-out revision of kubernetes.
+  This is typically a git resource, pointing to (a fork of) [k/k](github.com/kubernetes/kubernetes).
+- `node-image`, _optional_
+  Must provide an OCI image `image.tar` that will be used as a [node image]. This
+  can be an image generated via
+  [`EXPORT_NODE_IMAGE`](#out-oci)/[`exported-node-image`](#out-exported-node-image)
+  or any other OCI image that can be used as [node image] for kind.
+- `inputs`, _optional_  
+  If this task depends on other resources, aggregate them into the `inputs`
+  input. More about that in [Aggregated inputs & outputs](#agg-ins-and-outs).
+
+## Outputs
+
+The task generates all the outputs in this list, however depending on the
+task's configuration it may leave certain (or even all) outputs empty.
+
+- <a id="out-exported-node-image"></a> `exported-node-image`  
+  If the task is [configured to output the [node image] as an OCI
+  image](#out-oci), this output will be populated. 
+  A following step can consume this output and e.g. the `registry-image`
+  resource could be used to push the [node image] into a registry.
+  ```yaml
+  jobs:
+  - name: kind
+    plan:
+    - task: run-kind
+      privileged: true
+      file: kind-on-c/kind.yaml
+      params:
+        EXPORT_NODE_IMAGE: 1
+    - put: image-repo  # this is a registry-image resource
+      params:
+        image: exported-node-image/image.tar
+  ```
+- <a id="out-exported-node-rootfs"></a> `exported-node-rootfs`  
+  If the task is [configured to output the [node image] as a
+  rootfs](#out-rootfs), this output will be populated with a rootfs and a
+  minimal `metadata.json`.
+  With that it is possible to use the [node image] as a task image for a
+  following concourse task.
+  ```yaml
+  jobs:
+  - name: kind
+    plan:
+    - task: run-kind
+      privileged: true
+      file: kind-on-c/kind.yaml
+      params:
+        EXPORT_NODE_ROOTFS: 1
+    - task: do something with the node rootfs
+      image: exported-node-rootfs
+      config:
+        platform: linux
+        run:
+          path: bash
+          args:
+          - -xeuc
+          - |
+            echo "Concourse is now running the image we built with kind"
+  ```
+- `outputs`  
+  If users want to create further outputs, they can do so by aggregating them
+  in the `ouputs` output. More about that in [Aggregated inputs &
+  outputs](#agg-ins-and-outs).
+
+# <a id="agg-ins-and-outs"></a> Aggregated inputs & outputs
+
+Currently this task only allows for a *fixed set of inputs and outputs* (some
+inputs are optional, some output might be kept empty). This set cannot be
+changed by users of kind-on-c.
+
+Still users need to be able to provide one or more of their own resources to be
+consumed by this task as inputs or generate one or more outputs by this task. 
+
+A workaround for this are (what I call now) aggregated inputs & outputs:
+
+Users can use as many input resources they want, they however need to aggregate
+them into the one input `inputs` for this task. Likewise, if that is something
+a user needs to do, they can place all their outputs into the single `outputs`
+output and have a later task split them apart again, into separate, individual
+outputs.
+
+After all, inputs and outputs are eventually "just directories" on disk and
+therefore relatively easy to manipulate if need be.
+
+## Example usage of aggregated inputs and outputs
+
+The following (contrived) example shows how this could be used:
+- aggregates the resources `input-res-1`, `input-res-2`, and `input-res-3` into the input `inputs`
+- the kind-on-c task uses the input `inputs`
+- the kind-on-c task uses the output `outputs` and places `artifacts`, `metrics`, and `logs` in there
+- the last task consumes the `outputs` output of the kind-on-c task, splits
+  those up and makes them available as separate outputs `artifacts`, `metrics`,
+  and `logs`
+- all of the `put` resources just care about one of the individual outputs
+
+```yaml
+plan:
+- in_parallel:
+  - get: kind-on-c
+  - get: input-res-1
+    trigger: true
+  - get: input-res-2
+    trigger: true
+  - get: input-res-3
+- task: aggregate inputs for kind-on-c
+  config:
+    platform: linux
+    image_resource:
+      type: registry-image
+      source: { repository: bash }
+    inputs:
+    - name: input-res-1
+    - name: input-res-2
+    - name: input-res-3
+    outputs:
+    - name: inputs # this will be the aggregated inputs for kind-on-c
+    run:
+      path: bash
+      args:
+      - -xeuc
+      - |
+        cp -a input-res-1 inputs/
+        cp -a input-res-2 inputs/
+        cp -a input-res-3 inputs/
+- task: kind-on-c
+  privileged: true
+  file: kind-on-c/kind.yaml
+  params:
+    KIND_TESTS: |
+      # your actual tests go here!
+      cp -a some/artifacts outputs
+      cp -a some/metrics   outputs
+      cp -a some/logs      outputs
+- task: split aggregated outputs of kind-on-c
+  config:
+    platform: linux
+    image_resource:
+      type: registry-image
+      source: { repository: bash }
+    inputs:
+    - name: outputs
+    outputs:
+    - name: artifacts
+    - name: metrics
+    - name: logs
+    run:
+      path: bash
+      args:
+      - -xeuc
+      - |
+        cp -a outputs/artifacts/* artifacts
+        cp -a outputs/metrics/*   metrics
+        cp -a outputs/logs/*      logs
+- in_parallel:
+  - put: artifactory          # using only the artifacts output of the last task
+    params:
+      folder: artifacts
+  - put: lftp-log-dump        # using only the log output of the previous task
+    params:
+      files "logs/*.log"
+  - put: swift-metrics-store  # using only the metrics output of the previous task
+    params:
+      from: "metrics/(.*)"
+```
+
+## But why?
+
+kind-on-c made the design decision to use a [task file](kind.yaml). This is
+mostly to have an easy way to specify the specific version of the kind-on-c
+image, have [the pipeline](ci) automatically update it, and track which commit
+has been tested with which version of the image.
+
+[concourse] however does not allow to mix settings (e.g. inputs) from a task
+file with inline configuration in the task config.
+
+Therefore, for now at least, kind-on-c is opting for specifying the set of
+allowed/available inputs/outputs, which might mean a bit of overhead for the
+users.
 
 [concourse-dcind]: https://github.com/karlkfi/concourse-dcind
 [concourse]: https://concourse-ci.org/
