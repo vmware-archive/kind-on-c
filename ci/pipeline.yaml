@@ -221,6 +221,7 @@ jobs:
   - put: kind-on-c-dev
     params:
       repository: kind-on-c-dev
+      rebase: true
 
 - name: latest kind release
   public: *jobsArePublic
