@@ -9,10 +9,19 @@ config:
   gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
 - &baseImageRepo
   ubuntu
+- &gitBotName
+  kind-on-c pipeline
+- &gitBotEmail
+  hhorl+kindonc@pivotal.io
 - &kindOnCGitSource
   uri: git@github.com:pivotal-k8s/kind-on-c
   branch: dev
   private_key: ((github.push_key))
+  git_config:
+  - name: user.name
+    value: *gitBotName
+  - name: user.email
+    value: *gitBotEmail
 - &imageBuildingFiles
   - Dockerfile
 - &testTask
@@ -184,8 +193,8 @@ jobs:
     config:
       platform: linux
       params:
-        GIT_AUTHOR_NAME: "kind-on-c pipeline"
-        GIT_AUTHOR_EMAIL: "hhorl+kindonc@pivotal.io"
+        GIT_AUTHOR_NAME: *gitBotName
+        GIT_AUTHOR_EMAIL: *gitBotEmail
       inputs:
       - name: tag
       - name: kind-on-c-dev
