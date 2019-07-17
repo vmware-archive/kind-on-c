@@ -7,6 +7,8 @@ resource_types:
 config:
 - &imageRepo
   gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+- &baseImageRepo
+  ubuntu
 - &kindOnCGitSource
   uri: git@github.com:pivotal-k8s/kind-on-c
   branch: dev
@@ -24,27 +26,27 @@ config:
       kubectl get all --all-namespaces
       kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
         echo 'The pod says: the kubernetes cluster sure works!'
-- jobs-are-public: &jobsArePublic true
-- tasks_configs:
-  - &bashTaskConf
-    platform: linux
-    image_resource:
-      type: registry-image
-      source:
-        repository: bash
-  - &golangTaskConf
-    platform: linux
-    image_resource:
-      type: registry-image
-      source:
-        repository: "golang"
-        tag: "1.12"
+- &jobsArePublic
+  true
+- &bashTaskConf
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: bash
+- &golangTaskConf
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: "golang"
+      tag: "1.12"
 
 resources:
 - name: base-image
   type: registry-image
   source:
-    repository: alpine
+    repository: *baseImageRepo
 - name: image
   type: registry-image
   source:
@@ -135,6 +137,7 @@ jobs:
         REPOSITORY: *imageRepo
         CONTEXT: dockerfile
         TAG: ci
+        BASE_IMAGE_REPO: *baseImageRepo
       inputs:
       - name: base-image
       - name: builder-task
@@ -155,11 +158,11 @@ jobs:
           set -o pipefail
 
           kind_on_c_ver="$( git --git-dir=dockerfile/.git describe --always --tags )"
-          alpine_ver="$( cat base-image/digest )"
+          base_img_ver="$( cat base-image/digest )"
 
           cat <<EOF > image/build_args
           KIND_ON_C_VERSION=${kind_on_c_ver}
-          ALPINE_VERSION=${alpine_ver}
+          BASE_IMAGE=${BASE_IMAGE_REPO}@${base_img_ver}
           EOF
 
           export BUILD_ARGS_FILE=image/build_args
