@@ -376,7 +376,7 @@ kubectl::install() {
     tmpFile="$( mktemp )"
     trap 'rm "$tmpFile"' EXIT
     $curler -o "$tmpFile" "$urlKubectl"
-    install -m 07500 "$tmpFile" "${binDir}/kubectl"
+    install -m 0750 "$tmpFile" "${binDir}/kubectl"
   )
 }
 
