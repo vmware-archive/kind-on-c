@@ -262,6 +262,11 @@ jobs:
     - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-master
+      version:
+        # TODO(hoegaarden): kind v0.4.0 does not work with k8s master after
+        #                   this ref. When kind v0.5.0 is out, we can
+        #                   remove that pin
+        ref: "4b3b536c510e930052f5c5b0c342f17fc8e605a3"
   - << : *testTask
 - name: latest kind release with k8s-1.15
   public: *jobsArePublic
