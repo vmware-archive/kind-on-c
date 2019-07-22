@@ -14,6 +14,8 @@ main() {
   local varsFile="${TMP_DIR}/vars.yaml"
   local pipelineFile="${CI_DIR}/pipeline.yaml"
 
+  fly sync "$@"
+
   lpass show --notes "$LPASS_PATH" > "$varsFile"
 
   fly set-pipeline \
