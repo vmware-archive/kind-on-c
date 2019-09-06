@@ -556,6 +556,36 @@ jobs:
               exit 1
             }
           done
+- name: MetalLB & exposed services
+  public: *jobsArePublic
+  plan:
+  - in_parallel: *commonTestInputsForFeatures
+  - << : *testTask
+    params:
+      INSTALL_METALLB: 1
+      KIND_TESTS: |
+        set -x
+
+        PORT=8080
+        NAME='echo'
+        IMG='inanimate/echo-server'
+
+        kubectl run "$NAME" --image="$IMG" --replicas=2 --port="$PORT"
+        kubectl expose deployment "$NAME" --type=LoadBalancer
+
+        connectFromExt() {
+          local extIP
+          extIP="$( kubectl get service "$NAME" -o 'jsonpath={.status.loadBalancer.ingress[0].ip}' 2>/dev/null )"
+
+          [ -n "$extIP" ] || return 1
+
+          curl --silent --fail "http://${extIP}:${PORT}"
+        }
+
+        . kind-on-c/lib.inc.sh && log::init
+
+        # try every 6 seconds, 20 times -> 2 minutes
+        retry 20 6 connectFromExt
 
 groups:
 - name: all
@@ -576,6 +606,7 @@ groups:
   - HA control plane
   - output node image & rootfs
   - user inputs & outputs
+  - MetalLB & exposed services
 - name: image
   jobs:
   - update image
@@ -600,6 +631,7 @@ groups:
   - HA control plane
   - output node image & rootfs
   - user inputs & outputs
+  - MetalLB & exposed services
 - name: promote
   jobs:
   - promote
