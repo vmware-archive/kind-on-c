@@ -16,15 +16,6 @@ DOCKERD_OPTS="${DOCKERD_OPTS:-}"
 DOCKERD_PID_FILE="/tmp/docker.pid"
 DOCKERD_LOG_FILE="/tmp/docker.log"
 
-_colr="$( tput  -Txterm-color setaf 1 )"
-_colg="$( tput  -Txterm-color setaf 2 )"
-_colb="$( tput  -Txterm-color setaf 4 )"
-_nocol="$( tput -Txterm-color sgr0 )"
-
-log::_log()  { local x="$1"; shift; echo "$*" | sed "s/^/${x} /g" >&2 ; }
-log::info()  { log::_log "${_colg}[INF]${_nocol}" "$*" ; }
-log::warn()  { log::_log "${_colb}[WRN]${_nocol}" "$*" ; }
-log::error() { log::_log "${_colr}[ERR]${_nocol}" "$*" ; }
 
 cgroups::sanitize() {
   local cgroup="/sys/fs/cgroup"
@@ -331,30 +322,6 @@ kind::hack::gen_config() {
   echo "$patchedConfFile"
 }
 
-retry() {
-  local retryCount="$1"
-  local retrySleep="$2"
-  shift 2
-
-  local loopCount=$retryCount
-  local rc output
-
-  while (( loopCount-- ))
-  do
-    rc=0
-    output="$( "$@" 2>&1 )" || rc=$?
-
-    [ "$rc" = '0' ] && return 0
-
-    sleep "$retrySleep"
-  done
-
-  log::error "Tried '$*' for $retryCount times every $retrySleep, last error:"
-  # shellcheck disable=SC2001
-  log::error "$( echo "$output" | sed 's/^/  /g' )"
-  return $rc
-}
-
 kubectl::install() {
   local binDir="$1"
 
@@ -482,7 +449,19 @@ kind::image::prepare() {
   return 0
 }
 
+lib::load() {
+  local dir
+
+  dir="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd )"
+
+  # shellcheck source=./lib.inc.sh
+  . "${dir}/lib.inc.sh"
+}
+
 main() {
+  lib::load
+  log::init
+
   docker::start
   trap 'docker::stop "$?"' EXIT
   docker::await
