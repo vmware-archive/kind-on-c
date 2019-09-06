@@ -239,21 +239,18 @@ jobs:
     - get: kind-on-c
       resource: kind-on-c-dev
       trigger: true
-      passed:
+      passed: &allFeatureTests
       - custom kind config
       - HA control plane
       - output node image & rootfs
       - user inputs & outputs
+      - MetalLB & exposed services
     - get: kind-release
       trigger: true
       params:
         globs:
         - kind-linux-amd64
-      passed:
-      - custom kind config
-      - HA control plane
-      - output node image & rootfs
-      - user inputs & outputs
+      passed: *allFeatureTests
   - *testTask
 - name: latest kind release with k8s-master
   public: *jobsArePublic
@@ -358,10 +355,7 @@ jobs:
     - get: kind-on-c
       resource: kind-on-c-dev
       trigger: true
-      passed:
-      - custom kind config
-      - HA control plane
-      - output node image & rootfs
+      passed: *allFeatureTests
     - get: kind-release
       passed: [ build kind from master ]
       resource: kind-build
