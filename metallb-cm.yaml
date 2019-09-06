@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      # there is currently no way for a kind-on-c user to change the IP range
+      # of the docker bridge, so we leave that hardcoded for now.
+      - 172.17.255.1-172.17.255.250

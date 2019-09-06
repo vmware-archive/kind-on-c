@@ -361,6 +361,20 @@ kind::install() {
   install -m 0750 "$kindBin" "${binDir}/kind"
 }
 
+metallb::install() {
+  [[ ${INSTALL_METALLB+x} ]] || return 0
+
+  log::info 'Installing MetalLB'
+
+  local metallbSystemConf='https://raw.githubusercontent.com/danderson/metallb/v0.8.1/manifests/metallb.yaml'
+  local metallbConfigMap="${PWD}/kind-on-c/metallb-cm.yaml"
+
+  {
+    kubectl apply -f "$metallbSystemConf"
+    kubectl apply -f "$metallbConfigMap"
+  } >/dev/null
+}
+
 kind::start() {
   local imageName="${1}"
 
@@ -402,6 +416,8 @@ kind::start() {
   # - https://github.com/kubernetes-sigs/kind/pull/633
   log::info 'Installing flannel'
   retry 1 1 kubectl apply -f "$flannelConfig"
+
+  metallb::install
 
   # tell 'em!
   log::info "kind is available"
