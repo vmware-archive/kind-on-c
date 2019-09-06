@@ -159,6 +159,12 @@ matches the version of kubernetes deployed.
   _Note_: If the task is configured to use upstream kind's default [node image],
   this feature is not available. A warning is printed and the output is kept
   empty.
+- <a id="install-metallb"></a> `INSTALL_METALLB`  
+  If this parameter is set, [metallb] is installed onto the cluster. This
+  allows users to deploy services of type `LoadBalancer` and get an
+  `EXTERNAL-IP` for those.  This external IP can be used to connect to a
+  exposed service from the task container, thus from code running in
+  `KIND_TESTS`.
 - `KIND_PRE_START`  
   ... if you want or need to run something just before the kind cluster is
   started
@@ -206,7 +212,7 @@ The task generates all the outputs in this list, however depending on the
 task's configuration it may leave certain (or even all) outputs empty.
 
 - <a id="out-exported-node-image"></a> `exported-node-image`  
-  If the task is [configured to output the [node image] as an OCI
+  If the task is [configured to output the node image as an OCI
   image](#out-oci), this output will be populated. 
   A following step can consume this output and e.g. the `registry-image`
   resource could be used to push the [node image] into a registry.
@@ -224,7 +230,7 @@ task's configuration it may leave certain (or even all) outputs empty.
         image: exported-node-image/image.tar
   ```
 - <a id="out-exported-node-rootfs"></a> `exported-node-rootfs`  
-  If the task is [configured to output the [node image] as a
+  If the task is [configured to output the node image as a
   rootfs](#out-rootfs), this output will be populated with a rootfs and a
   minimal `metadata.json`.
   With that it is possible to use the [node image] as a task image for a
@@ -376,3 +382,4 @@ users.
 [kind]: https://kind.sigs.k8s.io/
 [kubernetes]: https://kubernetes.io/
 [node image]: https://kind.sigs.k8s.io/docs/design/node-image/
+[metallb]: https://metallb.universe.tf/
