@@ -50,6 +50,11 @@ config:
     source:
       repository: "golang"
       tag: "1.12"
+- k8sBranches:
+  - &k8sBranchMaster        master
+  - &k8sBranchCurrent       release-1.15
+  - &k8sBranchCurrentMinus1 release-1.14
+  - &k8sBranchCurrentMinus2 release-1.13
 
 resources:
 - name: base-image
@@ -100,26 +105,26 @@ resources:
   source:
     uri: https://github.com/kubernetes-sigs/kind
     branch: master
-- name: k8s-git-1.13
+- name: k8s-git-current-minus-2
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
-    branch: release-1.13
-- name: k8s-git-1.14
+    branch: *k8sBranchCurrentMinus2
+- name: k8s-git-current-minus-1
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
-    branch: release-1.14
-- name: k8s-git-1.15
+    branch: *k8sBranchCurrentMinus1
+- name: k8s-git-current
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
-    branch: release-1.15
+    branch: *k8sBranchCurrent
 - name: k8s-git-master
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
-    branch: master
+    branch: *k8sBranchMaster
 
 jobs:
 - name: update image
@@ -260,31 +265,29 @@ jobs:
     - get: k8s-git
       resource: k8s-git-master
   - << : *testTask
-- name: latest kind release with k8s-1.15
+- name: latest kind release with k8s-current
   public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
-      resource: k8s-git-1.15
+      resource: k8s-git-current
   - << : *testTask
-- name: latest kind release with k8s-1.14
+- name: latest kind release with k8s-current-minus-1
   public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
-      resource: k8s-git-1.14
-      passed:
-      - output node image & rootfs
+      resource: k8s-git-current-minus-1
   - << : *testTask
-- name: latest kind release with k8s-1.13
+- name: latest kind release with k8s-current-minus-2
   public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
     - get: k8s-git
-      resource: k8s-git-1.13
+      resource: k8s-git-current-minus-2
   - << : *testTask
 
 - name: promote
@@ -296,14 +299,14 @@ jobs:
     # all tests for the kind release
     - latest kind release
     - latest kind release with k8s-master
-    - latest kind release with k8s-1.15
-    - latest kind release with k8s-1.14
-    - latest kind release with k8s-1.13
+    - latest kind release with k8s-current
+    - latest kind release with k8s-current-minus-1
+    - latest kind release with k8s-current-minus-2
     # all tests for kind master
     - kind master
-    - kind master with k8s-1.13
-    - kind master with k8s-1.14
-    - kind master with k8s-1.15
+    - kind master with k8s-current-minus-2
+    - kind master with k8s-current-minus-1
+    - kind master with k8s-current
     - kind master with k8s-master
   - put: kind-on-c-master
     params:
@@ -356,29 +359,29 @@ jobs:
       resource: kind-build
       trigger: true
   - *testTask
-- name: kind master with k8s-1.13
+- name: kind master with k8s-current-minus-2
   public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
-      resource: k8s-git-1.13
+      resource: k8s-git-current-minus-2
   - << : *testTask
-- name: kind master with k8s-1.14
+- name: kind master with k8s-current-minus-1
   public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
-      resource: k8s-git-1.14
+      resource: k8s-git-current-minus-1
   - << : *testTask
-- name: kind master with k8s-1.15
+- name: kind master with k8s-current
   public: *jobsArePublic
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
     - get: k8s-git
-      resource: k8s-git-1.15
+      resource: k8s-git-current
   - << : *testTask
 - name: kind master with k8s-master
   public: *jobsArePublic
@@ -453,7 +456,7 @@ jobs:
   - in_parallel:
     - in_parallel: *commonTestInputsForFeatures
     - get: k8s-git
-      resource: k8s-git-1.14
+      resource: k8s-git-current-minus-1
   - << : *testTask
     task: export node image
     params:
@@ -582,14 +585,14 @@ groups:
   - promote
   - latest kind release
   - latest kind release with k8s-master
-  - latest kind release with k8s-1.15
-  - latest kind release with k8s-1.14
-  - latest kind release with k8s-1.13
+  - latest kind release with k8s-current
+  - latest kind release with k8s-current-minus-1
+  - latest kind release with k8s-current-minus-2
   - build kind from master
   - kind master
-  - kind master with k8s-1.13
-  - kind master with k8s-1.14
-  - kind master with k8s-1.15
+  - kind master with k8s-current-minus-2
+  - kind master with k8s-current-minus-1
+  - kind master with k8s-current
   - kind master with k8s-master
   - custom kind config
   - HA control plane
@@ -603,16 +606,16 @@ groups:
   jobs:
   - latest kind release
   - latest kind release with k8s-master
-  - latest kind release with k8s-1.15
-  - latest kind release with k8s-1.14
-  - latest kind release with k8s-1.13
+  - latest kind release with k8s-current
+  - latest kind release with k8s-current-minus-1
+  - latest kind release with k8s-current-minus-2
 - name: kind master
   jobs:
   - build kind from master
   - kind master
-  - kind master with k8s-1.13
-  - kind master with k8s-1.14
-  - kind master with k8s-1.15
+  - kind master with k8s-current-minus-2
+  - kind master with k8s-current-minus-1
+  - kind master with k8s-current
   - kind master with k8s-master
 - name: features
   jobs:
