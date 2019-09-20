@@ -5,14 +5,18 @@ resource_types:
     repository: frodenas/gcs-resource
 
 config:
-- &imageRepo
-  gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
-- &baseImageRepo
-  ubuntu
-- &gitBotName
-  kind-on-c pipeline
-- &gitBotEmail
-  hhorl+kindonc@pivotal.io
+- &jobsArePublic true
+- &imageRepo     gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+- &baseImageRepo ubuntu
+- &gitBotName    kind-on-c pipeline
+- &gitBotEmail   hhorl+kindonc@pivotal.io
+- k8s-branches:
+  - &k8sBranchMaster        master
+  - &k8sBranchCurrent       release-1.16
+  - &k8sBranchCurrentMinus1 release-1.15
+  - &k8sBranchCurrentMinus2 release-1.14
+- &imageBuildingFiles
+  - Dockerfile
 - &kindOnCGitSource
   uri: git@github.com:pivotal-k8s/kind-on-c
   branch: dev
@@ -22,8 +26,6 @@ config:
     value: *gitBotName
   - name: user.email
     value: *gitBotEmail
-- &imageBuildingFiles
-  - Dockerfile
 - &testTask
   task: run-tests
   file: kind-on-c/kind.yaml
@@ -35,8 +37,6 @@ config:
       kubectl get all --all-namespaces
       kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
         echo 'The pod says: the kubernetes cluster sure works!'
-- &jobsArePublic
-  true
 - &bashTaskConf
   platform: linux
   image_resource:
@@ -50,11 +50,6 @@ config:
     source:
       repository: "golang"
       tag: "1.12"
-- k8sBranches:
-  - &k8sBranchMaster        master
-  - &k8sBranchCurrent       release-1.16
-  - &k8sBranchCurrentMinus1 release-1.15
-  - &k8sBranchCurrentMinus2 release-1.14
 
 resources:
 - name: base-image
