@@ -52,9 +52,9 @@ config:
       tag: "1.12"
 - k8sBranches:
   - &k8sBranchMaster        master
-  - &k8sBranchCurrent       release-1.15
-  - &k8sBranchCurrentMinus1 release-1.14
-  - &k8sBranchCurrentMinus2 release-1.13
+  - &k8sBranchCurrent       release-1.16
+  - &k8sBranchCurrentMinus1 release-1.15
+  - &k8sBranchCurrentMinus2 release-1.14
 
 resources:
 - name: base-image
