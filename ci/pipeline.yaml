@@ -411,18 +411,20 @@ jobs:
       KIND_TESTS: |
         set -x
 
+        . kind-on-c/lib.inc.sh && log::init
+
         expectedNrOfNodes=3      # 0 worker + 3 control plane nodes
         expectedNrOfContainers=4 # 0 worker + 3 control plane + 1 loadbalancer
 
         actualNrOfContainers=$( kind get nodes | wc -l )
         [[ $expectedNrOfContainers -eq $actualNrOfContainers ]] || {
-          echo "ERR: Expectd to find ${expectedNrOfContainers} kind nodes, found ${actualNrOfContainers}"
+          log::error "Expectd to find ${expectedNrOfContainers} kind nodes, found ${actualNrOfContainers}"
           exit 1
         }
 
         actualNrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $expectedNrOfNodes -eq $actualNrOfNodes ]] || {
-          echo "ERR: Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
+          log::error "Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
           exit 2
         }
 - name: custom kind config
@@ -439,9 +441,10 @@ jobs:
         - role: worker
       KIND_TESTS: |
         set -x
+        . kind-on-c/lib.inc.sh && log::init
         nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $nrOfNodes -eq 2 ]] || {
-          echo "ERR: Expectd 2 nodes, found $nrOfNodes"
+          log::error "Expectd 2 nodes, found $nrOfNodes"
           exit 1
         }
 - name: output node image & rootfs
@@ -468,9 +471,10 @@ jobs:
         args:
         - -xeuc
         - |
+          . kind-on-c/lib.inc.sh && log::init
           expImg='exported-node-image/image.tar'
           test -e "$expImg" || {
-            echo >&2 "ERR: '${expImg}' not found. What's with that\!?"
+            log::error "'${expImg}' not found. What's with that\!?"
             exit 1
           }
   - << : *testTask
@@ -485,10 +489,11 @@ jobs:
         - role: control-plane
       KIND_TESTS: |
         set -x
+        . kind-on-c/lib.inc.sh && log::init
         expectedVer='^v1\.14\.'
         actualVer="$( kubectl get nodes -o json | jq -r .items[0].status.nodeInfo.kubeletVersion )"
         [[ $actualVer =~ $expectedVer ]] || {
-          echo >&2 "Expected APIServer to match version '${expectedVer}', got '${actualVer}'"
+          log::error "Expected APIServer to match version '${expectedVer}', got '${actualVer}'"
           exit 1
         }
 - name: user inputs & outputs
@@ -534,11 +539,12 @@ jobs:
         args:
         - -xeuc
         - |
+          . kind-on-c/lib.inc.sh && log::init
           expectedOutputs=( outputs/eins outputs/zwei )
           for o in "${expectedOutputs[@]}"
           do
             [ -d "$o" ] || {
-              echo >&2 "ERR: expected output '$o' to exist"
+              log::error "expected output '$o' to exist"
               exit 1
             }
           done
