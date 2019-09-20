@@ -49,7 +49,6 @@ config:
     type: registry-image
     source:
       repository: "golang"
-      tag: "1.12"
 
 resources:
 - name: base-image
