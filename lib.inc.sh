@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 log::init() {
+  local xtraceSetter
+  xtraceSetter="$( set +o | grep xtrace )"
+
+  set +x
   _colr="$( tput  -Txterm-color setaf 1 )"
   _colg="$( tput  -Txterm-color setaf 2 )"
   _colb="$( tput  -Txterm-color setaf 4 )"
@@ -10,6 +14,8 @@ log::init() {
   log::info()  { log::_log "${_colg}[INF]${_nocol}" "$*" ; }
   log::warn()  { log::_log "${_colb}[WRN]${_nocol}" "$*" ; }
   log::error() { log::_log "${_colr}[ERR]${_nocol}" "$*" ; }
+
+  eval "$xtraceSetter"
 }
 
 retry() {
