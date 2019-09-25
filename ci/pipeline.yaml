@@ -466,6 +466,7 @@ jobs:
       platform: linux
       inputs:
       - name: exported-node-image
+      - name: kind-on-c
       run:
         path: bash
         args:
@@ -538,6 +539,7 @@ jobs:
       << : *bashTaskConf
       inputs:
       - name: outputs
+      - name: kind-on-c
       run:
         path: bash
         args:
