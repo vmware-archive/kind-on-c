@@ -5,10 +5,16 @@ log::init() {
   xtraceSetter="$( set +o | grep xtrace )"
 
   set +x
-  _colr="$( tput  -Txterm-color setaf 1 )"
-  _colg="$( tput  -Txterm-color setaf 2 )"
-  _colb="$( tput  -Txterm-color setaf 4 )"
-  _nocol="$( tput -Txterm-color sgr0 )"
+
+  _colr='' ; _colg='' ; _colb='' ; _nocol=''
+
+  if command -v tput >/dev/null 2>&1
+  then
+    _colr="$( tput  -Txterm-color setaf 1 )"
+    _colg="$( tput  -Txterm-color setaf 2 )"
+    _colb="$( tput  -Txterm-color setaf 4 )"
+    _nocol="$( tput -Txterm-color sgr0 )"
+  fi
 
   log::_log()  { local x="$1"; shift; echo "$*" | sed "s/^/${x} /g" >&2 ; }
   log::info()  { log::_log "${_colg}[INF]${_nocol}" "$*" ; }
