@@ -333,18 +333,14 @@ kubectl::install() {
     return 0
   fi
 
-  local urlVer urlKubectl kubectlVer curler tmpFile
+  local urlVer urlKubectl kubectlVer curler
 
   curler="curl -sL"
   urlVer='https://storage.googleapis.com/kubernetes-release/release/stable.txt'
   kubectlVer="$( $curler "$urlVer" )"
   urlKubectl="https://storage.googleapis.com/kubernetes-release/release/${kubectlVer}/bin/linux/amd64/kubectl"
-  (
-    tmpFile="$( mktemp )"
-    trap 'rm "$tmpFile"' EXIT
-    $curler -o "$tmpFile" "$urlKubectl"
-    install -m 0750 "$tmpFile" "${binDir}/kubectl"
-  )
+
+  install -m 0750 <($curler "$urlKubectl") "${binDir}/kubectl"
 }
 
 kind::install() {
