@@ -284,42 +284,22 @@ kind::hack::kmsg_linker() {
 }
 
 # Generate a config file for kind
-# - by default, use the kind-on-c/kind-default-config
-# - if we find a user-provided config in the env ($KIND_CONFIG), we use that
-# - in any case, we patch in certain things, we definitely need (e.g. disable
-#   default CNI)
-kind::hack::gen_config() {
+# Either from $KIND_CONFIG or fallback to kind-on-c's default
+kind::gen_config() {
   local defaultConfFile="$1"
   local userConf="$2"
 
-  local orgConfFile patchedConfFile
-  orgConfFile="$( mktemp )"
+  local kindConfFile
+  kindConfFile="$( mktemp )"
 
   if [ -n "$userConf" ]
   then
-    echo "$userConf" > "$orgConfFile"
+    echo "$userConf" > "$kindConfFile"
   else
-    cat "$defaultConfFile" > "$orgConfFile"
+    cat "$defaultConfFile" > "$kindConfFile"
   fi
 
-  patchedConfFile="$( mktemp )"
-
-  # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
-  # To do so, we also need to make sure kind does not deploy its default CNI.
-  # See also:
-  # - https://github.com/kubernetes-sigs/kind/issues/626
-  # - https://github.com/kubernetes-sigs/kind/pull/633
-  yq -y -e -s '
-    if . == [] then null else .[] end
-      | .networking=(.networking + {disableDefaultCNI: true}) # ensure the default CNI is disabled
-  ' "$orgConfFile"  > "$patchedConfFile"
-
-  log::info 'patched kind config generated:'
-  log::info '----'
-  log::info "$( cat "$patchedConfFile" )"
-  log::info '----'
-
-  echo "$patchedConfFile"
+  echo "$kindConfFile"
 }
 
 kubectl::install() {
@@ -378,12 +358,11 @@ kind::start() {
   local kindLogLevel="${KIND_LOG_LEVEL:-error}"
   local userKindConfig="${KIND_CONFIG:-}"
 
-  local flannelConfig="${PWD}/kind-on-c/flannel.yaml"
   local defaultKindConfigFile="${PWD}/kind-on-c/kind-default-config.yaml"
 
   # generate the config for kind
   local kindConfigFile
-  kindConfigFile="$( kind::hack::gen_config "$defaultKindConfigFile" "$userKindConfig" )"
+  kindConfigFile="$( kind::gen_config "$defaultKindConfigFile" "$userKindConfig" )"
 
   # prepare kind opts
   local kindOpts
@@ -402,16 +381,6 @@ kind::start() {
   # be scheduled
   log::info 'Waiting for the default serviceaccount'
   retry 60 1 kubectl -n default get serviceaccount default -o name
-
-  # install flannel as an alternative CNI
-  #
-  # Until kind/kindnet properly supports non-IPv6 systems, we use flannel as a CNI.
-  # To do so, we also need to make sure kind does not deploy its default CNI.
-  # See also:
-  # - https://github.com/kubernetes-sigs/kind/issues/626
-  # - https://github.com/kubernetes-sigs/kind/pull/633
-  log::info 'Installing flannel'
-  retry 1 1 kubectl apply -f "$flannelConfig"
 
   metallb::install
 

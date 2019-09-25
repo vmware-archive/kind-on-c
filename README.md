@@ -135,9 +135,7 @@ matches the version of kubernetes deployed.
     - role: worker
   ```
   _Note_: potentially the config you specify will be patched with things that
-  are essential for kind-on-c to work properly (We currently force kind to
-  **not** deploy its own CNI, but to use flannel. Patches like that might be
-  added and removed as needed.)
+  are essential for kind-on-c to work properly.
 - <a id="out-rootfs"></a> `EXPORT_NODE_ROOTFS`  
   If this parameter is set, the [node image] built by kind is made
   available as an output in the format of a rootfs.
