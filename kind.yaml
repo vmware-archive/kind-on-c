@@ -3,7 +3,8 @@ image_resource:
   type: registry-image
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
-    tag: sha256-5ad4af515a9988a772dd13f869f7d4831ab44fa902009f55e70d077a2f28fe1c
+  version:
+    digest: sha256:8045449458a824d2bf7e713d0ddfa75643b14433bcd213747b5c081bc0eecd7c
 inputs:
 - name: kind-on-c
 - name: kind-release
