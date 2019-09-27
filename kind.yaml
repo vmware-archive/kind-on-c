@@ -4,7 +4,7 @@ image_resource:
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:8045449458a824d2bf7e713d0ddfa75643b14433bcd213747b5c081bc0eecd7c
+    digest: sha256:3a54322b0b4cd0c2342efb72d044562fdfb0188846f458f5334abbf3b0c48b31
 inputs:
 - name: kind-on-c
 - name: kind-release
@@ -23,14 +23,14 @@ outputs:
 run:
   path: kind-on-c/entrypoint.sh
 params:
-  KIND_TESTS:
-  KIND_CONFIG:
-  EXPORT_NODE_ROOTFS:
-  EXPORT_NODE_IMAGE:
-  INSTALL_METALLB:
-  KIND_PRE_START:
-  DOCKERD_OPTS:
-  DOCKERD_TIMEOUT:
-  KINDONC_DEBUG:
-  KIND_LOGLEVEL:
-  KIND_CLUSTER_NAME:
+  KIND_TESTS: null
+  KIND_CONFIG: null
+  EXPORT_NODE_ROOTFS: null
+  EXPORT_NODE_IMAGE: null
+  INSTALL_METALLB: null
+  KIND_PRE_START: null
+  DOCKERD_OPTS: null
+  DOCKERD_TIMEOUT: null
+  KINDONC_DEBUG: null
+  KIND_LOGLEVEL: null
+  KIND_CLUSTER_NAME: null
