@@ -61,17 +61,13 @@ resources:
     repository: *imageRepo
     username: ((registry.username))
     password: ((registry.password))
-    tag: ci
+    tag: ci-latest
 - name: kind-build
   type: google-cloud-storage
   source:
     bucket: kind-on-c-pipeline
     json_key: ((bucket.key))
     versioned_file: "pipeline-builds/kind-linux-amd64"
-- name: builder-task
-  type: git
-  source:
-    uri: https://github.com/concourse/builder-task
 - name: dockerfile
   type: git
   source:
@@ -127,7 +123,6 @@ jobs:
   - in_parallel:
       fail_fast: true
       steps:
-      - get: builder-task
       - get: base-image
         trigger: true
       - get: dockerfile
@@ -140,23 +135,21 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: concourse/builder-task
+          repository: vito/oci-build-task
       params:
         REPOSITORY: *imageRepo
         CONTEXT: dockerfile
-        TAG: ci
         BASE_IMAGE_REPO: *baseImageRepo
+        UNPACK_ROOTFS: true
       inputs:
       - name: base-image
-      - name: builder-task
       - name: dockerfile
       outputs:
       - name: image
-      - name: rootfs
       caches:
       - path: cache
       run:
-        path: bash
+        path: sh
         args:
         - -c
         - |
@@ -172,15 +165,13 @@ jobs:
           BASE_IMAGE=${BASE_IMAGE_REPO}@${base_img_ver}
           EOF
 
-          export BUILD_ARGS_FILE=image/build_args
-
-          builder-task/build
+          BUILD_ARGS_FILE=image/build_args build
   - put: image
     params:
       image: image/image.tar
   # - task: test new image ## TODO
   - task: update image revision
-    image: rootfs # use image from the builder task
+    image: image # use image from the builder task
     config:
       platform: linux
       params:
@@ -500,7 +491,7 @@ jobs:
     - in_parallel: *commonTestInputsForFeatures
     # those are just random inputs, to show how one could aggregate multiple
     # inputs and prepare them for kind-on-c
-    - { get: input-1 , resource: builder-task }
+    - { get: input-1 , resource: dockerfile }
     - { get: input-2 , resource: dockerfile }
   - task: aggregate inputs
     config:
