@@ -2,7 +2,7 @@
 
 ## Test pipelines
 
-- [wings]: concourse deployed as a BOSH release on VMs
+- ~~[wings]: concourse deployed as a BOSH release on VMs~~ (removed[¹⁾](#fn1))
 - [hush-house]: concourse deployed as helm chart on GKE
 
 [wings]: https://wings.pivotal.io/teams/k8s-c10s/pipelines/kind 
@@ -60,3 +60,8 @@ PIPELINE_NAME=kind-on-c-ci LPASS_PATH=pipelines/kind-on-c/vars.yaml ./ci/set-pip
 ... will wet the pipeline `kind-on-c-ci` on a concourse named `wings` and will
 pull the secrets from a lastpass note at `pipelines/kind-on-c/vars.yaml`.
 
+----
+
+<a id="fn1">¹⁾</a> We used to have the same pipeline on both [hush-house] and
+[wings]. We got enough confidence in running nested containers on [hush-house]
+and therefore decided to remove the pipeline from [wings].
