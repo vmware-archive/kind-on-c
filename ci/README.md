@@ -60,6 +60,20 @@ PIPELINE_NAME=kind-on-c-ci LPASS_PATH=pipelines/kind-on-c/vars.yaml ./ci/set-pip
 ... will wet the pipeline `kind-on-c-ci` on a concourse named `wings` and will
 pull the secrets from a lastpass note at `pipelines/kind-on-c/vars.yaml`.
 
+## One-off builds
+
+You can also use concourse to run the local state of `kind-on-c` (e.g. while testing features) by using `fly execute` like so:
+```sh
+KIND_TESTS='echo "no really running tests"; exit 1"' \
+KINDONC_DEBUG=1 \
+INSTALL_METALLB=1 \
+  fly -t hh execute \
+    --config kind.yaml \
+    --privileged \
+    --inputs-from 'kind/kind master' \
+    --input kind-on-c=.
+```
+
 ----
 
 <a id="fn1">¹⁾</a> We used to have the same pipeline on both [hush-house] and
