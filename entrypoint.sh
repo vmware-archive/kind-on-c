@@ -228,8 +228,8 @@ export::node::rootfs() {
 export::node() {
   local imageName="$1"
 
-  [[ ! ${EXPORT_NODE_ROOTFS+x} ]] || export::node::rootfs "$imageName"
-  [[ ! ${EXPORT_NODE_IMAGE+x} ]]  || export::node::image  "$imageName"
+  [ -z "${EXPORT_NODE_ROOTFS:-}" ] || export::node::rootfs "$imageName"
+  [ -z "${EXPORT_NODE_IMAGE:-}" ]  || export::node::image  "$imageName"
 }
 
 kind::hack::kmsg_linker::runner() {
@@ -338,7 +338,7 @@ kind::install() {
 }
 
 metallb::install() {
-  [[ ${INSTALL_METALLB+x} ]] || return 0
+  [ -n "${INSTALL_METALLB:-}" ] || return 0
 
   log::info 'Installing MetalLB'
 

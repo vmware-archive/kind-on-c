@@ -21,3 +21,15 @@ outputs:
 - name: outputs
 run:
   path: kind-on-c/entrypoint.sh
+params:
+  KIND_TESTS:
+  KIND_CONFIG:
+  EXPORT_NODE_ROOTFS:
+  EXPORT_NODE_IMAGE:
+  INSTALL_METALLB:
+  KIND_PRE_START:
+  DOCKERD_OPTS:
+  DOCKERD_TIMEOUT:
+  KINDONC_DEBUG:
+  KIND_LOGLEVEL:
+  KIND_CLUSTER_NAME:
