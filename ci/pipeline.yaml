@@ -3,6 +3,11 @@ resource_types:
   type: registry-image
   source:
     repository: frodenas/gcs-resource
+- name: file-url
+  type: registry-image
+  source:
+    repository: pivotalservices/concourse-curl-resource
+    tag: latest
 
 config:
 - &jobsArePublic true
@@ -115,6 +120,11 @@ resources:
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchMaster
+- name: container-diff-bin
+  type: file-url
+  source:
+    url: https://storage.googleapis.com/container-diff/latest/container-diff-linux-amd64
+    filename: container-diff
 
 jobs:
 - name: update image
@@ -128,6 +138,7 @@ jobs:
       - get: dockerfile
         trigger: true
       - get: kind-on-c-dev
+      - get: container-diff-bin
   - task: build
     privileged: true
     config:
@@ -137,7 +148,6 @@ jobs:
         source:
           repository: vito/oci-build-task
       params:
-        REPOSITORY: *imageRepo
         CONTEXT: dockerfile
         BASE_IMAGE_REPO: *baseImageRepo
         UNPACK_ROOTFS: true
@@ -151,10 +161,8 @@ jobs:
       run:
         path: sh
         args:
-        - -c
+        - -euc
         - |
-          set -e
-          set -u
           set -o pipefail
 
           kind_on_c_ver="$( git --git-dir=dockerfile/.git describe --always --tags )"
@@ -166,47 +174,78 @@ jobs:
           EOF
 
           BUILD_ARGS_FILE=image/build_args build
-  - put: image
+  - put: image-push
+    resource: image
     params:
       image: image/image.tar
+    inputs:
+    - image
   # - task: test new image ## TODO
   - task: update image revision
     image: image # use image from the builder task
     config:
       platform: linux
       params:
-        GIT_AUTHOR_NAME: *gitBotName
+        GIT_AUTHOR_NAME:  *gitBotName
         GIT_AUTHOR_EMAIL: *gitBotEmail
       inputs:
+      - name: image-push
       - name: image
       - name: kind-on-c-dev
+      - path: bin
+        name: container-diff-bin
       outputs:
       - name: kind-on-c-dev
+      caches:
+      - path: cache
       run:
         path: bash
         args:
-        - -c
+        - -euc
         - |
-          set -e
-          set -u
           set -o pipefail
 
-          digest="$( cat image/digest )"
           taskConf="${PWD}/kind-on-c-dev/kind.yaml"
-          tmpFile="$(mktemp)"
-          trap 'rm -f -- "$tmpFile"' EXIT
+          tmpDir="$(mktemp -d)"
+          trap 'rm -rf -- "$tmpDir"' EXIT
+
+          chmod 0750 bin/container-diff
+          export PATH="${PATH}:${PWD}/bin"
+
+          c0Repo="$( yq -r '.image_resource.source.repository' "$taskConf" )"
+          c0Digest="$( yq -r '.image_resource.version.digest' "$taskConf" )"
+          c1Digest="$( cat "image-push/digest" )"
+
+          c0="remote://${c0Repo}@${c0Digest}"
+          c1="${PWD}/image/image.tar"
+
+          diffCmd=(
+            container-diff diff "$c0" "$c1"
+              --type pip --type apt --type file --type size --type history
+              --cache-dir "${PWD}/cache" --verbosity info
+          )
+
+          tmpGitMsg="${tmpDir}/git_messages.txt"
+          tmpTaskConf="${tmpDir}/task.yml"
+
+          yq -y --arg d "${c1Digest}" '.image_resource.version.digest = $d' "$taskConf" > "$tmpTaskConf"
+          cat "$tmpTaskConf" > "$taskConf"
 
           cd kind-on-c-dev
-
-          yq -y --arg d "$digest" '.image_resource.version.digest = $d' "$taskConf" > "$tmpFile"
-          cat "$tmpFile" > "$taskConf"
 
           git config --global user.email "$GIT_AUTHOR_EMAIL"
           git config --global user.name "$GIT_AUTHOR_NAME"
 
           git add "$taskConf"
           git diff --quiet && git diff --staged --quiet || {
-            git commit --quiet --message "Update container image to '${digest}'"
+            printf \
+              'Update container image to "%s"\n\n----\n\nCommand:\n```\n%s\n```\nContainer Diff:\n```\n%s\n```\n' \
+              "${c1Digest}" \
+              "${diffCmd[*]}" \
+              "$( "${diffCmd[@]}" )" \
+              > "$tmpGitMsg"
+
+            git commit --quiet --file "$tmpGitMsg"
             git show -1 | cat
           }
   - put: kind-on-c-dev
@@ -308,10 +347,8 @@ jobs:
       run:
         path: bash
         args:
-        - -c
+        - -euc
         - |
-          set -e
-
           cd ./src
           go get -d ./...
           go build main.go
