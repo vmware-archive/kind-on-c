@@ -328,7 +328,7 @@ kind::install() {
   local kindBin="${PWD}/kind-release/kind-linux-amd64"
 
   [ -f "$kindBin" ] || {
-    log::error "'kind-release' input not configured"
+    log::error "'kind-release' input not configured correctly"
     log::error "   expected the kind binary at '${kindBin}'"
     return 1
   }
