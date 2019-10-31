@@ -4,21 +4,21 @@ image_resource:
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:8837d99e4d00429c3190daab0b71f67013d8217e360e7926ceeb141ba643b028
+    digest: sha256:21230c8a755f6988898135243c7a58415e15dd03094b2d1b875d623fa1f5fb55
 inputs:
-- name: kind-on-c
-- name: kind-release
-- name: node-image
-  optional: true
-- name: k8s-git
-  optional: true
-  path: go/src/k8s.io/kubernetes
-- name: inputs
-  optional: true
+  - name: kind-on-c
+  - name: kind-release
+  - name: node-image
+    optional: true
+  - name: k8s-git
+    optional: true
+    path: go/src/k8s.io/kubernetes
+  - name: inputs
+    optional: true
 outputs:
-- name: exported-node-rootfs
-- name: exported-node-image
-- name: outputs
+  - name: exported-node-rootfs
+  - name: exported-node-image
+  - name: outputs
 run:
   path: kind-on-c/entrypoint.sh
 params:
