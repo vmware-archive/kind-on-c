@@ -351,6 +351,19 @@ metallb::install() {
   } >/dev/null
 }
 
+# With https://github.com/kubernetes-sigs/kind/pull/1029 kind broke the way how
+# to handle the kube config file. This approach should work for both, how it
+# was handled before and after that change.
+kind::kubeconfig::write() {
+  local clusterName="$1"
+  local file
+
+  file="$( mktemp )"
+  kind get kubeconfig --name "$clusterName" > "$file"
+
+  echo "$file"
+}
+
 kind::start() {
   local imageName="${1}"
 
@@ -374,7 +387,7 @@ kind::start() {
   kind create cluster "${kindOpts[@]}"
 
   # make kubeconfig available
-  KUBECONFIG="$(kind get kubeconfig-path --name "$clusterName")"
+  KUBECONFIG="$( kind::kubeconfig::write "$clusterName" )"
   export KUBECONFIG
 
   # wait until the default service account is available, so pods can actually
