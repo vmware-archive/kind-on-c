@@ -156,6 +156,12 @@ resources:
 jobs:
 - name: update image
   <<: *taskDefaults
+  on_success:
+    put: success message
+    resource: slack
+    params:
+      alert_type: success
+      message: New kind-on-c image pushed and promoted
   plan:
   - in_parallel:
       fail_fast: true
@@ -335,6 +341,12 @@ jobs:
 
 - name: promote
   <<: *taskDefaults
+  on_success:
+    put: success message
+    resource: slack
+    params:
+      alert_type: success
+      message: New kind-on-c promoted from dev to master
   plan:
   - get: kind-on-c-dev
     trigger: true
