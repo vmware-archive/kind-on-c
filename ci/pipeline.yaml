@@ -486,7 +486,7 @@ jobs:
       KIND_TESTS: |
         set -x
 
-        . kind-on-c/lib.inc.sh && log::init
+        . kind-on-c/lib.inc.sh
 
         expectedNrOfNodes=3      # 0 worker + 3 control plane nodes
         expectedNrOfContainers=4 # 0 worker + 3 control plane + 1 loadbalancer
@@ -516,7 +516,7 @@ jobs:
         - role: worker
       KIND_TESTS: |
         set -x
-        . kind-on-c/lib.inc.sh && log::init
+        . kind-on-c/lib.inc.sh
         nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
         [[ $nrOfNodes -eq 2 ]] || {
           log::error "Expectd 2 nodes, found $nrOfNodes"
@@ -547,7 +547,7 @@ jobs:
         args:
         - -xeuc
         - |
-          . kind-on-c/lib.inc.sh && log::init
+          . kind-on-c/lib.inc.sh
           expImg='exported-node-image/image.tar'
           test -e "$expImg" || {
             log::error "'${expImg}' not found. What's with that\!?"
@@ -566,7 +566,7 @@ jobs:
         - role: control-plane
       KIND_TESTS: |
         set -x
-        . kind-on-c/lib.inc.sh && log::init
+        . kind-on-c/lib.inc.sh
 
         # convert the branch name 'release-1.15' to 'v1.15.' which can be used
         # as part of a glob for the version comparison
@@ -620,7 +620,7 @@ jobs:
         args:
         - -xeuc
         - |
-          . kind-on-c/lib.inc.sh && log::init
+          . kind-on-c/lib.inc.sh
           expectedOutputs=( outputs/eins outputs/zwei )
           for o in "${expectedOutputs[@]}"
           do
@@ -655,7 +655,7 @@ jobs:
           curl --silent --fail "http://${extIP}:${PORT}"
         }
 
-        . kind-on-c/lib.inc.sh && log::init
+        . kind-on-c/lib.inc.sh
 
         # try every 6 seconds, 20 times -> 2 minutes
         retry 20 6 connectFromExt

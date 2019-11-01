@@ -47,3 +47,9 @@ retry() {
   log::error "$( echo "$output" | sed 's/^/  /g' )"
   return $rc
 }
+
+_init() {
+  log::init
+}
+
+_init "$@"

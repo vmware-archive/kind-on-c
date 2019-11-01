@@ -455,7 +455,6 @@ lib::load() {
 
 main() {
   lib::load
-  log::init
 
   docker::start
   trap 'docker::stop "$?"' EXIT
