@@ -8,6 +8,10 @@ resource_types:
   source:
     repository: pivotalservices/concourse-curl-resource
     tag: latest
+- name: slack
+  type: registry-image
+  source:
+    repository: arbourd/concourse-slack-alert-resource
 
 config:
 - &jobsArePublic true
@@ -54,6 +58,25 @@ config:
     type: registry-image
     source:
       repository: "golang"
+- &notify
+  on_success:
+    put: success message
+    resource: slack
+    params:
+      alert_type: fixed
+  on_failure:
+    put: failure message
+    resource: slack
+    params:
+      alert_type: broke
+  on_error:
+    put: error message
+    resource: slack
+    params:
+      alert_type: broke
+- &taskDefaults
+  public: *jobsArePublic
+  <<: *notify
 
 resources:
 - name: base-image
@@ -125,10 +148,14 @@ resources:
   source:
     url: https://storage.googleapis.com/container-diff/latest/container-diff-linux-amd64
     filename: container-diff
+- name: slack
+  type: slack
+  source:
+    url: ((slack.url))
 
 jobs:
 - name: update image
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
       fail_fast: true
@@ -254,7 +281,7 @@ jobs:
       rebase: true
 
 - name: latest kind release
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel: &commonTestInputsForKindRelease
     - get: kind-on-c
@@ -274,7 +301,7 @@ jobs:
       passed: *allFeatureTests
   - *testTask
 - name: latest kind release with k8s-master
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -282,7 +309,7 @@ jobs:
       resource: k8s-git-master
   - << : *testTask
 - name: latest kind release with k8s-current
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -290,7 +317,7 @@ jobs:
       resource: k8s-git-current
   - << : *testTask
 - name: latest kind release with k8s-current-minus-1
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -298,7 +325,7 @@ jobs:
       resource: k8s-git-current-minus-1
   - << : *testTask
 - name: latest kind release with k8s-current-minus-2
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -307,7 +334,7 @@ jobs:
   - << : *testTask
 
 - name: promote
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - get: kind-on-c-dev
     trigger: true
@@ -329,7 +356,7 @@ jobs:
       repository: kind-on-c-dev
 
 - name: build kind from master
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - get: kind-git-master
     trigger: true
@@ -361,7 +388,7 @@ jobs:
       file: kind-bin/kind-linux-amd64
 
 - name: kind master
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel: &commonTestInputsForKindMaster
     - get: kind-on-c
@@ -374,7 +401,7 @@ jobs:
       trigger: true
   - *testTask
 - name: kind master with k8s-current-minus-2
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -382,7 +409,7 @@ jobs:
       resource: k8s-git-current-minus-2
   - << : *testTask
 - name: kind master with k8s-current-minus-1
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -390,7 +417,7 @@ jobs:
       resource: k8s-git-current-minus-1
   - << : *testTask
 - name: kind master with k8s-current
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -398,7 +425,7 @@ jobs:
       resource: k8s-git-current
   - << : *testTask
 - name: kind master with k8s-master
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -408,7 +435,7 @@ jobs:
 
 # additional "feature" tests
 - name: HA control plane
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel: &commonTestInputsForFeatures
     - get: kind-on-c
@@ -448,7 +475,7 @@ jobs:
           exit 2
         }
 - name: custom kind config
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
   - << : *testTask
@@ -468,7 +495,7 @@ jobs:
           exit 1
         }
 - name: output node image & rootfs
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForFeatures
@@ -522,7 +549,7 @@ jobs:
           exit 1
         }
 - name: user inputs & outputs
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForFeatures
@@ -575,7 +602,7 @@ jobs:
             }
           done
 - name: MetalLB & exposed services
-  public: *jobsArePublic
+  <<: *taskDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
   - << : *testTask

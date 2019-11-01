@@ -40,6 +40,8 @@ registry:
   password: <the container registry's password>
 bucket:
   key: <the service account key json for the google bucket>
+slack:
+  url: <slack webhook url>
 ```
 
 By default
