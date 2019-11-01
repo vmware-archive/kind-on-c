@@ -79,6 +79,14 @@ config:
   <<: *notify
 - &resourceDefaults
   public: *allIsPublic
+# To safe some cpu cycles:
+- &noCheck
+  # virtually disable checking of the resource
+  check_every: "8760h"
+- &slowCheck
+  # for resources we don't trigger on and it does not matter too much if we get
+  # the most recent version
+  check_every: "20m"
 
 resources:
 - name: base-image
@@ -119,6 +127,7 @@ resources:
   source:
     << : *kindOnCGitSource
     branch: master
+  <<: *noCheck
 - name: kind-release
   <<: *resourceDefaults
   type: github-release
@@ -139,35 +148,41 @@ resources:
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchCurrentMinus2
+  <<: *slowCheck
 - name: k8s-git-current-minus-1
   <<: *resourceDefaults
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchCurrentMinus1
+  <<: *slowCheck
 - name: k8s-git-current
   <<: *resourceDefaults
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchCurrent
+  <<: *slowCheck
 - name: k8s-git-master
   <<: *resourceDefaults
   type: git
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchMaster
+  <<: *slowCheck
 - name: container-diff-bin
   <<: *resourceDefaults
   type: file-url
   source:
     url: https://storage.googleapis.com/container-diff/latest/container-diff-linux-amd64
     filename: container-diff
+  <<: *slowCheck
 - name: slack
   <<: *resourceDefaults
   type: slack
   source:
     url: ((slack.url))
+  <<: *noCheck
 
 jobs:
 - name: update image
