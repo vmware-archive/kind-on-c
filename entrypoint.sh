@@ -398,9 +398,10 @@ kind::start() {
   metallb::install
 
   # tell 'em!
-  log::info "kind is available"
-  log::info "'\$KUBECONFIG' is setup: ${KUBECONFIG}"
-  log::info "$(command -v kubectl): $(kubectl version --short --client)"
+  log::info "cluster available"
+  log::info "$( kubectl version | sed 's/^/  /g' )"
+  log::info "  kind Version: $(kind version)"
+  log::info "  \$KUBECONFIG: ${KUBECONFIG}"
 }
 
 kind::image::prepare() {
@@ -467,7 +468,6 @@ main() {
 
   # install kind
   kind::install "$binPath"
-  log::info "$(command -v kind): $(kind version)"
 
   # prepare the node image, if configured
   local imageName
@@ -493,7 +493,6 @@ main() {
 
   # install kubectl
   kubectl::install "$binPath"
-  log::info "$(command -v kubectl): $(kubectl version --client)"
 
   # start the cluster
   kind::start "$imageName"
