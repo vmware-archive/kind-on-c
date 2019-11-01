@@ -74,8 +74,9 @@ config:
     resource: slack
     params:
       alert_type: broke
-- &taskDefaults
+- &jobDefaults
   public: *allIsPublic
+  serial: true
   <<: *notify
 - &resourceDefaults
   public: *allIsPublic
@@ -186,7 +187,7 @@ resources:
 
 jobs:
 - name: update image
-  <<: *taskDefaults
+  <<: *jobDefaults
   on_success:
     put: success message
     resource: slack
@@ -318,7 +319,7 @@ jobs:
       rebase: true
 
 - name: latest kind release
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel: &commonTestInputsForKindRelease
     - get: kind-on-c
@@ -338,7 +339,7 @@ jobs:
       passed: *allFeatureTests
   - *testTask
 - name: latest kind release with k8s-master
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -346,7 +347,7 @@ jobs:
       resource: k8s-git-master
   - << : *testTask
 - name: latest kind release with k8s-current
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -354,7 +355,7 @@ jobs:
       resource: k8s-git-current
   - << : *testTask
 - name: latest kind release with k8s-current-minus-1
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -362,7 +363,7 @@ jobs:
       resource: k8s-git-current-minus-1
   - << : *testTask
 - name: latest kind release with k8s-current-minus-2
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindRelease
@@ -371,7 +372,7 @@ jobs:
   - << : *testTask
 
 - name: promote
-  <<: *taskDefaults
+  <<: *jobDefaults
   on_success:
     put: success message
     resource: slack
@@ -399,7 +400,7 @@ jobs:
       repository: kind-on-c-dev
 
 - name: build kind from master
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - get: kind-git-master
     trigger: true
@@ -431,7 +432,7 @@ jobs:
       file: kind-bin/kind-linux-amd64
 
 - name: kind master
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel: &commonTestInputsForKindMaster
     - get: kind-on-c
@@ -444,7 +445,7 @@ jobs:
       trigger: true
   - *testTask
 - name: kind master with k8s-current-minus-2
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -452,7 +453,7 @@ jobs:
       resource: k8s-git-current-minus-2
   - << : *testTask
 - name: kind master with k8s-current-minus-1
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -460,7 +461,7 @@ jobs:
       resource: k8s-git-current-minus-1
   - << : *testTask
 - name: kind master with k8s-current
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -468,7 +469,7 @@ jobs:
       resource: k8s-git-current
   - << : *testTask
 - name: kind master with k8s-master
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForKindMaster
@@ -478,7 +479,7 @@ jobs:
 
 # additional "feature" tests
 - name: HA control plane
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel: &commonTestInputsForFeatures
     - get: kind-on-c
@@ -518,7 +519,7 @@ jobs:
           exit 2
         }
 - name: custom kind config
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
   - << : *testTask
@@ -538,7 +539,7 @@ jobs:
           exit 1
         }
 - name: output node image & rootfs
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForFeatures
@@ -592,7 +593,7 @@ jobs:
           exit 1
         }
 - name: user inputs & outputs
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel:
     - in_parallel: *commonTestInputsForFeatures
@@ -645,7 +646,7 @@ jobs:
             }
           done
 - name: MetalLB & exposed services
-  <<: *taskDefaults
+  <<: *jobDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
   - << : *testTask
