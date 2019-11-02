@@ -673,8 +673,8 @@ jobs:
         NAME='echo'
         IMG='inanimate/echo-server'
 
-        kubectl run "$NAME" --image="$IMG" --replicas=2 --port="$PORT"
-        kubectl expose deployment "$NAME" --type=LoadBalancer
+        kubectl run --generator=run-pod/v1 "$NAME" --image="$IMG" --port="$PORT"
+        kubectl expose pod "$NAME" --type=LoadBalancer
 
         connectFromExt() {
           local extIP
