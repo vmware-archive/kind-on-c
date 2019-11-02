@@ -93,11 +93,13 @@ resources:
 - name: base-image
   <<: *resourceDefaults
   type: registry-image
+  icon: layers-triple-outline
   source:
     repository: *baseImageRepo
 - name: image
   <<: *resourceDefaults
   type: registry-image
+  icon: layers-triple
   source:
     repository: *imageRepo
     username: ((registry.username))
@@ -106,6 +108,7 @@ resources:
 - name: kind-build
   <<: *resourceDefaults
   type: google-cloud-storage
+  icon: application-export
   source:
     bucket: kind-on-c-pipeline
     json_key: ((bucket.key))
@@ -113,18 +116,21 @@ resources:
 - name: dockerfile
   <<: *resourceDefaults
   type: git
+  icon: docker
   source:
     << : *kindOnCGitSource
     paths: *imageBuildingFiles
 - name: kind-on-c-dev
   <<: *resourceDefaults
   type: git
+  icon: source-branch
   source:
     << : *kindOnCGitSource
     ignore_paths: *imageBuildingFiles
 - name: kind-on-c-master
   <<: *resourceDefaults
   type: git
+  icon: source-merge
   source:
     << : *kindOnCGitSource
     branch: master
@@ -132,6 +138,7 @@ resources:
 - name: kind-release
   <<: *resourceDefaults
   type: github-release
+  icon: application-import
   source:
     owner: kubernetes-sigs
     repository: kind
@@ -140,12 +147,14 @@ resources:
 - name: kind-git-master
   <<: *resourceDefaults
   type: git
+  icon: source-fork
   source:
     uri: https://github.com/kubernetes-sigs/kind
     branch: master
 - name: k8s-git-current-minus-2
   <<: *resourceDefaults
   type: git
+  icon: kubernetes
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchCurrentMinus2
@@ -153,6 +162,7 @@ resources:
 - name: k8s-git-current-minus-1
   <<: *resourceDefaults
   type: git
+  icon: kubernetes
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchCurrentMinus1
@@ -160,6 +170,7 @@ resources:
 - name: k8s-git-current
   <<: *resourceDefaults
   type: git
+  icon: kubernetes
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchCurrent
@@ -167,6 +178,7 @@ resources:
 - name: k8s-git-master
   <<: *resourceDefaults
   type: git
+  icon: kubernetes
   source:
     uri: https://github.com/kubernetes/kubernetes
     branch: *k8sBranchMaster
@@ -174,6 +186,7 @@ resources:
 - name: container-diff-bin
   <<: *resourceDefaults
   type: file-url
+  icon: vector-difference
   source:
     url: https://storage.googleapis.com/container-diff/latest/container-diff-linux-amd64
     filename: container-diff
@@ -181,6 +194,7 @@ resources:
 - name: slack
   <<: *resourceDefaults
   type: slack
+  icon: chat-processing
   source:
     url: ((slack.url))
   <<: *noCheck
