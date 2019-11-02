@@ -355,23 +355,49 @@ kind::kubeconfig::write() {
   echo "$file"
 }
 
+kind::hack::loglevel() {
+  local level="$1"
+  local kindVersion
+  local re='^[0-9]+$'
+  local flagName='verbosity'
+
+  [ -n "$level" ] || return 0
+
+  kindVersion=$( kind --version | sed 's/^kind version v*//g' )
+
+  # for versions 0.5.1 and older
+  if dpkg --compare-versions "$kindVersion" le '0.5.1'
+  then
+    re='^(panic|fatal|error|warning|info|debug)$'
+    flagName='loglevel'
+  fi
+
+  [[ "$level" =~ $re ]] || {
+    log::warn "${flagName} '${level}' not allowed, must match '${re}'"
+    return 1
+  }
+
+  echo "--${flagName}=${level}"
+}
+
 kind::start() {
   local imageName="${1}"
 
   local clusterName="${KIND_CLUSTER_NAME:-kind}"
-  local kindLogLevel="${KIND_LOG_LEVEL:-error}"
   local userKindConfig="${KIND_CONFIG:-}"
 
   local defaultKindConfigFile="${PWD}/kind-on-c/kind-default-config.yaml"
 
-  # generate the config for kind
-  local kindConfigFile
+  # generate the config for kind and the logging option
+  local kindConfigFile kindLogOpt
   kindConfigFile="$( kind::gen_config "$defaultKindConfigFile" "$userKindConfig" )"
+  kindLogOpt="$( kind::hack::loglevel "${KIND_LOGLEVEL:-}" )"
 
   # prepare kind opts
   local kindOpts
-  kindOpts=( --config "$kindConfigFile" --name "$clusterName" --loglevel "$kindLogLevel" --retain )
-  [ -z "$imageName" ] || kindOpts+=( --image "$imageName" )
+  kindOpts=( --config "$kindConfigFile" --name "$clusterName" --retain )
+  [ -z "$kindLogOpt" ] || kindOpts+=( "$kindLogOpt" )
+  [ -z "$imageName" ]  || kindOpts+=( --image "$imageName" )
 
   # start the cluster
   kind::hack::kmsg_linker "$clusterName" &

@@ -173,7 +173,9 @@ matches the version of kubernetes deployed.
 - `KINDONC_DEBUG`  
   ... if you want to see all the ugly things that are happening to bring up docker and to run kind
 - `KIND_LOGLEVEL`  
-  ... make kind more or less verbose when it is doing its business
+  ... make kind more or less verbose when it is doing its business.  
+  For kind `<= 0.5.1` this value is used for the `--loglevel` option and needs to be one of `panic`, `fatal`, `error`, `warning`, `info`, `debug`.  
+  For kind `> 0.5.1` this value is used for the `--verbosity` option and needs to be and integer. 
 - `KIND_CLUSTER_NAME`  
   ... in case you want to change kind's cluster name -- you actually should not need to do that ...
 
