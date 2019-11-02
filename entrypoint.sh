@@ -83,7 +83,6 @@ cgroups::sanitize() {
 
 # Setup container environment and start docker daemon in the background.
 docker::start() {
-  log::info "Setting up Docker environment..."
   mkdir -p /var/log
   mkdir -p /var/run
 
@@ -116,7 +115,6 @@ docker::start() {
   rm -f "${DOCKERD_PID_FILE}"
   touch "${DOCKERD_LOG_FILE}"
 
-  log::info "Starting Docker..."
   dockerd ${docker_opts} &>"${DOCKERD_LOG_FILE}" &
   echo "$!" > "${DOCKERD_PID_FILE}"
 }
@@ -125,7 +123,6 @@ docker::start() {
 # Timeout after DOCKERD_TIMEOUT seconds
 docker::await() {
   local timeout="${DOCKERD_TIMEOUT}"
-  log::info "Waiting ${timeout} seconds for Docker to be available..."
   local start=${SECONDS}
   timeout=$(( timeout + start ))
   until docker info &>/dev/null; do
@@ -147,13 +144,11 @@ docker::await() {
     fi
     sleep 1
   done
-  local duration=$(( SECONDS - start ))
-  log::info "Docker available after ${duration} seconds."
 }
 
 # Gracefully stop Docker daemon.
 docker::stop() {
-  local rc docker_pid start duration
+  local rc docker_pid start
 
   rc="${1:-}"
 
@@ -170,13 +165,9 @@ docker::stop() {
   if [[ -z "${docker_pid}" ]]; then
     return 0
   fi
-  log::info "Terminating Docker daemon."
   kill -TERM "${docker_pid}"
   start=${SECONDS}
-  log::info "Waiting for Docker daemon to exit..."
   wait "${docker_pid}"
-  duration=$(( SECONDS - start ))
-  log::info "Docker exited after ${duration} seconds."
 }
 
 export::node::image() {
@@ -392,7 +383,6 @@ kind::start() {
 
   # wait until the default service account is available, so pods can actually
   # be scheduled
-  log::info 'Waiting for the default serviceaccount'
   retry 60 1 kubectl -n default get serviceaccount default -o name
 
   metallb::install
@@ -440,8 +430,6 @@ kind::image::prepare() {
 
   # Fallback to not using a special node image, use the default from kind
   # upstream
-  log::info "will use kind upstream's node image"
-  return 0
 }
 
 lib::load() {
@@ -453,8 +441,19 @@ lib::load() {
   . "${dir}/lib.inc.sh"
 }
 
+log::version() {
+  local v
+  v="$(
+    cd kind-on-c \
+      && git describe --dirty --exclude='*' --always 2>/dev/null \
+      || echo '<unknown>'
+  )"
+  log::info "kind-on-c: ${v}"
+}
+
 main() {
   lib::load
+  log::version
 
   docker::start
   trap 'docker::stop "$?"' EXIT
