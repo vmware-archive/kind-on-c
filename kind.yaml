@@ -4,7 +4,7 @@ image_resource:
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:21230c8a755f6988898135243c7a58415e15dd03094b2d1b875d623fa1f5fb55
+    digest: sha256:1248d953f0846b676ed36e73b72ca79e8c3800656d343cde3b1d16ba568f1d66
 inputs:
   - name: kind-on-c
   - name: kind-release
