@@ -189,14 +189,14 @@ matches the version of kubernetes deployed.
   future potentially more.
   This input is typically provided by a git resource that is pulling this very
   git repo.
-- `kind-releae`, _mandatory_  
+- `kind-release`, _mandatory_
   Must prrovide the kind binary, named `kind-linux-amd64`.
   This should either be backed by a github-release resource or a earlier task
   that compiles kind from the source.
 - `k8s-git`, _optional_  
   Must provide a git source tree of kubernetes. When configured, the [node image]
   will be built off of the checked-out revision of kubernetes.
-  This is typically a git resource, pointing to (a fork of) [k/k](github.com/kubernetes/kubernetes).
+  This is typically a git resource, pointing to (a fork of) [k/k](https://github.com/kubernetes/kubernetes).
 - `node-image`, _optional_
   Must provide an OCI image `image.tar` that will be used as a [node image]. This
   can be an image generated via
@@ -355,7 +355,7 @@ plan:
       folder: artifacts
   - put: lftp-log-dump        # using only the log output of the previous task
     params:
-      files "logs/*.log"
+      files: "logs/*.log"
   - put: swift-metrics-store  # using only the metrics output of the previous task
     params:
       from: "metrics/(.*)"
