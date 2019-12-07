@@ -196,7 +196,7 @@ matches the version of kubernetes deployed.
 - `k8s-git`, _optional_  
   Must provide a git source tree of kubernetes. When configured, the [node image]
   will be built off of the checked-out revision of kubernetes.
-  This is typically a git resource, pointing to (a fork of) [k/k](github.com/kubernetes/kubernetes).
+  This is typically a git resource, pointing to (a fork of) [k/k](https://github.com/kubernetes/kubernetes).
 - `node-image`, _optional_
   Must provide an OCI image `image.tar` that will be used as a [node image]. This
   can be an image generated via
