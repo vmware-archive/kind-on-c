@@ -285,7 +285,7 @@ jobs:
           set -o pipefail
 
           taskConf="${PWD}/kind-on-c-dev/kind.yaml"
-          imageLog="${PWD}/kinc-on-c-dev/image.md"
+          imageLog="${PWD}/kind-on-c-dev/image.md"
           tmpDir="$(mktemp -d)"
           trap 'rm -rf -- "$tmpDir"' EXIT
 
