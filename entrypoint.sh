@@ -333,12 +333,18 @@ metallb::install() {
 
   log::info 'Installing MetalLB'
 
-  local metallbSystemConf='https://raw.githubusercontent.com/danderson/metallb/v0.8.1/manifests/metallb.yaml'
   local metallbConfigMap="${PWD}/kind-on-c/metallb-cm.yaml"
+  local metallbSystemConfs=(
+    'https://raw.githubusercontent.com/metallb/metallb/v0.9/manifests/namespace.yaml'
+    'https://raw.githubusercontent.com/metallb/metallb/v0.9/manifests/metallb.yaml'
+  )
 
   {
-    kubectl apply -f "$metallbSystemConf"
+    for c in "${metallbSystemConfs[@]}" ; do
+      kubectl apply -f "$c"
+    done
     kubectl apply -f <( kind::hack::genMetalConfig "$metallbConfigMap" )
+    kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
   } >/dev/null
 }
 
