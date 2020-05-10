@@ -338,8 +338,49 @@ metallb::install() {
 
   {
     kubectl apply -f "$metallbSystemConf"
-    kubectl apply -f "$metallbConfigMap"
+    kubectl apply -f <( kind::hack::genMetalConfig "$metallbConfigMap" )
   } >/dev/null
+}
+
+kind::hack::genMetalConfig() {
+  local orgConfig="$1"
+  local kindNetName='kind' # will this change?
+
+  local dockerNet
+  local net cidr
+  local i1 i2 i3 i4 m1 m2 m3 m4
+  local ip0 ip1
+  local config
+
+  dockerNet="$( docker network inspect "$kindNetName" | jq -r '.[0].IPAM.Config[0].Subnet' )"
+  IFS=/ read -r net cidr <<< "$dockerNet"
+
+  IFS=. read -r i1 i2 i3 i4 <<< "$net"
+  IFS=. read -r m1 m2 m3 m4 <<< "$( kind::hack::cidrToNetmask "$cidr" )"
+
+  ip0="$((i1 & m1 | 255-m1)).$((i2 & m2 | 255-m2)).$((i3 & m3 | 255-m3)).$(((i4 & m4)+1))"
+  ip1="$((i1 & m1 | 255-m1)).$((i2 & m2 | 255-m2)).$((i3 & m3 | 255-m3)).$(((i4 & m4 | 255-m4)-1))"
+
+  # shellcheck disable=SC2016
+  config="$(
+    </dev/null yq -y -n --arg ip0 "$ip0" --arg ip1 "$ip1" '{
+      "address-pools": [{
+        "name": "default",
+        "protocol": "layer2",
+        "addresses": [
+          "\($ip0)-\($ip1)"
+        ]
+      }]
+    }'
+  )"
+
+  # shellcheck disable=SC2016
+  yq -y -r --arg c "$config" '.data.config = $c' "${orgConfig}"
+}
+
+kind::hack::cidrToNetmask() {
+  local value="$(( 0xffffffff ^ ((1 << (32 - ${1})) - 1) ))"
+  echo "$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8) & 0xff )).$(( value & 0xff ))"
 }
 
 # With https://github.com/kubernetes-sigs/kind/pull/1029 kind broke the way how
