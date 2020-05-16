@@ -128,7 +128,7 @@ matches the version of kubernetes deployed.
   ```yaml
   KIND_CONFIG: |
     kind: Cluster
-    apiVersion: kind.sigs.k8s.io/v1alpha3
+    apiVersion: kind.x-k8s.io/v1alpha4
     nodes:
     - role: control-plane
     - role: worker

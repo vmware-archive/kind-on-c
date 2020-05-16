@@ -519,7 +519,7 @@ jobs:
     params:
       KIND_CONFIG: |
         kind: Cluster
-        apiVersion: kind.sigs.k8s.io/v1alpha3
+        apiVersion: kind.x-k8s.io/v1alpha4
         nodes:
         - role: control-plane
         - role: control-plane
@@ -551,7 +551,7 @@ jobs:
     params:
       KIND_CONFIG: |
         kind: Cluster
-        apiVersion: kind.sigs.k8s.io/v1alpha3
+        apiVersion: kind.x-k8s.io/v1alpha4
         nodes:
         - role: control-plane
         - role: worker
@@ -602,7 +602,7 @@ jobs:
       EXPECTED_BRANCH: *k8sBranchCurrentMinus1
       KIND_CONFIG: |
         kind: Cluster
-        apiVersion: kind.sigs.k8s.io/v1alpha3
+        apiVersion: kind.x-k8s.io/v1alpha4
         nodes:
         - role: control-plane
       KIND_TESTS: |
