@@ -66,7 +66,7 @@ pull the secrets from a lastpass note at `pipelines/kind-on-c/vars.yaml`.
 
 You can also use concourse to run the local state of `kind-on-c` (e.g. while testing features) by using `fly execute` like so:
 ```sh
-KIND_TESTS='echo "no really running tests"; exit 1"' \
+KIND_TESTS='echo "no really running tests"; exit 0' \
 KINDONC_DEBUG=1 \
 INSTALL_METALLB=1 \
   fly -t hh execute \
