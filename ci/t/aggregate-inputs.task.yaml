@@ -1,0 +1,13 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: bash
+inputs:
+- name: kind-on-c
+- name: input-1
+- name: input-2
+outputs:
+- name: agg-inputs
+run:
+  path: ./kind-on-c/ci/t/aggregate-inputs.sh

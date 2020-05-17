@@ -1,0 +1,10 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: bash
+inputs:
+- name: outputs
+- name: kind-on-c
+run:
+  path: ./kind-on-c/ci/t/check-aggregated-outputs.sh

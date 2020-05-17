@@ -1,0 +1,6 @@
+platform: linux
+inputs:
+- name: exported-node-image
+- name: kind-on-c
+run:
+  path: ./kind-on-c/ci/t/exported-node-rootfs.sh

@@ -41,12 +41,6 @@ config:
   privileged: true
   params:
     KIND_TESTS: ./kind-on-c/ci/t/default.sh
-- &bashTaskConf
-  platform: linux
-  image_resource:
-    type: registry-image
-    source:
-      repository: bash
 - &golangTaskConf
   platform: linux
   image_resource:
@@ -537,22 +531,7 @@ jobs:
       KIND_TESTS: '' # skip bringing up the cluster, only create the image
   - task: run rootfs
     image: exported-node-rootfs # the rootfs of the node image built by kind, from the previous task
-    config:
-      platform: linux
-      inputs:
-      - name: exported-node-image
-      - name: kind-on-c
-      run:
-        path: bash
-        args:
-        - -xeuc
-        - |
-          . kind-on-c/lib.inc.sh
-          expImg='exported-node-image/image.tar'
-          test -e "$expImg" || {
-            log::error "'${expImg}' not found. What's with that\!?"
-            exit 1
-          }
+    file: kind-on-c/ci/t/exported-node-rootfs.task.yaml
   - << : *testTask
     task: run-tests with previously exported node image
     input_mapping:
@@ -571,20 +550,7 @@ jobs:
     - { get: input-1 , resource: dockerfile }
     - { get: input-2 , resource: dockerfile }
   - task: aggregate inputs
-    config:
-      << : *bashTaskConf
-      inputs:
-      - name: input-1
-      - name: input-2
-      outputs:
-      - name: agg-inputs
-      run:
-        path: bash
-        args:
-        - -xeuc
-        - |
-          cp -a input-1 agg-inputs/
-          cp -a input-2 agg-inputs/
+    file: kind-on-c/ci/t/aggregate-inputs.task.yaml
   - << : *testTask
     task: use inputs & populate outputs
     params:
@@ -592,25 +558,7 @@ jobs:
     input_mapping:
       inputs: agg-inputs
   - task: check aggregated outputs
-    config:
-      << : *bashTaskConf
-      inputs:
-      - name: outputs
-      - name: kind-on-c
-      run:
-        path: bash
-        args:
-        - -xeuc
-        - |
-          . kind-on-c/lib.inc.sh
-          expectedOutputs=( outputs/eins outputs/zwei )
-          for o in "${expectedOutputs[@]}"
-          do
-            [ -d "$o" ] || {
-              log::error "expected output '$o' to exist"
-              exit 1
-            }
-          done
+    file: kind-on-c/ci/t/check-aggregated-outputs.task.yaml
 - name: MetalLB & exposed services
   <<: *jobDefaults
   plan:
