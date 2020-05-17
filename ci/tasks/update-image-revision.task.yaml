@@ -1,0 +1,13 @@
+platform: linux
+inputs:
+- name: image-push
+- name: image
+- name: kind-on-c-dev
+- path: bin
+  name: container-diff-bin
+outputs:
+- name: kind-on-c-dev
+caches:
+- path: cache
+run:
+  path: ./kind-on-c-dev/ci/tasks/update-image-revision.sh

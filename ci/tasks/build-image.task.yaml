@@ -1,0 +1,17 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: vito/oci-build-task
+params:
+  CONTEXT: image-build
+  UNPACK_ROOTFS: true
+inputs:
+- name: base-image
+- name: image-build
+outputs:
+- name: image
+caches:
+- path: cache
+run:
+  path: ./image-build/ci/tasks/build-image.sh

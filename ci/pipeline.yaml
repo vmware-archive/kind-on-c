@@ -26,6 +26,8 @@ config:
   - &k8sBranchCurrentMinus2 release-1.16
 - &imageBuildingFiles
   - Dockerfile
+  - ci/tasks/build-image.*
+  - ci/tasks/update-image-revision.*
 - &kindOnCGitSource
   uri: git@github.com:pivotal-k8s/kind-on-c
   branch: dev
@@ -96,7 +98,7 @@ resources:
     bucket: kind-on-c-pipeline
     json_key: ((bucket.key))
     versioned_file: "pipeline-builds/kind-linux-amd64"
-- name: dockerfile
+- name: image-build
   <<: *resourceDefaults
   type: git
   icon: docker
@@ -197,45 +199,15 @@ jobs:
       steps:
       - get: base-image
         trigger: true
-      - get: dockerfile
+      - get: image-build
         trigger: true
       - get: kind-on-c-dev
       - get: container-diff-bin
   - task: build
+    file: image-build/ci/tasks/build-image.task.yaml
     privileged: true
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: vito/oci-build-task
-      params:
-        CONTEXT: dockerfile
-        BASE_IMAGE_REPO: *baseImageRepo
-        UNPACK_ROOTFS: true
-      inputs:
-      - name: base-image
-      - name: dockerfile
-      outputs:
-      - name: image
-      caches:
-      - path: cache
-      run:
-        path: sh
-        args:
-        - -euc
-        - |
-          set -o pipefail
-
-          kind_on_c_ver="$( git --git-dir=dockerfile/.git describe --always --tags )"
-          base_img_ver="$( cat base-image/digest )"
-
-          cat <<EOF > image/build_args
-          KIND_ON_C_VERSION=${kind_on_c_ver}
-          BASE_IMAGE=${BASE_IMAGE_REPO}@${base_img_ver}
-          EOF
-
-          BUILD_ARGS_FILE=image/build_args build
+    params:
+      BASE_IMAGE_REPO: *baseImageRepo
   - put: image-push
     resource: image
     params:
@@ -245,82 +217,10 @@ jobs:
   # - task: test new image ## TODO
   - task: update image revision
     image: image # use image from the builder task
-    config:
-      platform: linux
-      params:
-        GIT_AUTHOR_NAME:  *gitBotName
-        GIT_AUTHOR_EMAIL: *gitBotEmail
-      inputs:
-      - name: image-push
-      - name: image
-      - name: kind-on-c-dev
-      - path: bin
-        name: container-diff-bin
-      outputs:
-      - name: kind-on-c-dev
-      caches:
-      - path: cache
-      run:
-        path: bash
-        args:
-        - -euc
-        - |
-          set -o pipefail
-
-          taskConf="${PWD}/kind-on-c-dev/kind.yaml"
-          imageLog="${PWD}/kind-on-c-dev/image.md"
-          tmpDir="$(mktemp -d)"
-          trap 'rm -rf -- "$tmpDir"' EXIT
-
-          chmod 0750 bin/container-diff
-          export PATH="${PATH}:${PWD}/bin"
-
-          c0Repo="$( yq -r '.image_resource.source.repository' "$taskConf" )"
-          c0Digest="$( yq -r '.image_resource.version.digest' "$taskConf" )"
-          c1Digest="$( cat "image-push/digest" )"
-
-          c0="remote://${c0Repo}@${c0Digest}"
-          c1="${PWD}/image/image.tar"
-
-          diffCmd=(
-            container-diff diff "$c0" "$c1"
-              --type pip --type apt --type file --type size --type history
-              --cache-dir "${PWD}/cache" --verbosity info
-          )
-
-          tmpTaskConf="${tmpDir}/task.yml"
-
-          yq -y --arg d "${c1Digest}" '.image_resource.version.digest = $d' "$taskConf" > "$tmpTaskConf"
-          cat "$tmpTaskConf" > "$taskConf"
-
-          {
-            echo "Current image: \"${c0Repo}@${c1Digest}\""
-            echo "Previous image: \"${c0Repo}@${c0Digest}\""
-            echo
-
-            echo 'Command:'
-            echo '```'
-            echo "${diffCmd[*]}"
-            echo '```'
-            echo
-
-            echo 'Diff:'
-            echo '```'
-            "${diffCmd[@]}"
-            echo '```'
-          } > "${imageLog}"
-
-          cd kind-on-c-dev
-
-          git config --global user.email "$GIT_AUTHOR_EMAIL"
-          git config --global user.name "$GIT_AUTHOR_NAME"
-
-          git add "$taskConf"
-          git add "$imageLog"
-          git diff --quiet && git diff --staged --quiet || {
-            git commit --quiet --message "Update container image to \"${c1Digest}\""
-            git show -1 | cat
-          }
+    file: kind-on-c-dev/ci/tasks/update-image-revision.task.yaml
+    params:
+      GIT_AUTHOR_NAME:  *gitBotName
+      GIT_AUTHOR_EMAIL: *gitBotEmail
   - put: kind-on-c-dev
     params:
       repository: kind-on-c-dev
@@ -524,8 +424,8 @@ jobs:
     - in_parallel: *commonTestInputsForFeatures
     # those are just random inputs, to show how one could aggregate multiple
     # inputs and prepare them for kind-on-c
-    - { get: input-1 , resource: dockerfile }
-    - { get: input-2 , resource: dockerfile }
+    - { get: input-1 , resource: image-build }
+    - { get: input-2 , resource: image-build }
   - task: aggregate inputs
     file: kind-on-c/ci/t/aggregate-inputs.task.yaml
   - << : *testTask
