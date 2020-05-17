@@ -1,0 +1,16 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: "golang"
+inputs:
+- name: kind-git-master
+  path: src
+- name: kind-on-c
+outputs:
+- name: kind-bin
+params:
+  CGO_ENABLED: 0
+  GO111MODULE: "on"
+run:
+  path: ./kind-on-c/ci/tasks/build-kind.sh

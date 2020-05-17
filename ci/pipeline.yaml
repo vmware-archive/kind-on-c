@@ -41,12 +41,6 @@ config:
   privileged: true
   params:
     KIND_TESTS: ./kind-on-c/ci/t/default.sh
-- &golangTaskConf
-  platform: linux
-  image_resource:
-    type: registry-image
-    source:
-      repository: "golang"
 - &notify
   on_success:
     put: success message
@@ -416,31 +410,14 @@ jobs:
 - name: build kind from master
   <<: *jobDefaults
   plan:
-  - get: kind-git-master
-    trigger: true
+  - in_parallel:
+    - get: kind-on-c
+      resource: kind-on-c-dev
+      trigger: true
+    - get: kind-git-master
+      trigger: true
   - task: build
-    config:
-      << : *golangTaskConf
-      inputs:
-      - name: kind-git-master
-        path: src
-      outputs:
-      - name: kind-bin
-      params:
-        CGO_ENABLED: 0
-        GO111MODULE: "on"
-      run:
-        path: bash
-        args:
-        - -euc
-        - |
-          cd ./src
-          go get -d ./...
-          go build main.go
-
-          mv main "../kind-bin/kind-linux-amd64"
-
-          ls -l ../kind-bin/
+    file: kind-on-c/ci/tasks/build-kind.task.yaml
   - put: kind-build
     params:
       file: kind-bin/kind-linux-amd64
