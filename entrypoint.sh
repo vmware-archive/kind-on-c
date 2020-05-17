@@ -285,7 +285,12 @@ kind::gen_config() {
 
   if [ -n "$userConf" ]
   then
-    echo "$userConf" > "$kindConfFile"
+    if [ -e "$userConf" ]
+    then
+      cat "$userConf" > "$kindConfFile"
+    else
+      echo "$userConf" > "$kindConfFile"
+    fi
   else
     cat "$defaultConfFile" > "$kindConfFile"
   fi

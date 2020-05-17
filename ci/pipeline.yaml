@@ -40,12 +40,7 @@ config:
   file: kind-on-c/kind.yaml
   privileged: true
   params:
-    KIND_TESTS: |
-      set -x
-      kubectl get nodes -o wide
-      kubectl get all --all-namespaces
-      kubectl run test --rm=true --image=busybox -i --wait=true --restart=Never --command -- \
-        echo 'The pod says: the kubernetes cluster sure works!'
+    KIND_TESTS: ./kind-on-c/ci/t/default.sh
 - &bashTaskConf
   platform: linux
   image_resource:
@@ -517,52 +512,16 @@ jobs:
         - kind-linux-amd64
   - << : *testTask
     params:
-      KIND_CONFIG: |
-        kind: Cluster
-        apiVersion: kind.x-k8s.io/v1alpha4
-        nodes:
-        - role: control-plane
-        - role: control-plane
-        - role: control-plane
-      KIND_TESTS: |
-        set -x
-
-        . kind-on-c/lib.inc.sh
-
-        expectedNrOfNodes=3      # 0 worker + 3 control plane nodes
-        expectedNrOfContainers=4 # 0 worker + 3 control plane + 1 loadbalancer
-
-        actualNrOfContainers=$( kind get nodes | wc -l )
-        [[ $expectedNrOfContainers -eq $actualNrOfContainers ]] || {
-          log::error "Expectd to find ${expectedNrOfContainers} kind nodes, found ${actualNrOfContainers}"
-          exit 1
-        }
-
-        actualNrOfNodes=$( kubectl get nodes --no-headers | wc -l )
-        [[ $expectedNrOfNodes -eq $actualNrOfNodes ]] || {
-          log::error "Expectd to find ${expectedNrOfNodes} kubernetes nodes, found ${actualNrOfNodes}"
-          exit 2
-        }
+      KIND_CONFIG: ./kind-on-c/ci/t/ha-control-plane.kind-config.yaml
+      KIND_TESTS:  ./kind-on-c/ci/t/ha-control-plane.sh
 - name: custom kind config
   <<: *jobDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
   - << : *testTask
     params:
-      KIND_CONFIG: |
-        kind: Cluster
-        apiVersion: kind.x-k8s.io/v1alpha4
-        nodes:
-        - role: control-plane
-        - role: worker
-      KIND_TESTS: |
-        set -x
-        . kind-on-c/lib.inc.sh
-        nrOfNodes=$( kubectl get nodes --no-headers | wc -l )
-        [[ $nrOfNodes -eq 2 ]] || {
-          log::error "Expectd 2 nodes, found $nrOfNodes"
-          exit 1
-        }
+      KIND_CONFIG: ./kind-on-c/ci/t/custom-kind-config.kind-config.yaml
+      KIND_TESTS:  ./kind-on-c/ci/t/custom-kind-config.sh
 - name: output node image & rootfs
   <<: *jobDefaults
   plan:
@@ -600,23 +559,8 @@ jobs:
       node-image: exported-node-image
     params:
       EXPECTED_BRANCH: *k8sBranchCurrentMinus1
-      KIND_CONFIG: |
-        kind: Cluster
-        apiVersion: kind.x-k8s.io/v1alpha4
-        nodes:
-        - role: control-plane
-      KIND_TESTS: |
-        set -x
-        . kind-on-c/lib.inc.sh
-
-        # convert the branch name 'release-1.15' to 'v1.15.' which can be used
-        # as part of a glob for the version comparison
-        expectedVer="v${EXPECTED_BRANCH/#release-}."
-        actualVer="$( kubectl get nodes -o json | jq -r .items[0].status.nodeInfo.kubeletVersion )"
-        [[ $actualVer == "$expectedVer"* ]] || {
-          log::error "Expected APIServer to match version '${expectedVer}', got '${actualVer}'"
-          exit 1
-        }
+      KIND_CONFIG: ./kind-on-c/ci/t/exported-node-image.kind-config.yaml
+      KIND_TESTS:  ./kind-on-c/ci/t/exported-node-image.sh
 - name: user inputs & outputs
   <<: *jobDefaults
   plan:
@@ -644,10 +588,7 @@ jobs:
   - << : *testTask
     task: use inputs & populate outputs
     params:
-      KIND_PRE_START: |
-        set -x
-        cp -a inputs/input-1 outputs/eins
-        cp -a inputs/input-2 outputs/zwei
+      KIND_PRE_START: ./kind-on-c/ci/t/inputs-outputs.pre-start.sh
     input_mapping:
       inputs: agg-inputs
   - task: check aggregated outputs
@@ -677,29 +618,7 @@ jobs:
   - << : *testTask
     params:
       INSTALL_METALLB: 1
-      KIND_TESTS: |
-        set -x
-
-        PORT=8080
-        NAME='echo'
-        IMG='inanimate/echo-server'
-
-        kubectl run --generator=run-pod/v1 "$NAME" --image="$IMG" --port="$PORT"
-        kubectl expose pod "$NAME" --type=LoadBalancer
-
-        connectFromExt() {
-          local extIP
-          extIP="$( kubectl get service "$NAME" -o 'jsonpath={.status.loadBalancer.ingress[0].ip}' 2>/dev/null )"
-
-          [ -n "$extIP" ] || return 1
-
-          curl --silent --fail "http://${extIP}:${PORT}"
-        }
-
-        . kind-on-c/lib.inc.sh
-
-        # try every 6 seconds, 20 times -> 2 minutes
-        retry 20 6 connectFromExt
+      KIND_TESTS: ./kind-on-c/ci/t/metallb.sh
 
 groups:
 - name: all
