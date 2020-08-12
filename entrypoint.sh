@@ -223,12 +223,17 @@ export::node() {
   [ -z "${EXPORT_NODE_IMAGE:-}" ]  || export::node::image  "$imageName"
 }
 
-kind::hack::kmsg_linker::runner() {
+kind::hack::node_prepper::script() {
+  # Get the prepper script's content and remove all comments
+  grep -o '^[^#]*' "${PWD}/kind-on-c/node-prepper.sh"
+}
+
+kind::hack::node_prepper::runner() {
   local nodes0 nodes1 nodeCmd clusterName \
     nodes=() node pids=() pid
 
   clusterName="$1"
-  nodeCmd='set -e; [ -e /dev/kmsg ] || ln -s /dev/console /dev/kmsg'
+  nodeCmd="$( kind::hack::node_prepper::script )"
 
   # get all the nodes currently known by kind
   # remember those nodes for a bit
@@ -239,15 +244,15 @@ kind::hack::kmsg_linker::runner() {
   # we expect at least 1 node
   [ "${#nodes[@]}" -ge 1 ] || return 2
 
-  # for each node, spawn a background process for doing the linking for one node
-  # keep track of the PIDs
+  # for each node, spawn a background process for doing the preperation for one
+  # node keep track of the PIDs
   for node in "${nodes[@]}"
   do
     docker exec "$node" sh -c "$nodeCmd" &
     pids+=( $! )
   done
 
-  # wait for all linking processes in the background
+  # wait for all preperation processes in the background
   # bail out if anyone of those failed
   for pid in "${pids[@]}"
   do
@@ -266,12 +271,12 @@ kind::hack::kmsg_linker::runner() {
   return 0
 }
 
-kind::hack::kmsg_linker() {
-  log::info 'kmsg-linker starting in the background'
+kind::hack::node_prepper() {
+  log::info 'node-prepper starting in the background'
 
-  retry 300 1 kind::hack::kmsg_linker::runner "$1"
+  retry 300 1 kind::hack::node_prepper::runner "$1"
 
-  log::info 'kmsg-linker successful, shutting down'
+  log::info 'node-prepper was successful on all nodes, shutting down'
 }
 
 # Generate a config file for kind
@@ -452,7 +457,7 @@ kind::start() {
   [ -z "$imageName" ]  || kindOpts+=( --image "$imageName" )
 
   # start the cluster
-  kind::hack::kmsg_linker "$clusterName" &
+  kind::hack::node_prepper "$clusterName" &
   kind create cluster "${kindOpts[@]}"
 
   # make kubeconfig available
