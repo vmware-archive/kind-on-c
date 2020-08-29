@@ -45,17 +45,17 @@ config:
     KIND_TESTS: ./kind-on-c/ci/t/default.sh
 - &notify
   on_success:
-    put: success message
+    put: success-message
     resource: slack
     params:
       alert_type: fixed
   on_failure:
-    put: failure message
+    put: failure-message
     resource: slack
     params:
       alert_type: broke
   on_error:
-    put: error message
+    put: error-message
     resource: slack
     params:
       alert_type: broke
@@ -185,10 +185,10 @@ resources:
   <<: *noCheck
 
 jobs:
-- name: update image
+- name: update-image
   <<: *jobDefaults
   on_success:
-    put: success message
+    put: success-message
     resource: slack
     params:
       alert_type: success
@@ -215,7 +215,7 @@ jobs:
     inputs:
     - image
   # - task: test new image ## TODO
-  - task: update image revision
+  - task: update-image-revision
     image: image # use image from the builder task
     file: kind-on-c-dev/ci/tasks/update-image-revision.task.yaml
     params:
@@ -226,7 +226,7 @@ jobs:
       repository: kind-on-c-dev
       rebase: true
 
-- name: latest kind release
+- name: latest-kind-release
   <<: *jobDefaults
   plan:
   - in_parallel: &commonTestInputsForKindRelease
@@ -234,11 +234,11 @@ jobs:
       resource: kind-on-c-dev
       trigger: true
       passed: &allFeatureTests
-      - custom kind config
-      - HA control plane
-      - output node image & rootfs
-      - user inputs & outputs
-      - MetalLB & exposed services
+      - feature--custom-kind-config
+      - feature--ha-control-plane
+      - feature--output-node-image-and-rootfs
+      - feature--user-inputs-and-outputs
+      - feature--metal-lb-and-exposed-services
     - get: kind-release
       trigger: true
       params:
@@ -246,7 +246,7 @@ jobs:
         - kind-linux-amd64
       passed: *allFeatureTests
   - *testTask
-- name: latest kind release with k8s-master
+- name: latest-kind-release-with-k8s-master
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -254,7 +254,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-master
   - << : *testTask
-- name: latest kind release with k8s-current
+- name: latest-kind-release-with-k8s-current
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -262,7 +262,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-current
   - << : *testTask
-- name: latest kind release with k8s-current-minus-1
+- name: latest-kind-release-with-k8s-current-minus-1
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -270,7 +270,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-current-minus-1
   - << : *testTask
-- name: latest kind release with k8s-current-minus-2
+- name: latest-kind-release-with-k8s-current-minus-2
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -282,7 +282,7 @@ jobs:
 - name: promote
   <<: *jobDefaults
   on_success:
-    put: success message
+    put: success-message
     resource: slack
     params:
       alert_type: success
@@ -292,22 +292,22 @@ jobs:
     trigger: true
     passed:
     # all tests for the kind release
-    - latest kind release
-    - latest kind release with k8s-master
-    - latest kind release with k8s-current
-    - latest kind release with k8s-current-minus-1
-    - latest kind release with k8s-current-minus-2
+    - latest-kind-release
+    - latest-kind-release-with-k8s-master
+    - latest-kind-release-with-k8s-current
+    - latest-kind-release-with-k8s-current-minus-1
+    - latest-kind-release-with-k8s-current-minus-2
     # all tests for kind master
-    - kind master
-    - kind master with k8s-current-minus-2
-    - kind master with k8s-current-minus-1
-    - kind master with k8s-current
-    - kind master with k8s-master
+    - kind-master
+    - kind-master-with-k8s-current-minus-2
+    - kind-master-with-k8s-current-minus-1
+    - kind-master-with-k8s-current
+    - kind-master-with-k8s-master
   - put: kind-on-c-master
     params:
       repository: kind-on-c-dev
 
-- name: build kind from master
+- name: build-kind-from-master
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -322,7 +322,7 @@ jobs:
     params:
       file: kind-bin/kind-linux-amd64
 
-- name: kind master
+- name: kind-master
   <<: *jobDefaults
   plan:
   - in_parallel: &commonTestInputsForKindMaster
@@ -331,11 +331,11 @@ jobs:
       trigger: true
       passed: *allFeatureTests
     - get: kind-release
-      passed: [ build kind from master ]
+      passed: [ build-kind-from-master ]
       resource: kind-build
       trigger: true
   - *testTask
-- name: kind master with k8s-current-minus-2
+- name: kind-master-with-k8s-current-minus-2
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -343,7 +343,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-current-minus-2
   - << : *testTask
-- name: kind master with k8s-current-minus-1
+- name: kind-master-with-k8s-current-minus-1
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -351,7 +351,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-current-minus-1
   - << : *testTask
-- name: kind master with k8s-current
+- name: kind-master-with-k8s-current
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -359,7 +359,7 @@ jobs:
     - get: k8s-git
       resource: k8s-git-current
   - << : *testTask
-- name: kind master with k8s-master
+- name: kind-master-with-k8s-master
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -369,7 +369,7 @@ jobs:
   - << : *testTask
 
 # additional "feature" tests
-- name: HA control plane
+- name: feature--ha-control-plane
   <<: *jobDefaults
   plan:
   - in_parallel: &commonTestInputsForFeatures
@@ -385,7 +385,7 @@ jobs:
     params:
       KIND_CONFIG: ./kind-on-c/ci/t/ha-control-plane.kind-config.yaml
       KIND_TESTS:  ./kind-on-c/ci/t/ha-control-plane.sh
-- name: custom kind config
+- name: feature--custom-kind-config
   <<: *jobDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
@@ -393,7 +393,7 @@ jobs:
     params:
       KIND_CONFIG: ./kind-on-c/ci/t/custom-kind-config.kind-config.yaml
       KIND_TESTS:  ./kind-on-c/ci/t/custom-kind-config.sh
-- name: output node image & rootfs
+- name: feature--output-node-image-and-rootfs
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -401,23 +401,23 @@ jobs:
     - get: k8s-git
       resource: k8s-git-current-minus-1
   - << : *testTask
-    task: export node image
+    task: export-node-image
     params:
       EXPORT_NODE_IMAGE: 1
       EXPORT_NODE_ROOTFS: 1
       KIND_TESTS: '' # skip bringing up the cluster, only create the image
-  - task: run rootfs
+  - task: run-rootfs
     image: exported-node-rootfs # the rootfs of the node image built by kind, from the previous task
     file: kind-on-c/ci/t/exported-node-rootfs.task.yaml
   - << : *testTask
-    task: run-tests with previously exported node image
+    task: run-tests-with-previously-exported-node-image
     input_mapping:
       node-image: exported-node-image
     params:
       EXPECTED_BRANCH: *k8sBranchCurrentMinus1
       KIND_CONFIG: ./kind-on-c/ci/t/exported-node-image.kind-config.yaml
       KIND_TESTS:  ./kind-on-c/ci/t/exported-node-image.sh
-- name: user inputs & outputs
+- name: feature--user-inputs-and-outputs
   <<: *jobDefaults
   plan:
   - in_parallel:
@@ -426,17 +426,17 @@ jobs:
     # inputs and prepare them for kind-on-c
     - { get: input-1 , resource: image-build }
     - { get: input-2 , resource: image-build }
-  - task: aggregate inputs
+  - task: aggregate-inputs
     file: kind-on-c/ci/t/aggregate-inputs.task.yaml
   - << : *testTask
-    task: use inputs & populate outputs
+    task: use-inputs-and-populate-outputs
     params:
       KIND_PRE_START: ./kind-on-c/ci/t/inputs-outputs.pre-start.sh
     input_mapping:
       inputs: agg-inputs
-  - task: check aggregated outputs
+  - task: check-aggregated-outputs
     file: kind-on-c/ci/t/check-aggregated-outputs.task.yaml
-- name: MetalLB & exposed services
+- name: feature--metal-lb-and-exposed-services
   <<: *jobDefaults
   plan:
   - in_parallel: *commonTestInputsForFeatures
@@ -449,47 +449,47 @@ groups:
 - name: all
   jobs:
   - promote
-  - latest kind release
-  - latest kind release with k8s-master
-  - latest kind release with k8s-current
-  - latest kind release with k8s-current-minus-1
-  - latest kind release with k8s-current-minus-2
-  - build kind from master
-  - kind master
-  - kind master with k8s-current-minus-2
-  - kind master with k8s-current-minus-1
-  - kind master with k8s-current
-  - kind master with k8s-master
-  - custom kind config
-  - HA control plane
-  - output node image & rootfs
-  - user inputs & outputs
-  - MetalLB & exposed services
+  - latest-kind-release
+  - latest-kind-release-with-k8s-master
+  - latest-kind-release-with-k8s-current
+  - latest-kind-release-with-k8s-current-minus-1
+  - latest-kind-release-with-k8s-current-minus-2
+  - build-kind-from-master
+  - kind-master
+  - kind-master-with-k8s-current-minus-2
+  - kind-master-with-k8s-current-minus-1
+  - kind-master-with-k8s-current
+  - kind-master-with-k8s-master
+  - feature--custom-kind-config
+  - feature--ha-control-plane
+  - feature--output-node-image-and-rootfs
+  - feature--user-inputs-and-outputs
+  - feature--metal-lb-and-exposed-services
 - name: image
   jobs:
-  - update image
-- name: kind release
+  - update-image
+- name: kind-from-release
   jobs:
-  - latest kind release
-  - latest kind release with k8s-master
-  - latest kind release with k8s-current
-  - latest kind release with k8s-current-minus-1
-  - latest kind release with k8s-current-minus-2
-- name: kind master
+  - latest-kind-release
+  - latest-kind-release-with-k8s-master
+  - latest-kind-release-with-k8s-current
+  - latest-kind-release-with-k8s-current-minus-1
+  - latest-kind-release-with-k8s-current-minus-2
+- name: kind-from-master
   jobs:
-  - build kind from master
-  - kind master
-  - kind master with k8s-current-minus-2
-  - kind master with k8s-current-minus-1
-  - kind master with k8s-current
-  - kind master with k8s-master
+  - build-kind-from-master
+  - kind-master
+  - kind-master-with-k8s-current-minus-2
+  - kind-master-with-k8s-current-minus-1
+  - kind-master-with-k8s-current
+  - kind-master-with-k8s-master
 - name: features
   jobs:
-  - custom kind config
-  - HA control plane
-  - output node image & rootfs
-  - user inputs & outputs
-  - MetalLB & exposed services
+  - feature--custom-kind-config
+  - feature--ha-control-plane
+  - feature--output-node-image-and-rootfs
+  - feature--user-inputs-and-outputs
+  - feature--metal-lb-and-exposed-services
 - name: promote
   jobs:
   - promote
