@@ -503,9 +503,11 @@ kind::image::prepare() {
     gitTag="$( cd "${k8sSrcPath}" && git describe --dirty )"
     imageName="kind/local-image:${gitTag}"
 
-    GOPATH="${PWD}/go" \
-      kind build node-image --image "$imageName" \
-      >&2
+    (
+      export GOPATH="${PWD}/go"
+      cd "$GOPATH"
+      kind build node-image --image "$imageName" >&2
+    )
 
     echo "$imageName"
     return 0
