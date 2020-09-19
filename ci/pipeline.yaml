@@ -28,6 +28,8 @@ config:
   - Dockerfile
   - ci/tasks/build-image.*
   - ci/tasks/update-image-revision.*
+- &kindBuildingFiles
+  - ci/tasks/build-kind.*
 - &kindOnCGitSource
   uri: git@github.com:pivotal-k8s/kind-on-c
   branch: dev
@@ -98,6 +100,13 @@ resources:
     bucket: kind-on-c-pipeline
     json_key: ((bucket.key))
     versioned_file: "pipeline-builds/kind-linux-amd64"
+- name: kind-build-tasks
+  <<: *resourceDefaults
+  type: git
+  icon: source-branch
+  source:
+    << : *kindOnCGitSource
+    paths: *kindBuildingFiles
 - name: image-build
   <<: *resourceDefaults
   type: git
@@ -312,7 +321,7 @@ jobs:
   plan:
   - in_parallel:
     - get: kind-on-c
-      resource: kind-on-c-dev
+      resource: kind-build-tasks
       trigger: true
     - get: kind-git-master
       trigger: true
