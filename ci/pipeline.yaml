@@ -16,6 +16,7 @@ resource_types:
 config:
 - &allIsPublic   true
 - &imageRepo     gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+- &imageTag      ci-latest
 - &baseImageRepo ubuntu
 - &gitBotName    kind-on-c pipeline
 - &gitBotEmail   hhorl+kindonc@pivotal.io
@@ -39,12 +40,13 @@ config:
     value: *gitBotName
   - name: user.email
     value: *gitBotEmail
+- &defaultTest ./kind-on-c/ci/t/default.sh
 - &testTask
   task: run-tests
   file: kind-on-c/kind.yaml
   privileged: true
   params:
-    KIND_TESTS: ./kind-on-c/ci/t/default.sh
+    KIND_TESTS: *defaultTest
 - &notify
   on_success:
     put: success-message
@@ -91,7 +93,7 @@ resources:
     repository: *imageRepo
     username: ((registry.username))
     password: ((registry.password))
-    tag: ci-latest
+    tag: *imageTag
 - name: kind-build
   <<: *resourceDefaults
   type: google-cloud-storage
@@ -248,6 +250,7 @@ jobs:
       - feature--output-node-image-and-rootfs
       - feature--user-inputs-and-outputs
       - feature--metal-lb-and-exposed-services
+      - feature--bring-your-own-image
     - get: kind-release
       trigger: true
       params:
@@ -453,6 +456,33 @@ jobs:
     params:
       INSTALL_METALLB: 1
       KIND_TESTS: ./kind-on-c/ci/t/metallb.sh
+- name: feature--bring-your-own-image
+  <<: *jobDefaults
+  plan:
+  - in_parallel: *commonTestInputsForFeatures
+  # 1.) bake a custom kind-on-c task image -- we base it on the default
+  #     kind-on-c task image, so that we have all the needed dependencies
+  #     already there
+  - task: build-custom-image
+    file: kind-on-c/ci/tasks/build-custom-image.task.yaml
+    privileged: true
+    params:
+      BASE_REPO: *imageRepo
+      BASE_TAG: *imageTag
+      CUSTOM_FILE: &customFile /can_we_haz_custom_image
+      CUSTOM_CONTENT: &customContent 'yes, u can haz custom image!'
+    output_mapping:
+      image: custom-image
+  # 2.) provide a rootfs via `image` so that the task does not run the image
+  #     configured in the task file
+  - <<: *testTask
+    image: custom-image
+    params:
+      EXPECTED_FILE: *customFile
+      EXPECTED_CONTENT: *customContent
+      DEFAULT_TEST: *defaultTest
+      KIND_TESTS: |
+        ./kind-on-c/ci/t/custom-image.sh && "${DEFAULT_TEST}"
 
 groups:
 - name: all
@@ -474,6 +504,7 @@ groups:
   - feature--output-node-image-and-rootfs
   - feature--user-inputs-and-outputs
   - feature--metal-lb-and-exposed-services
+  - feature--bring-your-own-image
 - name: image
   jobs:
   - update-image
@@ -499,6 +530,7 @@ groups:
   - feature--output-node-image-and-rootfs
   - feature--user-inputs-and-outputs
   - feature--metal-lb-and-exposed-services
+  - feature--bring-your-own-image
 - name: promote
   jobs:
   - promote

@@ -1,0 +1,15 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: vito/oci-build-task
+params:
+  UNPACK_ROOTFS: true
+inputs:
+- name: kind-on-c
+outputs:
+- name: image
+caches:
+- path: cache
+run:
+  path: ./kind-on-c/ci/tasks/build-cutsom-image.sh

@@ -260,6 +260,59 @@ task's configuration it may leave certain (or even all) outputs empty.
   in the `ouputs` output. More about that in [Aggregated inputs &
   outputs](#agg-ins-and-outs).
 
+# Bring your own task image
+
+Chances are good, that you need some additional tools to run your
+`KIND_TESTS`. To do that, you can use a custom task image.
+
+You can e.g. use the `registry-image` resource to pull in your custom image and
+then override kind-on-c's default image by providing its rootfs to the
+kind-on-c task via the [`image`][img-dir] directive. This overrides the image that is
+configured in the task config.
+
+When it comes to creating the image, you can base it on the default kind-on-c
+image and add your additional tools and things as another layer.  For that you
+can follow the image's `ci-latest` tag, which gets updated every time we push a
+new task image. Or you can extract all information (repo and digest) of the
+default task image from the task config file.
+
+When you want to bring a entirely different image which is not based on
+kind-on-c's default task image, you need to check which dependencies we need in
+the [Dockerfile](./Dockerfile).
+
+
+For e.g. static binaries you could, instead of providing a custom image, have
+concourse pull down all the needed things and provide them to the task via the
+`inputs` input. Also, of course, nothing stand in the way to use both a custom
+image and provide certain things via `inputs`.
+
+```yaml
+jobs:
+- name: kind
+  plan:
+  - in_parallel:
+    - get: custom-kind-on-c-image
+    - get: kind-on-c
+    - get: kind-release
+    - get: other-custom-things
+  - task: run-kind
+    privileged: true
+    file: kind-on-c/kind.yaml
+    image: custom-kind-on-c-image # This overrides the image from the task config file
+    input_mapping:
+      inputs: other-custom-things
+    params:
+      KIND_TESTS: # use custom things either from the image or from inputs
+
+resources:
+- name: custom-kind-on-c-image
+  type: registry-image
+  source: {repository: my-custom-image, tag: "1.13"}
+- name: other-custom-things
+  type: some-resource-type
+  source: {...}
+```
+
 # <a id="agg-ins-and-outs"></a> Aggregated inputs & outputs
 
 Currently this task only allows for a *fixed set of inputs and outputs* (some
@@ -383,3 +436,4 @@ users.
 [kubernetes]: https://kubernetes.io/
 [node image]: https://kind.sigs.k8s.io/docs/design/node-image/
 [metallb]: https://metallb.universe.tf/
+[img-dir]: https://concourse-ci.org/jobs.html#schema.step.task-step.image
