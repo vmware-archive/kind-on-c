@@ -1,9 +1,9 @@
-Current image: "gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c"
-Previous image: "gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346"
+Current image: "gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:76d06d18b59d9089e316bd889c734226cd0885be2ca6aa84682eb51d067b8341"
+Previous image: "gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c"
 
 Command:
 ```
-container-diff diff remote://gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346 /tmp/build/4f61ea48/image/image.tar --type pip --type apt --type file --type size --type history --cache-dir /tmp/build/4f61ea48/cache --verbosity info
+container-diff diff remote://gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c /tmp/build/4f61ea48/image/image.tar --type pip --type apt --type file --type size --type history --cache-dir /tmp/build/4f61ea48/cache --verbosity info
 ```
 
 Diff:
@@ -11,161 +11,2465 @@ Diff:
 
 -----Apt-----
 
-Packages found only in gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346: None
+Packages found only in gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c:
+NAME               VERSION                         SIZE
+-containerd        1.3.3-0ubuntu2.2                124.2M
+-docker.io         19.03.8-0ubuntu1.20.04.2        182.7M
+-runc              1.0.0~rc10-0ubuntu1             10.5M
 
-Packages found only in /tmp/build/4f61ea48/image/image.tar: None
+Packages found only in /tmp/build/4f61ea48/image/image.tar:
+NAME                                VERSION                           SIZE
+-apt-transport-https                2.0.4                             157K
+-containerd.io                      1.4.3-1                           123.3M
+-dbus                               1.12.16-2ubuntu2.1                618K
+-dbus-user-session                  1.12.16-2ubuntu2.1                126K
+-dconf-gsettings-backend            0.36.0-1                          87K
+-dconf-service                      0.36.0-1                          114K
+-distro-info-data                   0.43ubuntu1.4                     17K
+-docker-ce                          5:20.10.3~3-0~ubuntu-focal        115.3M
+-docker-ce-cli                      5:20.10.3~3-0~ubuntu-focal        166.2M
+-gir1.2-glib-2.0                    1.64.1-1~ubuntu20.04.1            650K
+-gir1.2-packagekitglib-1.0          1.1.13-2ubuntu1.1                 121K
+-glib-networking                    2.64.2-1ubuntu0.1                 209K
+-glib-networking-common             2.64.2-1ubuntu0.1                 52K
+-glib-networking-services           2.64.2-1ubuntu0.1                 51K
+-gnupg-agent                        2.2.19-3ubuntu2                   45K
+-gpg                                2.2.19-3ubuntu2                   1.1M
+-gpg-agent                          2.2.19-3ubuntu2                   911K
+-gpgconf                            2.2.19-3ubuntu2                   409K
+-gsettings-desktop-schemas          3.36.0-1ubuntu1                   284K
+-iso-codes                          4.4-1                             19.1M
+-libapparmor1                       2.13.3-7ubuntu5.1                 167K
+-libappstream4                      0.12.10-2                         428K
+-libargon2-1                        0~20171227-0.2                    56K
+-libassuan0                         2.5.3-7ubuntu2                    105K
+-libcryptsetup12                    2:2.2.2-3ubuntu2.3                530K
+-libdbus-1-3                        1.12.16-2ubuntu2.1                465K
+-libdconf1                          0.36.0-1                          107K
+-libgirepository-1.0-1              1.64.1-1~ubuntu20.04.1            258K
+-libglib2.0-0                       2.64.6-1~ubuntu20.04.1            3.9M
+-libglib2.0-bin                     2.64.6-1~ubuntu20.04.1            333K
+-libglib2.0-data                    2.64.6-1~ubuntu20.04.1            104K
+-libgstreamer1.0-0                  1.16.2-2                          3.8M
+-libicu66                           66.1-2ubuntu2                     32M
+-libjson-c4                         0.13.1 dfsg-7ubuntu0.3            92K
+-libkmod2                           27-1ubuntu2                       134K
+-liblmdb0                           0.9.24-1                          109K
+-libnpth0                           1.6-1                             36K
+-libpackagekit-glib2-18             1.1.13-2ubuntu1.1                 438K
+-libpam-systemd                     245.4-4ubuntu3.4                  622K
+-libpolkit-agent-1-0                0.105-26ubuntu1                   78K
+-libpolkit-gobject-1-0              0.105-26ubuntu1                   156K
+-libproxy1v5                        0.4.15-10ubuntu1.2                156K
+-libsoup2.4-1                       2.70.0-1                          729K
+-libstemmer0d                       0 svn585-2                        357K
+-libxml2                            2.9.10 dfsg-5                     1.9M
+-libyaml-0-2                        0.2.2-1                           148K
+-lsb-release                        11.1.0ubuntu2                     66K
+-packagekit                         1.1.13-2ubuntu1.1                 1.5M
+-pinentry-curses                    1.1.0-3build1                     100K
+-policykit-1                        0.105-26ubuntu1                   556K
+-python-apt-common                  2.0.0ubuntu0.20.04.4              272K
+-python3-apt                        2.0.0ubuntu0.20.04.4              715K
+-python3-certifi                    2019.11.28-1                      319K
+-python3-chardet                    3.0.4-4build1                     411K
+-python3-dbus                       1.2.16-1build1                    420K
+-python3-gi                         3.36.0-1                          692K
+-python3-idna                       2.8-1                             289K
+-python3-requests                   2.22.0-2ubuntu1                   228K
+-python3-requests-unixsocket        0.2.0-2                           34K
+-python3-six                        1.14.0-2                          58K
+-python3-software-properties        0.98.9.3                          148K
+-python3-urllib3                    1.25.8-2ubuntu0.1                 414K
+-software-properties-common         0.98.9.3                          196K
+-systemd                            245.4-4ubuntu3.4                  14.9M
+-systemd-sysv                       245.4-4ubuntu3.4                  171K
+-systemd-timesyncd                  245.4-4ubuntu3.4                  238K
 
 Version differences:
-PACKAGE                 IMAGE1 (gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
--ca-certificates        20201027ubuntu0.20.04.1, 398K                                                                                                            20210119~20.04.1, 381K
--tzdata                 2020f-0ubuntu0.20.04.1, 3.8M                                                                                                             2021a-0ubuntu0.20.04, 3.8M
+PACKAGE                IMAGE1 (gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
+-libldap-2.4-2         2.4.49 dfsg-2ubuntu1.5, 522K                                                                                                             2.4.49 dfsg-2ubuntu1.6, 523K
+-libldap-common        2.4.49 dfsg-2ubuntu1.5, 101K                                                                                                             2.4.49 dfsg-2ubuntu1.6, 102K
 
 
 -----File-----
 
-These entries have been added to gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346:
-FILE                                                                                    SIZE
-/etc/ssl/certs/3fb36b73.0                                                               2K
-/etc/ssl/certs/NAVER_Global_Root_Certification_Authority.pem                            2K
-/usr/share/ca-certificates/mozilla/NAVER_Global_Root_Certification_Authority.crt        2K
+These entries have been added to gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c:
+FILE                                                                                                                 SIZE
+/etc/PackageKit                                                                                                      2.4K
+/etc/PackageKit/PackageKit.conf                                                                                      706B
+/etc/PackageKit/Vendor.conf                                                                                          1.7K
+/etc/X11                                                                                                             1.9K
+/etc/X11/Xsession.d                                                                                                  1.9K
+/etc/X11/Xsession.d/20dbus_xdg-runtime                                                                               1K
+/etc/X11/Xsession.d/90gpg-agent                                                                                      880B
+/etc/alternatives/pinentry                                                                                           66.6K
+/etc/apt/apt.conf.d/20packagekit                                                                                     1K
+/etc/apt/sources.list.save                                                                                           2.7K
+/etc/apt/trusted.gpg.d/docker.gpg                                                                                    2.7K
+/etc/apt/trusted.gpg.d/docker.gpg~                                                                                   0
+/etc/binfmt.d                                                                                                        0
+/etc/containerd                                                                                                      886B
+/etc/containerd/config.toml                                                                                          886B
+/etc/dbus-1                                                                                                          1.9K
+/etc/dbus-1/session.d                                                                                                0
+/etc/dbus-1/system.d                                                                                                 1.9K
+/etc/dbus-1/system.d/com.ubuntu.SoftwareProperties.conf                                                              662B
+/etc/dbus-1/system.d/org.freedesktop.PackageKit.conf                                                                 1.3K
+/etc/dconf                                                                                                           0
+/etc/dconf/db                                                                                                        0
+/etc/default/dbus                                                                                                    297B
+/etc/default/docker                                                                                                  654B
+/etc/dhcp                                                                                                            4.5K
+/etc/dhcp/dhclient-enter-hooks.d                                                                                     3.4K
+/etc/dhcp/dhclient-enter-hooks.d/resolved                                                                            3.4K
+/etc/dhcp/dhclient-exit-hooks.d                                                                                      1.1K
+/etc/dhcp/dhclient-exit-hooks.d/timesyncd                                                                            1.1K
+/etc/init                                                                                                            1.8K
+/etc/init.d/dbus                                                                                                     3.1K
+/etc/init.d/docker                                                                                                   3.8K
+/etc/init/docker.conf                                                                                                1.8K
+/etc/kernel/install.d                                                                                                0
+/etc/logcheck                                                                                                        1.3K
+/etc/logcheck/ignore.d.server                                                                                        1.3K
+/etc/logcheck/ignore.d.server/gpg-agent                                                                              1.3K
+/etc/modules-load.d                                                                                                  10B
+/etc/modules-load.d/modules.conf                                                                                     unknown
+/etc/mtab                                                                                                            unknown
+/etc/pam.d/polkit-1                                                                                                  270B
+/etc/pam.d/systemd-user                                                                                              317B
+/etc/passwd-                                                                                                         1.2K
+/etc/polkit-1                                                                                                        332B
+/etc/polkit-1/localauthority                                                                                         0
+/etc/polkit-1/localauthority.conf.d                                                                                  332B
+/etc/polkit-1/localauthority.conf.d/50-localauthority.conf                                                           267B
+/etc/polkit-1/localauthority.conf.d/51-ubuntu-admin.conf                                                             65B
+/etc/polkit-1/localauthority/10-vendor.d                                                                             0
+/etc/polkit-1/localauthority/20-org.d                                                                                0
+/etc/polkit-1/localauthority/30-site.d                                                                               0
+/etc/polkit-1/localauthority/50-local.d                                                                              0
+/etc/polkit-1/localauthority/90-mandatory.d                                                                          0
+/etc/rc0.d/K01docker                                                                                                 3.8K
+/etc/rc1.d/K01docker                                                                                                 3.8K
+/etc/rc2.d/S01dbus                                                                                                   3.1K
+/etc/rc2.d/S01docker                                                                                                 3.8K
+/etc/rc3.d/S01dbus                                                                                                   3.1K
+/etc/rc3.d/S01docker                                                                                                 3.8K
+/etc/rc4.d/S01dbus                                                                                                   3.1K
+/etc/rc4.d/S01docker                                                                                                 3.8K
+/etc/rc5.d/S01dbus                                                                                                   3.1K
+/etc/rc5.d/S01docker                                                                                                 3.8K
+/etc/rc6.d/K01docker                                                                                                 3.8K
+/etc/shadow-                                                                                                         645B
+/etc/sysctl.d/99-sysctl.conf                                                                                         2.3K
+/etc/systemd/journald.conf                                                                                           1K
+/etc/systemd/logind.conf                                                                                             1K
+/etc/systemd/network                                                                                                 0
+/etc/systemd/networkd.conf                                                                                           584B
+/etc/systemd/pstore.conf                                                                                             529B
+/etc/systemd/resolved.conf                                                                                           642B
+/etc/systemd/sleep.conf                                                                                              790B
+/etc/systemd/system.conf                                                                                             1.7K
+/etc/systemd/system/dbus-org.freedesktop.resolve1.service                                                            1.7K
+/etc/systemd/system/dbus-org.freedesktop.timesync1.service                                                           1.4K
+/etc/systemd/system/getty.target.wants                                                                               34B
+/etc/systemd/system/getty.target.wants/getty@tty1.service                                                            1.9K
+/etc/systemd/system/multi-user.target.wants/docker.service                                                           1.7K
+/etc/systemd/system/multi-user.target.wants/ondemand.service                                                         362B
+/etc/systemd/system/multi-user.target.wants/remote-fs.target                                                         522B
+/etc/systemd/system/multi-user.target.wants/systemd-resolved.service                                                 1.7K
+/etc/systemd/system/sysinit.target.wants                                                                             87B
+/etc/systemd/system/sysinit.target.wants/systemd-pstore.service                                                      735B
+/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service                                                   1.4K
+/etc/systemd/timesyncd.conf                                                                                          604B
+/etc/systemd/user                                                                                                    216B
+/etc/systemd/user.conf                                                                                               1.2K
+/etc/systemd/user/sockets.target.wants                                                                               216B
+/etc/systemd/user/sockets.target.wants/gpg-agent-browser.socket                                                      298B
+/etc/systemd/user/sockets.target.wants/gpg-agent-extra.socket                                                        281B
+/etc/systemd/user/sockets.target.wants/gpg-agent-ssh.socket                                                          308B
+/etc/systemd/user/sockets.target.wants/gpg-agent.socket                                                              234B
+/etc/systemd/user/sockets.target.wants/pk-debconf-helper.socket                                                      127B
+/etc/tmpfiles.d                                                                                                      0
+/etc/xdg                                                                                                             18B
+/etc/xdg/systemd                                                                                                     18B
+/etc/xdg/systemd/user                                                                                                18B
+/run/lock/subsys                                                                                                     0
+/run/log                                                                                                             0
+/run/sendsigs.omit.d                                                                                                 0
+/run/shm                                                                                                             8B
+/run/systemd/ask-password                                                                                            0
+/run/systemd/machines                                                                                                0
+/run/systemd/netif                                                                                                   0
+/run/systemd/netif/leases                                                                                            0
+/run/systemd/netif/links                                                                                             0
+/run/systemd/netif/lldp                                                                                              0
+/run/systemd/resolve                                                                                                 22B
+/run/systemd/resolve/stub-resolv.conf                                                                                22B
+/run/systemd/seats                                                                                                   0
+/run/systemd/sessions                                                                                                0
+/run/systemd/shutdown                                                                                                0
+/run/systemd/users                                                                                                   0
+/run/user                                                                                                            0
+/tmp/tmp3m73l3qo                                                                                                     9B
+/tmp/tmp3m73l3qo/apt.conf                                                                                            9B
+/usr/bin/add-apt-repository                                                                                          7.2K
+/usr/bin/apt-add-repository                                                                                          7.2K
+/usr/bin/bootctl                                                                                                     62.3K
+/usr/bin/busctl                                                                                                      86.3K
+/usr/bin/chardet3                                                                                                    389B
+/usr/bin/chardetect3                                                                                                 389B
+/usr/bin/dbus-cleanup-sockets                                                                                        14.1K
+/usr/bin/dbus-daemon                                                                                                 243.2K
+/usr/bin/dbus-monitor                                                                                                30.1K
+/usr/bin/dbus-run-session                                                                                            14.1K
+/usr/bin/dbus-send                                                                                                   30.1K
+/usr/bin/dbus-update-activation-environment                                                                          14.1K
+/usr/bin/dbus-uuidgen                                                                                                14.1K
+/usr/bin/gapplication                                                                                                22.4K
+/usr/bin/gdbus                                                                                                       50.4K
+/usr/bin/gio                                                                                                         90.4K
+/usr/bin/gio-querymodules                                                                                            14.3K
+/usr/bin/glib-compile-schemas                                                                                        50.4K
+/usr/bin/gpg                                                                                                         1M
+/usr/bin/gpg-agent                                                                                                   409K
+/usr/bin/gpg-connect-agent                                                                                           163.2K
+/usr/bin/gpgconf                                                                                                     174.7K
+/usr/bin/gresource                                                                                                   22.3K
+/usr/bin/gsettings                                                                                                   30.4K
+/usr/bin/hostnamectl                                                                                                 26.2K
+/usr/bin/journalctl                                                                                                  78.2K
+/usr/bin/kernel-install                                                                                              5.1K
+/usr/bin/localectl                                                                                                   26.2K
+/usr/bin/loginctl                                                                                                    58.3K
+/usr/bin/lsb_release                                                                                                 3.6K
+/usr/bin/networkctl                                                                                                  74.2K
+/usr/bin/pinentry                                                                                                    66.6K
+/usr/bin/pinentry-curses                                                                                             66.6K
+/usr/bin/pkaction                                                                                                    18.3K
+/usr/bin/pkcheck                                                                                                     22.4K
+/usr/bin/pkexec                                                                                                      30.3K
+/usr/bin/pkttyagent                                                                                                  18.3K
+/usr/bin/resolvectl                                                                                                  126.4K
+/usr/bin/runc                                                                                                        13.8M
+/usr/bin/systemctl                                                                                                   973.2K
+/usr/bin/systemd                                                                                                     1.5M
+/usr/bin/systemd-analyze                                                                                             1.5M
+/usr/bin/systemd-ask-password                                                                                        14.3K
+/usr/bin/systemd-cat                                                                                                 18.2K
+/usr/bin/systemd-cgls                                                                                                22.3K
+/usr/bin/systemd-cgtop                                                                                               38.2K
+/usr/bin/systemd-delta                                                                                               26.2K
+/usr/bin/systemd-detect-virt                                                                                         18.2K
+/usr/bin/systemd-escape                                                                                              22.2K
+/usr/bin/systemd-id128                                                                                               22.2K
+/usr/bin/systemd-inhibit                                                                                             22.2K
+/usr/bin/systemd-machine-id-setup                                                                                    26.3K
+/usr/bin/systemd-mount                                                                                               50.5K
+/usr/bin/systemd-notify                                                                                              18.2K
+/usr/bin/systemd-path                                                                                                18.2K
+/usr/bin/systemd-resolve                                                                                             126.4K
+/usr/bin/systemd-run                                                                                                 58.4K
+/usr/bin/systemd-socket-activate                                                                                     26.2K
+/usr/bin/systemd-stdio-bridge                                                                                        22.2K
+/usr/bin/systemd-sysusers                                                                                            54.5K
+/usr/bin/systemd-tmpfiles                                                                                            86.4K
+/usr/bin/systemd-tty-ask-password-agent                                                                              30.2K
+/usr/bin/systemd-umount                                                                                              50.5K
+/usr/bin/timedatectl                                                                                                 46.2K
+/usr/lib/binfmt.d                                                                                                    0
+/usr/lib/dbus-1.0                                                                                                    50.1K
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper                                                                          50.1K
+/usr/lib/environment.d                                                                                               16B
+/usr/lib/environment.d/99-environment.conf                                                                           106B
+/usr/lib/girepository-1.0                                                                                            90.4K
+/usr/lib/girepository-1.0/PackageKitGlib-1.0.typelib                                                                 90.4K
+/usr/lib/gnupg                                                                                                       396.7K
+/usr/lib/gnupg/gpg-check-pattern                                                                                     110.7K
+/usr/lib/gnupg/gpg-preset-passphrase                                                                                 86.8K
+/usr/lib/gnupg/gpg-protect-tool                                                                                      199.2K
+/usr/lib/gnupg2                                                                                                      55B
+/usr/lib/gnupg2/gpg-preset-passphrase                                                                                86.8K
+/usr/lib/gnupg2/gpg-protect-tool                                                                                     199.2K
+/usr/lib/kernel                                                                                                      5.5K
+/usr/lib/kernel/install.d                                                                                            5.5K
+/usr/lib/kernel/install.d/00-entry-directory.install                                                                 748B
+/usr/lib/kernel/install.d/50-depmod.install                                                                          833B
+/usr/lib/kernel/install.d/85-initrd.install                                                                          567B
+/usr/lib/kernel/install.d/90-loaderentry.install                                                                     3.4K
+/usr/lib/lsb/init-functions.d/40-systemd                                                                             3.2K
+/usr/lib/modprobe.d                                                                                                  765B
+/usr/lib/modprobe.d/systemd.conf                                                                                     765B
+/usr/lib/modules-load.d                                                                                              0
+/usr/lib/packagekit                                                                                                  429.4K
+/usr/lib/packagekit/packagekit-direct                                                                                102.3K
+/usr/lib/packagekit/packagekitd                                                                                      282.5K
+/usr/lib/packagekit/pk-debconf-helper                                                                                14.3K
+/usr/lib/packagekit/pk-offline-update                                                                                30.3K
+/usr/lib/policykit-1                                                                                                 141K
+/usr/lib/policykit-1/polkit-agent-helper-1                                                                           22.3K
+/usr/lib/policykit-1/polkitd                                                                                         118.7K
+/usr/lib/python2.7                                                                                                   38B
+/usr/lib/python2.7/dist-packages                                                                                     38B
+/usr/lib/python2.7/dist-packages/lsb_release.py                                                                      14.6K
+/usr/lib/python3/dist-packages/PyGObject-3.36.0.egg-info                                                             1.8K
+/usr/lib/python3/dist-packages/PyGObject-3.36.0.egg-info/PKG-INFO                                                    1.8K
+/usr/lib/python3/dist-packages/PyGObject-3.36.0.egg-info/dependency_links.txt                                        1B
+/usr/lib/python3/dist-packages/PyGObject-3.36.0.egg-info/not-zip-safe                                                1B
+/usr/lib/python3/dist-packages/PyGObject-3.36.0.egg-info/requires.txt                                                16B
+/usr/lib/python3/dist-packages/PyGObject-3.36.0.egg-info/top_level.txt                                               15B
+/usr/lib/python3/dist-packages/__pycache__/lsb_release.cpython-38.pyc                                                8.8K
+/usr/lib/python3/dist-packages/__pycache__/six.cpython-38.pyc                                                        26.2K
+/usr/lib/python3/dist-packages/_dbus_bindings.cpython-38-x86_64-linux-gnu.so                                         168.2K
+/usr/lib/python3/dist-packages/_dbus_glib_bindings.cpython-38-x86_64-linux-gnu.so                                    22.5K
+/usr/lib/python3/dist-packages/apt                                                                                   300.1K
+/usr/lib/python3/dist-packages/apt/__init__.py                                                                       1.4K
+/usr/lib/python3/dist-packages/apt/__pycache__                                                                       110.1K
+/usr/lib/python3/dist-packages/apt/__pycache__/__init__.cpython-38.pyc                                               554B
+/usr/lib/python3/dist-packages/apt/__pycache__/auth.cpython-38.pyc                                                   7.5K
+/usr/lib/python3/dist-packages/apt/__pycache__/cache.cpython-38.pyc                                                  29.4K
+/usr/lib/python3/dist-packages/apt/__pycache__/cdrom.cpython-38.pyc                                                  2.3K
+/usr/lib/python3/dist-packages/apt/__pycache__/debfile.cpython-38.pyc                                                20.3K
+/usr/lib/python3/dist-packages/apt/__pycache__/package.cpython-38.pyc                                                47.9K
+/usr/lib/python3/dist-packages/apt/__pycache__/utils.cpython-38.pyc                                                  2.1K
+/usr/lib/python3/dist-packages/apt/auth.py                                                                           10.7K
+/usr/lib/python3/dist-packages/apt/cache.py                                                                          37.1K
+/usr/lib/python3/dist-packages/apt/cdrom.py                                                                          3.4K
+/usr/lib/python3/dist-packages/apt/debfile.py                                                                        33.8K
+/usr/lib/python3/dist-packages/apt/package.py                                                                        56.2K
+/usr/lib/python3/dist-packages/apt/progress                                                                          43.7K
+/usr/lib/python3/dist-packages/apt/progress/__init__.py                                                              1.2K
+/usr/lib/python3/dist-packages/apt/progress/__pycache__                                                              19.6K
+/usr/lib/python3/dist-packages/apt/progress/__pycache__/__init__.cpython-38.pyc                                      517B
+/usr/lib/python3/dist-packages/apt/progress/__pycache__/base.cpython-38.pyc                                          11K
+/usr/lib/python3/dist-packages/apt/progress/__pycache__/text.cpython-38.pyc                                          8K
+/usr/lib/python3/dist-packages/apt/progress/base.py                                                                  12.4K
+/usr/lib/python3/dist-packages/apt/progress/text.py                                                                  10.5K
+/usr/lib/python3/dist-packages/apt/py.typed                                                                          0
+/usr/lib/python3/dist-packages/apt/utils.py                                                                          3.6K
+/usr/lib/python3/dist-packages/apt_inst-stubs                                                                        849B
+/usr/lib/python3/dist-packages/apt_inst-stubs/__init__.pyi                                                           849B
+/usr/lib/python3/dist-packages/apt_inst.cpython-38-x86_64-linux-gnu.so                                               58.7K
+/usr/lib/python3/dist-packages/apt_pkg-stubs                                                                         10.9K
+/usr/lib/python3/dist-packages/apt_pkg-stubs/__init__.pyi                                                            10.9K
+/usr/lib/python3/dist-packages/apt_pkg.cpython-38-x86_64-linux-gnu.so                                                351K
+/usr/lib/python3/dist-packages/aptsources                                                                            88.9K
+/usr/lib/python3/dist-packages/aptsources/__init__.py                                                                195B
+/usr/lib/python3/dist-packages/aptsources/__pycache__                                                                35.7K
+/usr/lib/python3/dist-packages/aptsources/__pycache__/__init__.cpython-38.pyc                                        283B
+/usr/lib/python3/dist-packages/aptsources/__pycache__/distinfo.cpython-38.pyc                                        8.9K
+/usr/lib/python3/dist-packages/aptsources/__pycache__/distro.cpython-38.pyc                                          14.4K
+/usr/lib/python3/dist-packages/aptsources/__pycache__/sourceslist.cpython-38.pyc                                     12.1K
+/usr/lib/python3/dist-packages/aptsources/distinfo.py                                                                11.4K
+/usr/lib/python3/dist-packages/aptsources/distro.py                                                                  23.1K
+/usr/lib/python3/dist-packages/aptsources/sourceslist.py                                                             18.5K
+/usr/lib/python3/dist-packages/certifi                                                                               276K
+/usr/lib/python3/dist-packages/certifi-2019.11.28.egg-info                                                           2.9K
+/usr/lib/python3/dist-packages/certifi-2019.11.28.egg-info/PKG-INFO                                                  2.8K
+/usr/lib/python3/dist-packages/certifi-2019.11.28.egg-info/dependency_links.txt                                      1B
+/usr/lib/python3/dist-packages/certifi-2019.11.28.egg-info/not-zip-safe                                              1B
+/usr/lib/python3/dist-packages/certifi-2019.11.28.egg-info/top_level.txt                                             8B
+/usr/lib/python3/dist-packages/certifi/__init__.py                                                                   52B
+/usr/lib/python3/dist-packages/certifi/__main__.py                                                                   41B
+/usr/lib/python3/dist-packages/certifi/__pycache__                                                                   833B
+/usr/lib/python3/dist-packages/certifi/__pycache__/__init__.cpython-38.pyc                                           206B
+/usr/lib/python3/dist-packages/certifi/__pycache__/__main__.cpython-38.pyc                                           197B
+/usr/lib/python3/dist-packages/certifi/__pycache__/core.cpython-38.pyc                                               430B
+/usr/lib/python3/dist-packages/certifi/cacert.pem                                                                    274.9K
+/usr/lib/python3/dist-packages/certifi/core.py                                                                       225B
+/usr/lib/python3/dist-packages/chardet                                                                               740.8K
+/usr/lib/python3/dist-packages/chardet-3.0.4.egg-info                                                                3.8K
+/usr/lib/python3/dist-packages/chardet-3.0.4.egg-info/PKG-INFO                                                       3.8K
+/usr/lib/python3/dist-packages/chardet-3.0.4.egg-info/dependency_links.txt                                           1B
+/usr/lib/python3/dist-packages/chardet-3.0.4.egg-info/entry_points.txt                                               60B
+/usr/lib/python3/dist-packages/chardet-3.0.4.egg-info/top_level.txt                                                  8B
+/usr/lib/python3/dist-packages/chardet/__init__.py                                                                   1.5K
+/usr/lib/python3/dist-packages/chardet/__pycache__                                                                   379.7K
+/usr/lib/python3/dist-packages/chardet/__pycache__/__init__.cpython-38.pyc                                           799B
+/usr/lib/python3/dist-packages/chardet/__pycache__/big5freq.cpython-38.pyc                                           26.5K
+/usr/lib/python3/dist-packages/chardet/__pycache__/big5prober.cpython-38.pyc                                         1.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/chardistribution.cpython-38.pyc                                   6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/charsetgroupprober.cpython-38.pyc                                 2.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/charsetprober.cpython-38.pyc                                      3.4K
+/usr/lib/python3/dist-packages/chardet/__pycache__/codingstatemachine.cpython-38.pyc                                 2.8K
+/usr/lib/python3/dist-packages/chardet/__pycache__/compat.cpython-38.pyc                                             304B
+/usr/lib/python3/dist-packages/chardet/__pycache__/cp949prober.cpython-38.pyc                                        1.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/enums.cpython-38.pyc                                              2.5K
+/usr/lib/python3/dist-packages/chardet/__pycache__/escprober.cpython-38.pyc                                          2.5K
+/usr/lib/python3/dist-packages/chardet/__pycache__/escsm.cpython-38.pyc                                              7.2K
+/usr/lib/python3/dist-packages/chardet/__pycache__/eucjpprober.cpython-38.pyc                                        2.3K
+/usr/lib/python3/dist-packages/chardet/__pycache__/euckrfreq.cpython-38.pyc                                          11.7K
+/usr/lib/python3/dist-packages/chardet/__pycache__/euckrprober.cpython-38.pyc                                        1.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/euctwfreq.cpython-38.pyc                                          26.5K
+/usr/lib/python3/dist-packages/chardet/__pycache__/euctwprober.cpython-38.pyc                                        1.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/gb2312freq.cpython-38.pyc                                         18.6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/gb2312prober.cpython-38.pyc                                       1.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/hebrewprober.cpython-38.pyc                                       2.9K
+/usr/lib/python3/dist-packages/chardet/__pycache__/jisfreq.cpython-38.pyc                                            21.6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/jpcntx.cpython-38.pyc                                             36.7K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langbulgarianmodel.cpython-38.pyc                                 23K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langcyrillicmodel.cpython-38.pyc                                  28.4K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langgreekmodel.cpython-38.pyc                                     23K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langhebrewmodel.cpython-38.pyc                                    21.6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langhungarianmodel.cpython-38.pyc                                 23K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langthaimodel.cpython-38.pyc                                      21.6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/langturkishmodel.cpython-38.pyc                                   21.6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/latin1prober.cpython-38.pyc                                       3.3K
+/usr/lib/python3/dist-packages/chardet/__pycache__/mbcharsetprober.cpython-38.pyc                                    2.2K
+/usr/lib/python3/dist-packages/chardet/__pycache__/mbcsgroupprober.cpython-38.pyc                                    1.1K
+/usr/lib/python3/dist-packages/chardet/__pycache__/mbcssm.cpython-38.pyc                                             16.3K
+/usr/lib/python3/dist-packages/chardet/__pycache__/sbcharsetprober.cpython-38.pyc                                    2.9K
+/usr/lib/python3/dist-packages/chardet/__pycache__/sbcsgroupprober.cpython-38.pyc                                    1.5K
+/usr/lib/python3/dist-packages/chardet/__pycache__/sjisprober.cpython-38.pyc                                         2.4K
+/usr/lib/python3/dist-packages/chardet/__pycache__/universaldetector.cpython-38.pyc                                  5.6K
+/usr/lib/python3/dist-packages/chardet/__pycache__/utf8prober.cpython-38.pyc                                         1.9K
+/usr/lib/python3/dist-packages/chardet/__pycache__/version.cpython-38.pyc                                            388B
+/usr/lib/python3/dist-packages/chardet/big5freq.py                                                                   30.5K
+/usr/lib/python3/dist-packages/chardet/big5prober.py                                                                 1.7K
+/usr/lib/python3/dist-packages/chardet/chardistribution.py                                                           9.2K
+/usr/lib/python3/dist-packages/chardet/charsetgroupprober.py                                                         3.7K
+/usr/lib/python3/dist-packages/chardet/charsetprober.py                                                              5K
+/usr/lib/python3/dist-packages/chardet/cli                                                                           5.4K
+/usr/lib/python3/dist-packages/chardet/cli/__init__.py                                                               1B
+/usr/lib/python3/dist-packages/chardet/cli/__pycache__                                                               2.7K
+/usr/lib/python3/dist-packages/chardet/cli/__pycache__/__init__.cpython-38.pyc                                       145B
+/usr/lib/python3/dist-packages/chardet/cli/__pycache__/chardetect.cpython-38.pyc                                     2.5K
+/usr/lib/python3/dist-packages/chardet/cli/chardetect.py                                                             2.7K
+/usr/lib/python3/dist-packages/chardet/codingstatemachine.py                                                         3.5K
+/usr/lib/python3/dist-packages/chardet/compat.py                                                                     1.1K
+/usr/lib/python3/dist-packages/chardet/cp949prober.py                                                                1.8K
+/usr/lib/python3/dist-packages/chardet/enums.py                                                                      1.6K
+/usr/lib/python3/dist-packages/chardet/escprober.py                                                                  3.9K
+/usr/lib/python3/dist-packages/chardet/escsm.py                                                                      10.3K
+/usr/lib/python3/dist-packages/chardet/eucjpprober.py                                                                3.7K
+/usr/lib/python3/dist-packages/chardet/euckrfreq.py                                                                  13.2K
+/usr/lib/python3/dist-packages/chardet/euckrprober.py                                                                1.7K
+/usr/lib/python3/dist-packages/chardet/euctwfreq.py                                                                  30.9K
+/usr/lib/python3/dist-packages/chardet/euctwprober.py                                                                1.7K
+/usr/lib/python3/dist-packages/chardet/gb2312freq.py                                                                 20.2K
+/usr/lib/python3/dist-packages/chardet/gb2312prober.py                                                               1.7K
+/usr/lib/python3/dist-packages/chardet/hebrewprober.py                                                               13.5K
+/usr/lib/python3/dist-packages/chardet/jisfreq.py                                                                    25.2K
+/usr/lib/python3/dist-packages/chardet/jpcntx.py                                                                     19.2K
+/usr/lib/python3/dist-packages/chardet/langbulgarianmodel.py                                                         12.5K
+/usr/lib/python3/dist-packages/chardet/langcyrillicmodel.py                                                          17.5K
+/usr/lib/python3/dist-packages/chardet/langgreekmodel.py                                                             12.4K
+/usr/lib/python3/dist-packages/chardet/langhebrewmodel.py                                                            11.1K
+/usr/lib/python3/dist-packages/chardet/langhungarianmodel.py                                                         12.3K
+/usr/lib/python3/dist-packages/chardet/langthaimodel.py                                                              11K
+/usr/lib/python3/dist-packages/chardet/langturkishmodel.py                                                           10.8K
+/usr/lib/python3/dist-packages/chardet/latin1prober.py                                                               5.2K
+/usr/lib/python3/dist-packages/chardet/mbcharsetprober.py                                                            3.3K
+/usr/lib/python3/dist-packages/chardet/mbcsgroupprober.py                                                            2K
+/usr/lib/python3/dist-packages/chardet/mbcssm.py                                                                     24.9K
+/usr/lib/python3/dist-packages/chardet/sbcharsetprober.py                                                            5.5K
+/usr/lib/python3/dist-packages/chardet/sbcsgroupprober.py                                                            3.5K
+/usr/lib/python3/dist-packages/chardet/sjisprober.py                                                                 3.7K
+/usr/lib/python3/dist-packages/chardet/universaldetector.py                                                          12.2K
+/usr/lib/python3/dist-packages/chardet/utf8prober.py                                                                 2.7K
+/usr/lib/python3/dist-packages/chardet/version.py                                                                    242B
+/usr/lib/python3/dist-packages/dbus                                                                                  260.4K
+/usr/lib/python3/dist-packages/dbus/__init__.py                                                                      3.7K
+/usr/lib/python3/dist-packages/dbus/__pycache__                                                                      104K
+/usr/lib/python3/dist-packages/dbus/__pycache__/__init__.cpython-38.pyc                                              2.1K
+/usr/lib/python3/dist-packages/dbus/__pycache__/_compat.cpython-38.pyc                                               216B
+/usr/lib/python3/dist-packages/dbus/__pycache__/_dbus.cpython-38.pyc                                                 7.2K
+/usr/lib/python3/dist-packages/dbus/__pycache__/_expat_introspect_parser.cpython-38.pyc                              2.2K
+/usr/lib/python3/dist-packages/dbus/__pycache__/bus.cpython-38.pyc                                                   13.3K
+/usr/lib/python3/dist-packages/dbus/__pycache__/connection.cpython-38.pyc                                            17.4K
+/usr/lib/python3/dist-packages/dbus/__pycache__/decorators.cpython-38.pyc                                            11.3K
+/usr/lib/python3/dist-packages/dbus/__pycache__/exceptions.cpython-38.pyc                                            3.8K
+/usr/lib/python3/dist-packages/dbus/__pycache__/gi_service.cpython-38.pyc                                            1.9K
+/usr/lib/python3/dist-packages/dbus/__pycache__/glib.cpython-38.pyc                                                  1016B
+/usr/lib/python3/dist-packages/dbus/__pycache__/lowlevel.cpython-38.pyc                                              675B
+/usr/lib/python3/dist-packages/dbus/__pycache__/proxies.cpython-38.pyc                                               17.3K
+/usr/lib/python3/dist-packages/dbus/__pycache__/server.cpython-38.pyc                                                3.4K
+/usr/lib/python3/dist-packages/dbus/__pycache__/service.cpython-38.pyc                                               21.6K
+/usr/lib/python3/dist-packages/dbus/__pycache__/types.cpython-38.pyc                                                 728B
+/usr/lib/python3/dist-packages/dbus/_compat.py                                                                       148B
+/usr/lib/python3/dist-packages/dbus/_dbus.py                                                                         8.6K
+/usr/lib/python3/dist-packages/dbus/_expat_introspect_parser.py                                                      3.3K
+/usr/lib/python3/dist-packages/dbus/bus.py                                                                           17.5K
+/usr/lib/python3/dist-packages/dbus/connection.py                                                                    27.2K
+/usr/lib/python3/dist-packages/dbus/decorators.py                                                                    14.9K
+/usr/lib/python3/dist-packages/dbus/exceptions.py                                                                    4.6K
+/usr/lib/python3/dist-packages/dbus/gi_service.py                                                                    3.4K
+/usr/lib/python3/dist-packages/dbus/glib.py                                                                          2.1K
+/usr/lib/python3/dist-packages/dbus/lowlevel.py                                                                      1.8K
+/usr/lib/python3/dist-packages/dbus/mainloop                                                                         5.1K
+/usr/lib/python3/dist-packages/dbus/mainloop/__init__.py                                                             2.3K
+/usr/lib/python3/dist-packages/dbus/mainloop/__pycache__                                                             1.1K
+/usr/lib/python3/dist-packages/dbus/mainloop/__pycache__/__init__.cpython-38.pyc                                     433B
+/usr/lib/python3/dist-packages/dbus/mainloop/__pycache__/glib.cpython-38.pyc                                         653B
+/usr/lib/python3/dist-packages/dbus/mainloop/glib.py                                                                 1.8K
+/usr/lib/python3/dist-packages/dbus/proxies.py                                                                       24.2K
+/usr/lib/python3/dist-packages/dbus/server.py                                                                        4.5K
+/usr/lib/python3/dist-packages/dbus/service.py                                                                       34.6K
+/usr/lib/python3/dist-packages/dbus/types.py                                                                         561B
+/usr/lib/python3/dist-packages/dbus_python-1.2.16.egg-info                                                           2.3K
+/usr/lib/python3/dist-packages/dbus_python-1.2.16.egg-info/PKG-INFO                                                  2.3K
+/usr/lib/python3/dist-packages/dbus_python-1.2.16.egg-info/dependency_links.txt                                      1B
+/usr/lib/python3/dist-packages/dbus_python-1.2.16.egg-info/not-zip-safe                                              0
+/usr/lib/python3/dist-packages/dbus_python-1.2.16.egg-info/top_level.txt                                             40B
+/usr/lib/python3/dist-packages/gi                                                                                    803.4K
+/usr/lib/python3/dist-packages/gi/__init__.py                                                                        5.8K
+/usr/lib/python3/dist-packages/gi/__pycache__                                                                        67.9K
+/usr/lib/python3/dist-packages/gi/__pycache__/__init__.cpython-38.pyc                                                4.3K
+/usr/lib/python3/dist-packages/gi/__pycache__/_compat.cpython-38.pyc                                                 963B
+/usr/lib/python3/dist-packages/gi/__pycache__/_constants.cpython-38.pyc                                              1K
+/usr/lib/python3/dist-packages/gi/__pycache__/_error.cpython-38.pyc                                                  1.4K
+/usr/lib/python3/dist-packages/gi/__pycache__/_gtktemplate.cpython-38.pyc                                            5.7K
+/usr/lib/python3/dist-packages/gi/__pycache__/_option.cpython-38.pyc                                                 10.5K
+/usr/lib/python3/dist-packages/gi/__pycache__/_ossighelper.cpython-38.pyc                                            4.9K
+/usr/lib/python3/dist-packages/gi/__pycache__/_propertyhelper.cpython-38.pyc                                         10.1K
+/usr/lib/python3/dist-packages/gi/__pycache__/_signalhelper.cpython-38.pyc                                           7.7K
+/usr/lib/python3/dist-packages/gi/__pycache__/docstring.cpython-38.pyc                                               3.8K
+/usr/lib/python3/dist-packages/gi/__pycache__/importer.cpython-38.pyc                                                3.3K
+/usr/lib/python3/dist-packages/gi/__pycache__/module.cpython-38.pyc                                                  5.3K
+/usr/lib/python3/dist-packages/gi/__pycache__/pygtkcompat.cpython-38.pyc                                             651B
+/usr/lib/python3/dist-packages/gi/__pycache__/types.cpython-38.pyc                                                   8K
+/usr/lib/python3/dist-packages/gi/_compat.py                                                                         1.5K
+/usr/lib/python3/dist-packages/gi/_constants.py                                                                      1.9K
+/usr/lib/python3/dist-packages/gi/_error.py                                                                          2K
+/usr/lib/python3/dist-packages/gi/_gi.cpython-38-x86_64-linux-gnu.so                                                 336.6K
+/usr/lib/python3/dist-packages/gi/_gtktemplate.py                                                                    7.7K
+/usr/lib/python3/dist-packages/gi/_option.py                                                                         12.9K
+/usr/lib/python3/dist-packages/gi/_ossighelper.py                                                                    7.9K
+/usr/lib/python3/dist-packages/gi/_propertyhelper.py                                                                 14K
+/usr/lib/python3/dist-packages/gi/_signalhelper.py                                                                   9.1K
+/usr/lib/python3/dist-packages/gi/docstring.py                                                                       6.5K
+/usr/lib/python3/dist-packages/gi/importer.py                                                                        5.2K
+/usr/lib/python3/dist-packages/gi/module.py                                                                          9.5K
+/usr/lib/python3/dist-packages/gi/overrides                                                                          299.1K
+/usr/lib/python3/dist-packages/gi/overrides/GIMarshallingTests.py                                                    2.2K
+/usr/lib/python3/dist-packages/gi/overrides/GLib.py                                                                  29.2K
+/usr/lib/python3/dist-packages/gi/overrides/GObject.py                                                               24.1K
+/usr/lib/python3/dist-packages/gi/overrides/Gdk.py                                                                   15.9K
+/usr/lib/python3/dist-packages/gi/overrides/GdkPixbuf.py                                                             1.7K
+/usr/lib/python3/dist-packages/gi/overrides/Gio.py                                                                   18.6K
+/usr/lib/python3/dist-packages/gi/overrides/Gtk.py                                                                   57.8K
+/usr/lib/python3/dist-packages/gi/overrides/Pango.py                                                                 1.7K
+/usr/lib/python3/dist-packages/gi/overrides/__init__.py                                                              12.3K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__                                                              134K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GIMarshallingTests.cpython-38.pyc                            1.8K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GLib.cpython-38.pyc                                          22.1K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GObject.cpython-38.pyc                                       17.1K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gdk.cpython-38.pyc                                           11.4K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/GdkPixbuf.cpython-38.pyc                                     1K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gio.cpython-38.pyc                                           16K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Gtk.cpython-38.pyc                                           52.1K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/Pango.cpython-38.pyc                                         1.5K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/__init__.cpython-38.pyc                                      10K
+/usr/lib/python3/dist-packages/gi/overrides/__pycache__/keysyms.cpython-38.pyc                                       941B
+/usr/lib/python3/dist-packages/gi/overrides/keysyms.py                                                               1.7K
+/usr/lib/python3/dist-packages/gi/pygtkcompat.py                                                                     766B
+/usr/lib/python3/dist-packages/gi/repository                                                                         1.3K
+/usr/lib/python3/dist-packages/gi/repository/__init__.py                                                             1K
+/usr/lib/python3/dist-packages/gi/repository/__pycache__                                                             325B
+/usr/lib/python3/dist-packages/gi/repository/__pycache__/__init__.cpython-38.pyc                                     325B
+/usr/lib/python3/dist-packages/gi/types.py                                                                           14K
+/usr/lib/python3/dist-packages/idna                                                                                  455.4K
+/usr/lib/python3/dist-packages/idna-2.8.egg-info                                                                     10.3K
+/usr/lib/python3/dist-packages/idna-2.8.egg-info/PKG-INFO                                                            10.3K
+/usr/lib/python3/dist-packages/idna-2.8.egg-info/dependency_links.txt                                                1B
+/usr/lib/python3/dist-packages/idna-2.8.egg-info/top_level.txt                                                       5B
+/usr/lib/python3/dist-packages/idna/__init__.py                                                                      58B
+/usr/lib/python3/dist-packages/idna/__pycache__                                                                      205.1K
+/usr/lib/python3/dist-packages/idna/__pycache__/__init__.cpython-38.pyc                                              207B
+/usr/lib/python3/dist-packages/idna/__pycache__/codec.cpython-38.pyc                                                 2.8K
+/usr/lib/python3/dist-packages/idna/__pycache__/compat.cpython-38.pyc                                                579B
+/usr/lib/python3/dist-packages/idna/__pycache__/core.cpython-38.pyc                                                  8.8K
+/usr/lib/python3/dist-packages/idna/__pycache__/idnadata.cpython-38.pyc                                              20.8K
+/usr/lib/python3/dist-packages/idna/__pycache__/intranges.cpython-38.pyc                                             1.7K
+/usr/lib/python3/dist-packages/idna/__pycache__/package_data.cpython-38.pyc                                          161B
+/usr/lib/python3/dist-packages/idna/__pycache__/uts46data.cpython-38.pyc                                             170.1K
+/usr/lib/python3/dist-packages/idna/codec.py                                                                         3.2K
+/usr/lib/python3/dist-packages/idna/compat.py                                                                        232B
+/usr/lib/python3/dist-packages/idna/core.py                                                                          11.5K
+/usr/lib/python3/dist-packages/idna/idnadata.py                                                                      39.9K
+/usr/lib/python3/dist-packages/idna/intranges.py                                                                     1.7K
+/usr/lib/python3/dist-packages/idna/package_data.py                                                                  21B
+/usr/lib/python3/dist-packages/idna/uts46data.py                                                                     193.6K
+/usr/lib/python3/dist-packages/lsb_release.py                                                                        14.6K
+/usr/lib/python3/dist-packages/pygtkcompat                                                                           69K
+/usr/lib/python3/dist-packages/pygtkcompat/__init__.py                                                               547B
+/usr/lib/python3/dist-packages/pygtkcompat/__pycache__                                                               34.2K
+/usr/lib/python3/dist-packages/pygtkcompat/__pycache__/__init__.cpython-38.pyc                                       436B
+/usr/lib/python3/dist-packages/pygtkcompat/__pycache__/generictreemodel.cpython-38.pyc                               14.3K
+/usr/lib/python3/dist-packages/pygtkcompat/__pycache__/pygtkcompat.cpython-38.pyc                                    19.5K
+/usr/lib/python3/dist-packages/pygtkcompat/generictreemodel.py                                                       13.9K
+/usr/lib/python3/dist-packages/pygtkcompat/pygtkcompat.py                                                            20.4K
+/usr/lib/python3/dist-packages/python_apt-2.0.0+ubuntu0.20.4.4.egg-info                                              274B
+/usr/lib/python3/dist-packages/python_apt-2.0.0+ubuntu0.20.4.4.egg-info/PKG-INFO                                     241B
+/usr/lib/python3/dist-packages/python_apt-2.0.0+ubuntu0.20.4.4.egg-info/dependency_links.txt                         1B
+/usr/lib/python3/dist-packages/python_apt-2.0.0+ubuntu0.20.4.4.egg-info/top_level.txt                                32B
+/usr/lib/python3/dist-packages/requests                                                                              305.9K
+/usr/lib/python3/dist-packages/requests-2.22.0.egg-info                                                              5.9K
+/usr/lib/python3/dist-packages/requests-2.22.0.egg-info/PKG-INFO                                                     5.8K
+/usr/lib/python3/dist-packages/requests-2.22.0.egg-info/dependency_links.txt                                         1B
+/usr/lib/python3/dist-packages/requests-2.22.0.egg-info/not-zip-safe                                                 1B
+/usr/lib/python3/dist-packages/requests-2.22.0.egg-info/requires.txt                                                 167B
+/usr/lib/python3/dist-packages/requests-2.22.0.egg-info/top_level.txt                                                9B
+/usr/lib/python3/dist-packages/requests/__init__.py                                                                  3.8K
+/usr/lib/python3/dist-packages/requests/__pycache__                                                                  137.4K
+/usr/lib/python3/dist-packages/requests/__pycache__/__init__.cpython-38.pyc                                          3.3K
+/usr/lib/python3/dist-packages/requests/__pycache__/__version__.cpython-38.pyc                                       500B
+/usr/lib/python3/dist-packages/requests/__pycache__/_internal_utils.cpython-38.pyc                                   1.2K
+/usr/lib/python3/dist-packages/requests/__pycache__/adapters.cpython-38.pyc                                          16.5K
+/usr/lib/python3/dist-packages/requests/__pycache__/api.cpython-38.pyc                                               6.3K
+/usr/lib/python3/dist-packages/requests/__pycache__/auth.cpython-38.pyc                                              8.1K
+/usr/lib/python3/dist-packages/requests/__pycache__/certs.cpython-38.pyc                                             571B
+/usr/lib/python3/dist-packages/requests/__pycache__/compat.cpython-38.pyc                                            1.6K
+/usr/lib/python3/dist-packages/requests/__pycache__/cookies.cpython-38.pyc                                           18.3K
+/usr/lib/python3/dist-packages/requests/__pycache__/exceptions.cpython-38.pyc                                        5.1K
+/usr/lib/python3/dist-packages/requests/__pycache__/help.cpython-38.pyc                                              2.6K
+/usr/lib/python3/dist-packages/requests/__pycache__/hooks.cpython-38.pyc                                             942B
+/usr/lib/python3/dist-packages/requests/__pycache__/models.cpython-38.pyc                                            23.2K
+/usr/lib/python3/dist-packages/requests/__pycache__/packages.cpython-38.pyc                                          359B
+/usr/lib/python3/dist-packages/requests/__pycache__/sessions.cpython-38.pyc                                          19K
+/usr/lib/python3/dist-packages/requests/__pycache__/status_codes.cpython-38.pyc                                      4K
+/usr/lib/python3/dist-packages/requests/__pycache__/structures.cpython-38.pyc                                        4.3K
+/usr/lib/python3/dist-packages/requests/__pycache__/utils.cpython-38.pyc                                             21.6K
+/usr/lib/python3/dist-packages/requests/__version__.py                                                               436B
+/usr/lib/python3/dist-packages/requests/_internal_utils.py                                                           1.1K
+/usr/lib/python3/dist-packages/requests/adapters.py                                                                  20.8K
+/usr/lib/python3/dist-packages/requests/api.py                                                                       6.1K
+/usr/lib/python3/dist-packages/requests/auth.py                                                                      10K
+/usr/lib/python3/dist-packages/requests/certs.py                                                                     453B
+/usr/lib/python3/dist-packages/requests/compat.py                                                                    1.6K
+/usr/lib/python3/dist-packages/requests/cookies.py                                                                   18K
+/usr/lib/python3/dist-packages/requests/exceptions.py                                                                3.1K
+/usr/lib/python3/dist-packages/requests/help.py                                                                      3.4K
+/usr/lib/python3/dist-packages/requests/hooks.py                                                                     757B
+/usr/lib/python3/dist-packages/requests/models.py                                                                    33.4K
+/usr/lib/python3/dist-packages/requests/packages.py                                                                  542B
+/usr/lib/python3/dist-packages/requests/sessions.py                                                                  28.6K
+/usr/lib/python3/dist-packages/requests/status_codes.py                                                              4K
+/usr/lib/python3/dist-packages/requests/structures.py                                                                2.9K
+/usr/lib/python3/dist-packages/requests/utils.py                                                                     29.3K
+/usr/lib/python3/dist-packages/requests_unixsocket                                                                   17.7K
+/usr/lib/python3/dist-packages/requests_unixsocket-0.2.0.egg-info                                                    4.1K
+/usr/lib/python3/dist-packages/requests_unixsocket-0.2.0.egg-info/PKG-INFO                                           4.1K
+/usr/lib/python3/dist-packages/requests_unixsocket-0.2.0.egg-info/dependency_links.txt                               1B
+/usr/lib/python3/dist-packages/requests_unixsocket-0.2.0.egg-info/not-zip-safe                                       1B
+/usr/lib/python3/dist-packages/requests_unixsocket-0.2.0.egg-info/requires.txt                                       0
+/usr/lib/python3/dist-packages/requests_unixsocket-0.2.0.egg-info/top_level.txt                                      20B
+/usr/lib/python3/dist-packages/requests_unixsocket/__init__.py                                                       2K
+/usr/lib/python3/dist-packages/requests_unixsocket/__pycache__                                                       10K
+/usr/lib/python3/dist-packages/requests_unixsocket/__pycache__/__init__.cpython-38.pyc                               2.9K
+/usr/lib/python3/dist-packages/requests_unixsocket/__pycache__/adapters.cpython-38.pyc                               3.5K
+/usr/lib/python3/dist-packages/requests_unixsocket/__pycache__/testutils.cpython-38.pyc                              3.6K
+/usr/lib/python3/dist-packages/requests_unixsocket/adapters.py                                                       2.7K
+/usr/lib/python3/dist-packages/requests_unixsocket/testutils.py                                                      3K
+/usr/lib/python3/dist-packages/six-1.14.0.egg-info                                                                   2K
+/usr/lib/python3/dist-packages/six-1.14.0.egg-info/PKG-INFO                                                          2K
+/usr/lib/python3/dist-packages/six-1.14.0.egg-info/dependency_links.txt                                              1B
+/usr/lib/python3/dist-packages/six-1.14.0.egg-info/top_level.txt                                                     4B
+/usr/lib/python3/dist-packages/six.py                                                                                33.3K
+/usr/lib/python3/dist-packages/softwareproperties                                                                    188.9K
+/usr/lib/python3/dist-packages/softwareproperties/AptAuth.py                                                         3.1K
+/usr/lib/python3/dist-packages/softwareproperties/CountryInformation.py                                              2K
+/usr/lib/python3/dist-packages/softwareproperties/GoaAuth.py                                                         3.9K
+/usr/lib/python3/dist-packages/softwareproperties/LivepatchService.py                                                9K
+/usr/lib/python3/dist-packages/softwareproperties/LivepatchSnap.py                                                   4.2K
+/usr/lib/python3/dist-packages/softwareproperties/MirrorTest.py                                                      7.3K
+/usr/lib/python3/dist-packages/softwareproperties/SoftwareProperties.py                                              32.3K
+/usr/lib/python3/dist-packages/softwareproperties/__init__.py                                                        1.4K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__                                                        70.9K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/AptAuth.cpython-38.pyc                                 2.7K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/CountryInformation.cpython-38.pyc                      1.3K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/GoaAuth.cpython-38.pyc                                 3.2K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/LivepatchService.cpython-38.pyc                        7.8K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/LivepatchSnap.cpython-38.pyc                           3.5K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/MirrorTest.cpython-38.pyc                              6.2K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/SoftwareProperties.cpython-38.pyc                      25.4K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/__init__.cpython-38.pyc                                570B
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/cloudarchive.cpython-38.pyc                            3.7K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/distro.cpython-38.pyc                                  1.2K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/ppa.cpython-38.pyc                                     13.6K
+/usr/lib/python3/dist-packages/softwareproperties/__pycache__/shortcuts.cpython-38.pyc                               1.5K
+/usr/lib/python3/dist-packages/softwareproperties/cloudarchive.py                                                    4.6K
+/usr/lib/python3/dist-packages/softwareproperties/dbus                                                               29.7K
+/usr/lib/python3/dist-packages/softwareproperties/dbus/SoftwarePropertiesDBus.py                                     17K
+/usr/lib/python3/dist-packages/softwareproperties/dbus/__init__.py                                                   0
+/usr/lib/python3/dist-packages/softwareproperties/dbus/__pycache__                                                   12.7K
+/usr/lib/python3/dist-packages/softwareproperties/dbus/__pycache__/SoftwarePropertiesDBus.cpython-38.pyc             12.6K
+/usr/lib/python3/dist-packages/softwareproperties/dbus/__pycache__/__init__.cpython-38.pyc                           157B
+/usr/lib/python3/dist-packages/softwareproperties/distro.py                                                          2.1K
+/usr/lib/python3/dist-packages/softwareproperties/ppa.py                                                             16.6K
+/usr/lib/python3/dist-packages/softwareproperties/shortcuts.py                                                       1.8K
+/usr/lib/python3/dist-packages/urllib3                                                                               539K
+/usr/lib/python3/dist-packages/urllib3-1.25.8.egg-info                                                               47.2K
+/usr/lib/python3/dist-packages/urllib3-1.25.8.egg-info/PKG-INFO                                                      47K
+/usr/lib/python3/dist-packages/urllib3-1.25.8.egg-info/dependency_links.txt                                          1B
+/usr/lib/python3/dist-packages/urllib3-1.25.8.egg-info/requires.txt                                                  173B
+/usr/lib/python3/dist-packages/urllib3-1.25.8.egg-info/top_level.txt                                                 8B
+/usr/lib/python3/dist-packages/urllib3/__init__.py                                                                   2.6K
+/usr/lib/python3/dist-packages/urllib3/__pycache__                                                                   104.3K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/__init__.cpython-38.pyc                                           2K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/_collections.cpython-38.pyc                                       10.4K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/connection.cpython-38.pyc                                         10.2K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/connectionpool.cpython-38.pyc                                     23.6K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/exceptions.cpython-38.pyc                                         9.8K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/fields.cpython-38.pyc                                             7.9K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/filepost.cpython-38.pyc                                           2.6K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/poolmanager.cpython-38.pyc                                        12.6K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/request.cpython-38.pyc                                            5.5K
+/usr/lib/python3/dist-packages/urllib3/__pycache__/response.cpython-38.pyc                                           19.8K
+/usr/lib/python3/dist-packages/urllib3/_collections.py                                                               10.5K
+/usr/lib/python3/dist-packages/urllib3/connection.py                                                                 14.2K
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py                                                             35.7K
+/usr/lib/python3/dist-packages/urllib3/contrib                                                                       167.6K
+/usr/lib/python3/dist-packages/urllib3/contrib/__init__.py                                                           0
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__                                                           51.9K
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/__init__.cpython-38.pyc                                   149B
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/_appengine_environ.cpython-38.pyc                         1.3K
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/appengine.cpython-38.pyc                                  8K
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/ntlmpool.cpython-38.pyc                                   3.1K
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/pyopenssl.cpython-38.pyc                                  14.5K
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/securetransport.cpython-38.pyc                            19.3K
+/usr/lib/python3/dist-packages/urllib3/contrib/__pycache__/socks.cpython-38.pyc                                      5.4K
+/usr/lib/python3/dist-packages/urllib3/contrib/_appengine_environ.py                                                 957B
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport                                                      45.6K
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/__init__.py                                          0
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/__pycache__                                          17.4K
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/__pycache__/__init__.cpython-38.pyc                  166B
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/__pycache__/bindings.cpython-38.pyc                  9.9K
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-38.pyc                 7.3K
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/bindings.py                                          16.5K
+/usr/lib/python3/dist-packages/urllib3/contrib/_securetransport/low_level.py                                         11.7K
+/usr/lib/python3/dist-packages/urllib3/contrib/appengine.py                                                          10.7K
+/usr/lib/python3/dist-packages/urllib3/contrib/ntlmpool.py                                                           4.1K
+/usr/lib/python3/dist-packages/urllib3/contrib/pyopenssl.py                                                          16K
+/usr/lib/python3/dist-packages/urllib3/contrib/securetransport.py                                                    31.5K
+/usr/lib/python3/dist-packages/urllib3/contrib/socks.py                                                              6.9K
+/usr/lib/python3/dist-packages/urllib3/exceptions.py                                                                 6.4K
+/usr/lib/python3/dist-packages/urllib3/fields.py                                                                     8.3K
+/usr/lib/python3/dist-packages/urllib3/filepost.py                                                                   2.4K
+/usr/lib/python3/dist-packages/urllib3/packages                                                                      13.3K
+/usr/lib/python3/dist-packages/urllib3/packages/__init__.py                                                          300B
+/usr/lib/python3/dist-packages/urllib3/packages/__pycache__                                                          364B
+/usr/lib/python3/dist-packages/urllib3/packages/__pycache__/__init__.cpython-38.pyc                                  364B
+/usr/lib/python3/dist-packages/urllib3/packages/backports                                                            2.8K
+/usr/lib/python3/dist-packages/urllib3/packages/backports/__init__.py                                                0
+/usr/lib/python3/dist-packages/urllib3/packages/backports/__pycache__                                                1.4K
+/usr/lib/python3/dist-packages/urllib3/packages/backports/__pycache__/__init__.cpython-38.pyc                        160B
+/usr/lib/python3/dist-packages/urllib3/packages/backports/__pycache__/makefile.cpython-38.pyc                        1.2K
+/usr/lib/python3/dist-packages/urllib3/packages/backports/makefile.py                                                1.4K
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname                                                   9.9K
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname/__init__.py                                       688B
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname/__pycache__                                       3.7K
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname/__pycache__/__init__.cpython-38.pyc               504B
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname/__pycache__/_implementation.cpython-38.pyc        3.2K
+/usr/lib/python3/dist-packages/urllib3/packages/ssl_match_hostname/_implementation.py                                5.5K
+/usr/lib/python3/dist-packages/urllib3/poolmanager.py                                                                16.6K
+/usr/lib/python3/dist-packages/urllib3/request.py                                                                    5.9K
+/usr/lib/python3/dist-packages/urllib3/response.py                                                                   27.2K
+/usr/lib/python3/dist-packages/urllib3/util                                                                          123.9K
+/usr/lib/python3/dist-packages/urllib3/util/__init__.py                                                              1K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__                                                              54.2K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/__init__.cpython-38.pyc                                      969B
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/connection.cpython-38.pyc                                    3.1K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/queue.cpython-38.pyc                                         979B
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/request.cpython-38.pyc                                       3.2K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/response.cpython-38.pyc                                      1.9K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/retry.cpython-38.pyc                                         12.6K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/ssl_.cpython-38.pyc                                          9.5K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/timeout.cpython-38.pyc                                       8.6K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/url.cpython-38.pyc                                           10.4K
+/usr/lib/python3/dist-packages/urllib3/util/__pycache__/wait.cpython-38.pyc                                          3K
+/usr/lib/python3/dist-packages/urllib3/util/connection.py                                                            4.5K
+/usr/lib/python3/dist-packages/urllib3/util/queue.py                                                                 470B
+/usr/lib/python3/dist-packages/urllib3/util/request.py                                                               3.7K
+/usr/lib/python3/dist-packages/urllib3/util/response.py                                                              2.5K
+/usr/lib/python3/dist-packages/urllib3/util/retry.py                                                                 15.1K
+/usr/lib/python3/dist-packages/urllib3/util/ssl_.py                                                                  13.8K
+/usr/lib/python3/dist-packages/urllib3/util/timeout.py                                                               9.6K
+/usr/lib/python3/dist-packages/urllib3/util/url.py                                                                   13.6K
+/usr/lib/python3/dist-packages/urllib3/util/wait.py                                                                  5.3K
+/usr/lib/software-properties                                                                                         2.1K
+/usr/lib/software-properties/software-properties-dbus                                                                2.1K
+/usr/lib/sysctl.d/50-default.conf                                                                                    1.3K
+/usr/lib/sysctl.d/50-pid-max.conf                                                                                    635B
+/usr/lib/systemd/boot                                                                                                143.8K
+/usr/lib/systemd/boot/efi                                                                                            143.8K
+/usr/lib/systemd/boot/efi/linuxx64.efi.stub                                                                          54.4K
+/usr/lib/systemd/boot/efi/systemd-bootx64.efi                                                                        89.4K
+/usr/lib/systemd/catalog                                                                                             136.6K
+/usr/lib/systemd/catalog/systemd.be.catalog                                                                          12.6K
+/usr/lib/systemd/catalog/systemd.be@latin.catalog                                                                    9.7K
+/usr/lib/systemd/catalog/systemd.bg.catalog                                                                          13.9K
+/usr/lib/systemd/catalog/systemd.catalog                                                                             14.8K
+/usr/lib/systemd/catalog/systemd.de.catalog                                                                          471B
+/usr/lib/systemd/catalog/systemd.fr.catalog                                                                          12.9K
+/usr/lib/systemd/catalog/systemd.it.catalog                                                                          15.5K
+/usr/lib/systemd/catalog/systemd.pl.catalog                                                                          14.7K
+/usr/lib/systemd/catalog/systemd.pt_BR.catalog                                                                       8.1K
+/usr/lib/systemd/catalog/systemd.ru.catalog                                                                          19.9K
+/usr/lib/systemd/catalog/systemd.zh_CN.catalog                                                                       7.1K
+/usr/lib/systemd/catalog/systemd.zh_TW.catalog                                                                       7.1K
+/usr/lib/systemd/libsystemd-shared-245.so                                                                            2.3M
+/usr/lib/systemd/network                                                                                             2.3K
+/usr/lib/systemd/network/80-container-host0.network                                                                  645B
+/usr/lib/systemd/network/80-container-ve.network                                                                     718B
+/usr/lib/systemd/network/80-container-vz.network                                                                     704B
+/usr/lib/systemd/network/80-wifi-adhoc.network                                                                       78B
+/usr/lib/systemd/network/80-wifi-ap.network.example                                                                  101B
+/usr/lib/systemd/network/80-wifi-station.network.example                                                             64B
+/usr/lib/systemd/ntp-units.d                                                                                         26B
+/usr/lib/systemd/ntp-units.d/80-systemd-timesync.list                                                                26B
+/usr/lib/systemd/resolv.conf                                                                                         701B
+/usr/lib/systemd/set-cpufreq                                                                                         1.2K
+/usr/lib/systemd/system-generators                                                                                   262.9K
+/usr/lib/systemd/system-generators/systemd-bless-boot-generator                                                      14.1K
+/usr/lib/systemd/system-generators/systemd-cryptsetup-generator                                                      34.4K
+/usr/lib/systemd/system-generators/systemd-debug-generator                                                           14.3K
+/usr/lib/systemd/system-generators/systemd-fstab-generator                                                           38.4K
+/usr/lib/systemd/system-generators/systemd-getty-generator                                                           18.1K
+/usr/lib/systemd/system-generators/systemd-gpt-auto-generator                                                        34.1K
+/usr/lib/systemd/system-generators/systemd-hibernate-resume-generator                                                14.3K
+/usr/lib/systemd/system-generators/systemd-rc-local-generator                                                        14.1K
+/usr/lib/systemd/system-generators/systemd-run-generator                                                             14.3K
+/usr/lib/systemd/system-generators/systemd-system-update-generator                                                   14.1K
+/usr/lib/systemd/system-generators/systemd-sysv-generator                                                            34.2K
+/usr/lib/systemd/system-generators/systemd-veritysetup-generator                                                     18.3K
+/usr/lib/systemd/system-preset                                                                                       1.4K
+/usr/lib/systemd/system-preset/90-systemd.preset                                                                     1.4K
+/usr/lib/systemd/system-shutdown                                                                                     0
+/usr/lib/systemd/system-sleep                                                                                        0
+/usr/lib/systemd/system/autovt@.service                                                                              1.9K
+/usr/lib/systemd/system/basic.target                                                                                 919B
+/usr/lib/systemd/system/blockdev@.target                                                                             441B
+/usr/lib/systemd/system/bluetooth.target                                                                             419B
+/usr/lib/systemd/system/boot-complete.target                                                                         455B
+/usr/lib/systemd/system/console-getty.service                                                                        1.1K
+/usr/lib/systemd/system/container-getty@.service                                                                     1.2K
+/usr/lib/systemd/system/cryptdisks-early.service                                                                     0
+/usr/lib/systemd/system/cryptdisks.service                                                                           0
+/usr/lib/systemd/system/cryptsetup-pre.target                                                                        465B
+/usr/lib/systemd/system/cryptsetup.target                                                                            412B
+/usr/lib/systemd/system/ctrl-alt-del.target                                                                          583B
+/usr/lib/systemd/system/dbus-org.freedesktop.hostname1.service                                                       1.1K
+/usr/lib/systemd/system/dbus-org.freedesktop.locale1.service                                                         1.1K
+/usr/lib/systemd/system/dbus-org.freedesktop.login1.service                                                          2K
+/usr/lib/systemd/system/dbus-org.freedesktop.timedate1.service                                                       1.1K
+/usr/lib/systemd/system/dbus.service                                                                                 505B
+/usr/lib/systemd/system/dbus.socket                                                                                  106B
+/usr/lib/systemd/system/debug-shell.service                                                                          1K
+/usr/lib/systemd/system/default.target                                                                               598B
+/usr/lib/systemd/system/dev-hugepages.mount                                                                          750B
+/usr/lib/systemd/system/dev-mqueue.mount                                                                             693B
+/usr/lib/systemd/system/emergency.service                                                                            797B
+/usr/lib/systemd/system/emergency.target                                                                             471B
+/usr/lib/systemd/system/exit.target                                                                                  541B
+/usr/lib/systemd/system/final.target                                                                                 480B
+/usr/lib/systemd/system/getty-pre.target                                                                             506B
+/usr/lib/systemd/system/getty-static.service                                                                         342B
+/usr/lib/systemd/system/getty.target                                                                                 500B
+/usr/lib/systemd/system/getty.target.wants                                                                           23B
+/usr/lib/systemd/system/getty.target.wants/getty-static.service                                                      342B
+/usr/lib/systemd/system/getty@.service                                                                               1.9K
+/usr/lib/systemd/system/graphical.target                                                                             598B
+/usr/lib/systemd/system/graphical.target.wants                                                                       39B
+/usr/lib/systemd/system/graphical.target.wants/systemd-update-utmp-runlevel.service                                  797B
+/usr/lib/systemd/system/halt.target                                                                                  527B
+/usr/lib/systemd/system/hibernate.target                                                                             509B
+/usr/lib/systemd/system/hwclock.service                                                                              0
+/usr/lib/systemd/system/hybrid-sleep.target                                                                          530B
+/usr/lib/systemd/system/initrd-cleanup.service                                                                       665B
+/usr/lib/systemd/system/initrd-fs.target                                                                             528B
+/usr/lib/systemd/system/initrd-parse-etc.service                                                                     815B
+/usr/lib/systemd/system/initrd-root-device.target                                                                    496B
+/usr/lib/systemd/system/initrd-root-fs.target                                                                        501B
+/usr/lib/systemd/system/initrd-switch-root.service                                                                   584B
+/usr/lib/systemd/system/initrd-switch-root.target                                                                    777B
+/usr/lib/systemd/system/initrd-udevadm-cleanup-db.service                                                            813B
+/usr/lib/systemd/system/initrd.target                                                                                698B
+/usr/lib/systemd/system/kexec.target                                                                                 541B
+/usr/lib/systemd/system/kmod-static-nodes.service                                                                    716B
+/usr/lib/systemd/system/kmod.service                                                                                 1K
+/usr/lib/systemd/system/local-fs-pre.target                                                                          435B
+/usr/lib/systemd/system/local-fs.target                                                                              482B
+/usr/lib/systemd/system/local-fs.target.wants                                                                        0
+/usr/lib/systemd/system/machine.slice                                                                                445B
+/usr/lib/systemd/system/modprobe@.service                                                                            577B
+/usr/lib/systemd/system/multi-user.target                                                                            532B
+/usr/lib/systemd/system/multi-user.target.wants                                                                      159B
+/usr/lib/systemd/system/multi-user.target.wants/dbus.service                                                         505B
+/usr/lib/systemd/system/multi-user.target.wants/getty.target                                                         500B
+/usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path                                       650B
+/usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service                                               2K
+/usr/lib/systemd/system/multi-user.target.wants/systemd-update-utmp-runlevel.service                                 797B
+/usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service                                        628B
+/usr/lib/systemd/system/network-online.target                                                                        505B
+/usr/lib/systemd/system/network-pre.target                                                                           502B
+/usr/lib/systemd/system/network.target                                                                               521B
+/usr/lib/systemd/system/nss-lookup.target                                                                            554B
+/usr/lib/systemd/system/nss-user-lookup.target                                                                       513B
+/usr/lib/systemd/system/ondemand.service                                                                             362B
+/usr/lib/systemd/system/packagekit-offline-update.service                                                            407B
+/usr/lib/systemd/system/packagekit.service                                                                           371B
+/usr/lib/systemd/system/paths.target                                                                                 394B
+/usr/lib/systemd/system/polkit.service                                                                               175B
+/usr/lib/systemd/system/poweroff.target                                                                              592B
+/usr/lib/systemd/system/printer.target                                                                               417B
+/usr/lib/systemd/system/proc-sys-fs-binfmt_misc.automount                                                            745B
+/usr/lib/systemd/system/proc-sys-fs-binfmt_misc.mount                                                                718B
+/usr/lib/systemd/system/procps.service                                                                               693B
+/usr/lib/systemd/system/quotaon.service                                                                              609B
+/usr/lib/systemd/system/rc-local.service                                                                             716B
+/usr/lib/systemd/system/rc-local.service.d                                                                           290B
+/usr/lib/systemd/system/rc-local.service.d/debian.conf                                                               290B
+/usr/lib/systemd/system/rc.service                                                                                   0
+/usr/lib/systemd/system/rcS.service                                                                                  0
+/usr/lib/systemd/system/reboot.target                                                                                583B
+/usr/lib/systemd/system/remote-cryptsetup.target                                                                     549B
+/usr/lib/systemd/system/remote-fs-pre.target                                                                         436B
+/usr/lib/systemd/system/remote-fs.target                                                                             522B
+/usr/lib/systemd/system/rescue.service                                                                               788B
+/usr/lib/systemd/system/rescue.target                                                                                492B
+/usr/lib/systemd/system/rescue.target.wants                                                                          39B
+/usr/lib/systemd/system/rescue.target.wants/systemd-update-utmp-runlevel.service                                     797B
+/usr/lib/systemd/system/rpcbind.target                                                                               540B
+/usr/lib/systemd/system/runlevel0.target                                                                             592B
+/usr/lib/systemd/system/runlevel1.target                                                                             492B
+/usr/lib/systemd/system/runlevel1.target.wants                                                                       0
+/usr/lib/systemd/system/runlevel2.target                                                                             532B
+/usr/lib/systemd/system/runlevel2.target.wants                                                                       0
+/usr/lib/systemd/system/runlevel3.target                                                                             532B
+/usr/lib/systemd/system/runlevel3.target.wants                                                                       0
+/usr/lib/systemd/system/runlevel4.target                                                                             532B
+/usr/lib/systemd/system/runlevel4.target.wants                                                                       0
+/usr/lib/systemd/system/runlevel5.target                                                                             598B
+/usr/lib/systemd/system/runlevel5.target.wants                                                                       0
+/usr/lib/systemd/system/runlevel6.target                                                                             583B
+/usr/lib/systemd/system/serial-getty@.service                                                                        1.5K
+/usr/lib/systemd/system/shutdown.target                                                                              442B
+/usr/lib/systemd/system/sigpwr.target                                                                                402B
+/usr/lib/systemd/system/sleep.target                                                                                 460B
+/usr/lib/systemd/system/slices.target                                                                                449B
+/usr/lib/systemd/system/smartcard.target                                                                             420B
+/usr/lib/systemd/system/sockets.target                                                                               396B
+/usr/lib/systemd/system/sockets.target.wants                                                                         131B
+/usr/lib/systemd/system/sockets.target.wants/dbus.socket                                                             106B
+/usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket                                                  546B
+/usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket                                           686B
+/usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket                                         1.1K
+/usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket                                                 882B
+/usr/lib/systemd/system/sound.target                                                                                 420B
+/usr/lib/systemd/system/suspend-then-hibernate.target                                                                577B
+/usr/lib/systemd/system/suspend.target                                                                               503B
+/usr/lib/systemd/system/swap.target                                                                                  393B
+/usr/lib/systemd/system/sys-fs-fuse-connections.mount                                                                823B
+/usr/lib/systemd/system/sys-kernel-config.mount                                                                      830B
+/usr/lib/systemd/system/sys-kernel-debug.mount                                                                       738B
+/usr/lib/systemd/system/sys-kernel-tracing.mount                                                                     764B
+/usr/lib/systemd/system/sysinit.target                                                                               558B
+/usr/lib/systemd/system/sysinit.target.wants                                                                         640B
+/usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target                                                       412B
+/usr/lib/systemd/system/sysinit.target.wants/dev-hugepages.mount                                                     750B
+/usr/lib/systemd/system/sysinit.target.wants/dev-mqueue.mount                                                        693B
+/usr/lib/systemd/system/sysinit.target.wants/kmod-static-nodes.service                                               716B
+/usr/lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount                                       745B
+/usr/lib/systemd/system/sysinit.target.wants/sys-fs-fuse-connections.mount                                           823B
+/usr/lib/systemd/system/sysinit.target.wants/sys-kernel-config.mount                                                 830B
+/usr/lib/systemd/system/sysinit.target.wants/sys-kernel-debug.mount                                                  738B
+/usr/lib/systemd/system/sysinit.target.wants/sys-kernel-tracing.mount                                                764B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-ask-password-console.path                                       722B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-binfmt.service                                                  1.1K
+/usr/lib/systemd/system/sysinit.target.wants/systemd-boot-system-token.service                                       1.3K
+/usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush.service                                           773B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-journald.service                                                1.5K
+/usr/lib/systemd/system/sysinit.target.wants/systemd-machine-id-commit.service                                       728B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-modules-load.service                                            1K
+/usr/lib/systemd/system/sysinit.target.wants/systemd-random-seed.service                                             1K
+/usr/lib/systemd/system/sysinit.target.wants/systemd-sysctl.service                                                  693B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service                                                695B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev.service                                      739B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup.service                                          779B
+/usr/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service                                             794B
+/usr/lib/systemd/system/syslog.socket                                                                                1.4K
+/usr/lib/systemd/system/system-systemd\x2dcryptsetup.slice                                                           434B
+/usr/lib/systemd/system/system-update-cleanup.service                                                                1.4K
+/usr/lib/systemd/system/system-update-pre.target                                                                     543B
+/usr/lib/systemd/system/system-update.target                                                                         617B
+/usr/lib/systemd/system/system-update.target.wants                                                                   36B
+/usr/lib/systemd/system/system-update.target.wants/packagekit-offline-update.service                                 407B
+/usr/lib/systemd/system/systemd-ask-password-console.path                                                            722B
+/usr/lib/systemd/system/systemd-ask-password-console.service                                                         737B
+/usr/lib/systemd/system/systemd-ask-password-wall.path                                                               650B
+/usr/lib/systemd/system/systemd-ask-password-wall.service                                                            742B
+/usr/lib/systemd/system/systemd-backlight@.service                                                                   719B
+/usr/lib/systemd/system/systemd-binfmt.service                                                                       1.1K
+/usr/lib/systemd/system/systemd-bless-boot.service                                                                   678B
+/usr/lib/systemd/system/systemd-boot-check-no-failures.service                                                       718B
+/usr/lib/systemd/system/systemd-boot-system-token.service                                                            1.3K
+/usr/lib/systemd/system/systemd-exit.service                                                                         556B
+/usr/lib/systemd/system/systemd-fsck-root.service                                                                    740B
+/usr/lib/systemd/system/systemd-fsck@.service                                                                        741B
+/usr/lib/systemd/system/systemd-fsckd.service                                                                        551B
+/usr/lib/systemd/system/systemd-fsckd.socket                                                                         540B
+/usr/lib/systemd/system/systemd-halt.service                                                                         579B
+/usr/lib/systemd/system/systemd-hibernate-resume@.service                                                            671B
+/usr/lib/systemd/system/systemd-hibernate.service                                                                    541B
+/usr/lib/systemd/system/systemd-hostnamed.service                                                                    1.1K
+/usr/lib/systemd/system/systemd-hybrid-sleep.service                                                                 559B
+/usr/lib/systemd/system/systemd-initctl.service                                                                      566B
+/usr/lib/systemd/system/systemd-initctl.socket                                                                       546B
+/usr/lib/systemd/system/systemd-journal-flush.service                                                                773B
+/usr/lib/systemd/system/systemd-journald-audit.socket                                                                686B
+/usr/lib/systemd/system/systemd-journald-dev-log.socket                                                              1.1K
+/usr/lib/systemd/system/systemd-journald-varlink@.socket                                                             597B
+/usr/lib/systemd/system/systemd-journald.service                                                                     1.5K
+/usr/lib/systemd/system/systemd-journald.socket                                                                      882B
+/usr/lib/systemd/system/systemd-journald@.service                                                                    1.4K
+/usr/lib/systemd/system/systemd-journald@.socket                                                                     738B
+/usr/lib/systemd/system/systemd-kexec.service                                                                        592B
+/usr/lib/systemd/system/systemd-localed.service                                                                      1.1K
+/usr/lib/systemd/system/systemd-logind.service                                                                       2K
+/usr/lib/systemd/system/systemd-machine-id-commit.service                                                            728B
+/usr/lib/systemd/system/systemd-modules-load.service                                                                 1K
+/usr/lib/systemd/system/systemd-network-generator.service                                                            635B
+/usr/lib/systemd/system/systemd-networkd-wait-online.service                                                         740B
+/usr/lib/systemd/system/systemd-networkd.service                                                                     2K
+/usr/lib/systemd/system/systemd-networkd.socket                                                                      633B
+/usr/lib/systemd/system/systemd-poweroff.service                                                                     556B
+/usr/lib/systemd/system/systemd-pstore.service                                                                       735B
+/usr/lib/systemd/system/systemd-quotacheck.service                                                                   655B
+/usr/lib/systemd/system/systemd-random-seed.service                                                                  1K
+/usr/lib/systemd/system/systemd-reboot.service                                                                       551B
+/usr/lib/systemd/system/systemd-remount-fs.service                                                                   767B
+/usr/lib/systemd/system/systemd-resolved.service                                                                     1.7K
+/usr/lib/systemd/system/systemd-rfkill.service                                                                       717B
+/usr/lib/systemd/system/systemd-rfkill.socket                                                                        726B
+/usr/lib/systemd/system/systemd-suspend-then-hibernate.service                                                       596B
+/usr/lib/systemd/system/systemd-suspend.service                                                                      537B
+/usr/lib/systemd/system/systemd-sysctl.service                                                                       693B
+/usr/lib/systemd/system/systemd-sysusers.service                                                                     695B
+/usr/lib/systemd/system/systemd-time-wait-sync.service                                                               1.2K
+/usr/lib/systemd/system/systemd-timedated.service                                                                    1.1K
+/usr/lib/systemd/system/systemd-timesyncd.service                                                                    1.4K
+/usr/lib/systemd/system/systemd-tmpfiles-clean.service                                                               658B
+/usr/lib/systemd/system/systemd-tmpfiles-clean.timer                                                                 490B
+/usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service                                                           739B
+/usr/lib/systemd/system/systemd-tmpfiles-setup.service                                                               779B
+/usr/lib/systemd/system/systemd-update-utmp-runlevel.service                                                         797B
+/usr/lib/systemd/system/systemd-update-utmp.service                                                                  794B
+/usr/lib/systemd/system/systemd-user-sessions.service                                                                628B
+/usr/lib/systemd/system/systemd-volatile-root.service                                                                690B
+/usr/lib/systemd/system/time-set.target                                                                              426B
+/usr/lib/systemd/system/time-sync.target                                                                             479B
+/usr/lib/systemd/system/timers.target                                                                                445B
+/usr/lib/systemd/system/timers.target.wants                                                                          31B
+/usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer                                             490B
+/usr/lib/systemd/system/umount.target                                                                                457B
+/usr/lib/systemd/system/user-.slice.d                                                                                486B
+/usr/lib/systemd/system/user-.slice.d/10-defaults.conf                                                               486B
+/usr/lib/systemd/system/user-runtime-dir@.service                                                                    688B
+/usr/lib/systemd/system/user.slice                                                                                   432B
+/usr/lib/systemd/system/user@.service                                                                                748B
+/usr/lib/systemd/system/user@.service.d                                                                              125B
+/usr/lib/systemd/system/user@.service.d/timeout.conf                                                                 125B
+/usr/lib/systemd/system/x11-common.service                                                                           0
+/usr/lib/systemd/systemd                                                                                             1.5M
+/usr/lib/systemd/systemd-ac-power                                                                                    14.2K
+/usr/lib/systemd/systemd-backlight                                                                                   26.1K
+/usr/lib/systemd/systemd-binfmt                                                                                      18.2K
+/usr/lib/systemd/systemd-bless-boot                                                                                  30.3K
+/usr/lib/systemd/systemd-boot-check-no-failures                                                                      14.2K
+/usr/lib/systemd/systemd-cgroups-agent                                                                               14.1K
+/usr/lib/systemd/systemd-cryptsetup                                                                                  34.3K
+/usr/lib/systemd/systemd-dissect                                                                                     22.3K
+/usr/lib/systemd/systemd-fsck                                                                                        26.1K
+/usr/lib/systemd/systemd-fsckd                                                                                       30.2K
+/usr/lib/systemd/systemd-growfs                                                                                      22.2K
+/usr/lib/systemd/systemd-hibernate-resume                                                                            14.1K
+/usr/lib/systemd/systemd-hostnamed                                                                                   34.2K
+/usr/lib/systemd/systemd-initctl                                                                                     18.2K
+/usr/lib/systemd/systemd-journald                                                                                    158.2K
+/usr/lib/systemd/systemd-localed                                                                                     42.2K
+/usr/lib/systemd/systemd-logind                                                                                      262.3K
+/usr/lib/systemd/systemd-makefs                                                                                      14.1K
+/usr/lib/systemd/systemd-modules-load                                                                                18.3K
+/usr/lib/systemd/systemd-network-generator                                                                           34.2K
+/usr/lib/systemd/systemd-networkd                                                                                    2.1M
+/usr/lib/systemd/systemd-networkd-wait-online                                                                        30.4K
+/usr/lib/systemd/systemd-pstore                                                                                      22.2K
+/usr/lib/systemd/systemd-quotacheck                                                                                  14.2K
+/usr/lib/systemd/systemd-random-seed                                                                                 22.1K
+/usr/lib/systemd/systemd-remount-fs                                                                                  18.2K
+/usr/lib/systemd/systemd-reply-password                                                                              14.1K
+/usr/lib/systemd/systemd-resolved                                                                                    402.2K
+/usr/lib/systemd/systemd-rfkill                                                                                      22.2K
+/usr/lib/systemd/systemd-shutdown                                                                                    54.2K
+/usr/lib/systemd/systemd-sleep                                                                                       26.3K
+/usr/lib/systemd/systemd-socket-proxyd                                                                               30.2K
+/usr/lib/systemd/systemd-sulogin-shell                                                                               14.1K
+/usr/lib/systemd/systemd-sysctl                                                                                      22.3K
+/usr/lib/systemd/systemd-sysv-install                                                                                1.3K
+/usr/lib/systemd/systemd-time-wait-sync                                                                              14.1K
+/usr/lib/systemd/systemd-timedated                                                                                   46.2K
+/usr/lib/systemd/systemd-timesyncd                                                                                   54.2K
+/usr/lib/systemd/systemd-update-utmp                                                                                 14.2K
+/usr/lib/systemd/systemd-user-runtime-dir                                                                            22.1K
+/usr/lib/systemd/systemd-user-sessions                                                                               14.1K
+/usr/lib/systemd/systemd-veritysetup                                                                                 14.3K
+/usr/lib/systemd/systemd-volatile-root                                                                               18.1K
+/usr/lib/systemd/user                                                                                                10.3K
+/usr/lib/systemd/user-environment-generators                                                                         15K
+/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator                                      14.1K
+/usr/lib/systemd/user-environment-generators/90gpg-agent                                                             851B
+/usr/lib/systemd/user-generators                                                                                     0
+/usr/lib/systemd/user-preset                                                                                         744B
+/usr/lib/systemd/user-preset/90-systemd.preset                                                                       744B
+/usr/lib/systemd/user/basic.target                                                                                   497B
+/usr/lib/systemd/user/bluetooth.target                                                                               419B
+/usr/lib/systemd/user/dbus.service                                                                                   360B
+/usr/lib/systemd/user/dbus.socket                                                                                    174B
+/usr/lib/systemd/user/default.target                                                                                 463B
+/usr/lib/systemd/user/exit.target                                                                                    502B
+/usr/lib/systemd/user/glib-pacrunner.service                                                                         147B
+/usr/lib/systemd/user/gpg-agent-browser.socket                                                                       298B
+/usr/lib/systemd/user/gpg-agent-extra.socket                                                                         281B
+/usr/lib/systemd/user/gpg-agent-ssh.socket                                                                           308B
+/usr/lib/systemd/user/gpg-agent.service                                                                              223B
+/usr/lib/systemd/user/gpg-agent.socket                                                                               234B
+/usr/lib/systemd/user/graphical-session-pre.target                                                                   546B
+/usr/lib/systemd/user/graphical-session.target                                                                       484B
+/usr/lib/systemd/user/paths.target                                                                                   394B
+/usr/lib/systemd/user/pk-debconf-helper.service                                                                      165B
+/usr/lib/systemd/user/pk-debconf-helper.socket                                                                       127B
+/usr/lib/systemd/user/printer.target                                                                                 417B
+/usr/lib/systemd/user/shutdown.target                                                                                442B
+/usr/lib/systemd/user/smartcard.target                                                                               420B
+/usr/lib/systemd/user/sockets.target                                                                                 396B
+/usr/lib/systemd/user/sockets.target.wants                                                                           14B
+/usr/lib/systemd/user/sockets.target.wants/dbus.socket                                                               174B
+/usr/lib/systemd/user/sound.target                                                                                   420B
+/usr/lib/systemd/user/systemd-exit.service                                                                           500B
+/usr/lib/systemd/user/systemd-tmpfiles-clean.service                                                                 657B
+/usr/lib/systemd/user/systemd-tmpfiles-clean.timer                                                                   533B
+/usr/lib/systemd/user/systemd-tmpfiles-setup.service                                                                 720B
+/usr/lib/systemd/user/timers.target                                                                                  445B
+/usr/lib/sysusers.d                                                                                                  2.4K
+/usr/lib/sysusers.d/basic.conf                                                                                       1.7K
+/usr/lib/sysusers.d/dbus.conf                                                                                        211B
+/usr/lib/sysusers.d/systemd.conf                                                                                     505B
+/usr/lib/tmpfiles.d/dbus.conf                                                                                        365B
+/usr/lib/tmpfiles.d/debian.conf                                                                                      517B
+/usr/lib/tmpfiles.d/home.conf                                                                                        362B
+/usr/lib/tmpfiles.d/journal-nocow.conf                                                                               1.1K
+/usr/lib/tmpfiles.d/legacy.conf                                                                                      812B
+/usr/lib/tmpfiles.d/systemd-nologin.conf                                                                             597B
+/usr/lib/tmpfiles.d/systemd-tmp.conf                                                                                 823B
+/usr/lib/tmpfiles.d/systemd.conf                                                                                     1.8K
+/usr/lib/tmpfiles.d/tmp.conf                                                                                         448B
+/usr/lib/tmpfiles.d/var.conf                                                                                         568B
+/usr/lib/tmpfiles.d/x11.conf                                                                                         655B
+/usr/lib/udev/rules.d/70-uaccess.rules                                                                               2.7K
+/usr/lib/udev/rules.d/71-seat.rules                                                                                  3.7K
+/usr/lib/udev/rules.d/73-seat-late.rules                                                                             636B
+/usr/lib/udev/rules.d/99-systemd.rules                                                                               4.6K
+/usr/lib/x86_64-linux-gnu/gio                                                                                        236.8K
+/usr/lib/x86_64-linux-gnu/gio/modules                                                                                236.8K
+/usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache                                                                150B
+/usr/lib/x86_64-linux-gnu/gio/modules/libdconfsettings.so                                                            66.1K
+/usr/lib/x86_64-linux-gnu/gio/modules/libgiognomeproxy.so                                                            22.1K
+/usr/lib/x86_64-linux-gnu/gio/modules/libgiognutls.so                                                                130.3K
+/usr/lib/x86_64-linux-gnu/gio/modules/libgiolibproxy.so                                                              18.1K
+/usr/lib/x86_64-linux-gnu/girepository-1.0                                                                           618.5K
+/usr/lib/x86_64-linux-gnu/girepository-1.0/GIRepository-2.0.typelib                                                  27.1K
+/usr/lib/x86_64-linux-gnu/girepository-1.0/GLib-2.0.typelib                                                          187.4K
+/usr/lib/x86_64-linux-gnu/girepository-1.0/GModule-2.0.typelib                                                       1.3K
+/usr/lib/x86_64-linux-gnu/girepository-1.0/GObject-2.0.typelib                                                       57.6K
+/usr/lib/x86_64-linux-gnu/girepository-1.0/Gio-2.0.typelib                                                           345.1K
+/usr/lib/x86_64-linux-gnu/glib-2.0                                                                                   65.1K
+/usr/lib/x86_64-linux-gnu/glib-2.0/gio-launch-desktop                                                                400B
+/usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules                                                                  14.3K
+/usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas                                                              50.4K
+/usr/lib/x86_64-linux-gnu/gstreamer-1.0                                                                              487.3K
+/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoreelements.so                                                        408.1K
+/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoretracers.so                                                         79.2K
+/usr/lib/x86_64-linux-gnu/gstreamer1.0                                                                               36.5K
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0                                                                 36.5K
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner                                              14.1K
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper                                                  22.4K
+/usr/lib/x86_64-linux-gnu/libapparmor.so.1                                                                           78.8K
+/usr/lib/x86_64-linux-gnu/libapparmor.so.1.6.1                                                                       78.8K
+/usr/lib/x86_64-linux-gnu/libappstream.so.0.12.10                                                                    384.4K
+/usr/lib/x86_64-linux-gnu/libappstream.so.4                                                                          384.4K
+/usr/lib/x86_64-linux-gnu/libargon2.so.1                                                                             34.1K
+/usr/lib/x86_64-linux-gnu/libassuan.so.0                                                                             78.3K
+/usr/lib/x86_64-linux-gnu/libassuan.so.0.8.3                                                                         78.3K
+/usr/lib/x86_64-linux-gnu/libcryptsetup.so.12                                                                        443.5K
+/usr/lib/x86_64-linux-gnu/libcryptsetup.so.12.5.0                                                                    443.5K
+/usr/lib/x86_64-linux-gnu/libdbus-1.so.3                                                                             318.3K
+/usr/lib/x86_64-linux-gnu/libdbus-1.so.3.19.11                                                                       318.3K
+/usr/lib/x86_64-linux-gnu/libdconf.so.1                                                                              66.1K
+/usr/lib/x86_64-linux-gnu/libdconf.so.1.0.0                                                                          66.1K
+/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0                                                                            1.9M
+/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.6400.6                                                                     1.9M
+/usr/lib/x86_64-linux-gnu/libgirepository-1.0.so.1                                                                   218.2K
+/usr/lib/x86_64-linux-gnu/libgirepository-1.0.so.1.0.0                                                               218.2K
+/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0                                                                           1.2M
+/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.6400.6                                                                    1.2M
+/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0                                                                        18.2K
+/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.6400.6                                                                 18.2K
+/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0                                                                        378.4K
+/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.6400.6                                                                 378.4K
+/usr/lib/x86_64-linux-gnu/libgstbase-1.0.so.0                                                                        501.2K
+/usr/lib/x86_64-linux-gnu/libgstbase-1.0.so.0.1602.0                                                                 501.2K
+/usr/lib/x86_64-linux-gnu/libgstcheck-1.0.so.0                                                                       140.7K
+/usr/lib/x86_64-linux-gnu/libgstcheck-1.0.so.0.1602.0                                                                140.7K
+/usr/lib/x86_64-linux-gnu/libgstcontroller-1.0.so.0                                                                  70.9K
+/usr/lib/x86_64-linux-gnu/libgstcontroller-1.0.so.0.1602.0                                                           70.9K
+/usr/lib/x86_64-linux-gnu/libgstnet-1.0.so.0                                                                         103.6K
+/usr/lib/x86_64-linux-gnu/libgstnet-1.0.so.0.1602.0                                                                  103.6K
+/usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so.0                                                                      1.3M
+/usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so.0.1602.0                                                               1.3M
+/usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0                                                                        14.1K
+/usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0.6400.6                                                                 14.1K
+/usr/lib/x86_64-linux-gnu/libicudata.so.66                                                                           26.7M
+/usr/lib/x86_64-linux-gnu/libicudata.so.66.1                                                                         26.7M
+/usr/lib/x86_64-linux-gnu/libicui18n.so.66                                                                           3M
+/usr/lib/x86_64-linux-gnu/libicui18n.so.66.1                                                                         3M
+/usr/lib/x86_64-linux-gnu/libicuio.so.66                                                                             58.3K
+/usr/lib/x86_64-linux-gnu/libicuio.so.66.1                                                                           58.3K
+/usr/lib/x86_64-linux-gnu/libicutest.so.66                                                                           79.6K
+/usr/lib/x86_64-linux-gnu/libicutest.so.66.1                                                                         79.6K
+/usr/lib/x86_64-linux-gnu/libicutu.so.66                                                                             215.1K
+/usr/lib/x86_64-linux-gnu/libicutu.so.66.1                                                                           215.1K
+/usr/lib/x86_64-linux-gnu/libicuuc.so.66                                                                             1.9M
+/usr/lib/x86_64-linux-gnu/libicuuc.so.66.1                                                                           1.9M
+/usr/lib/x86_64-linux-gnu/libjson-c.so.4                                                                             66.3K
+/usr/lib/x86_64-linux-gnu/libjson-c.so.4.0.0                                                                         66.3K
+/usr/lib/x86_64-linux-gnu/libkmod.so.2                                                                               102.2K
+/usr/lib/x86_64-linux-gnu/libkmod.so.2.3.5                                                                           102.2K
+/usr/lib/x86_64-linux-gnu/liblmdb.so.0                                                                               90.1K
+/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0                                                                           90.1K
+/usr/lib/x86_64-linux-gnu/libnpth.so.0                                                                               18.4K
+/usr/lib/x86_64-linux-gnu/libnpth.so.0.1.2                                                                           18.4K
+/usr/lib/x86_64-linux-gnu/libpackagekit-glib2.so.18                                                                  384.3K
+/usr/lib/x86_64-linux-gnu/libpackagekit-glib2.so.18.1.3                                                              384.3K
+/usr/lib/x86_64-linux-gnu/libpolkit-agent-1.so.0                                                                     51.3K
+/usr/lib/x86_64-linux-gnu/libpolkit-agent-1.so.0.0.0                                                                 51.3K
+/usr/lib/x86_64-linux-gnu/libpolkit-gobject-1.so.0                                                                   123.5K
+/usr/lib/x86_64-linux-gnu/libpolkit-gobject-1.so.0.0.0                                                               123.5K
+/usr/lib/x86_64-linux-gnu/libproxy.so.1                                                                              130.5K
+/usr/lib/x86_64-linux-gnu/libproxy.so.1.0.0                                                                          130.5K
+/usr/lib/x86_64-linux-gnu/libsoup-2.4.so.1                                                                           618.7K
+/usr/lib/x86_64-linux-gnu/libsoup-2.4.so.1.9.0                                                                       618.7K
+/usr/lib/x86_64-linux-gnu/libstemmer.so.0d                                                                           326.4K
+/usr/lib/x86_64-linux-gnu/libstemmer.so.0d.0.0                                                                       326.4K
+/usr/lib/x86_64-linux-gnu/libxml2.so.2                                                                               1.7M
+/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10                                                                          1.7M
+/usr/lib/x86_64-linux-gnu/libyaml-0.so.2                                                                             130.2K
+/usr/lib/x86_64-linux-gnu/libyaml-0.so.2.0.6                                                                         130.2K
+/usr/lib/x86_64-linux-gnu/packagekit-backend                                                                         503.6K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_aptcc.so                                                  393.8K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_dummy.so                                                  38.7K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_test_fail.so                                              14.1K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_test_nop.so                                               14.1K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_test_spawn.so                                             14.2K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_test_succeed.so                                           14.3K
+/usr/lib/x86_64-linux-gnu/packagekit-backend/libpk_backend_test_thread.so                                            14.4K
+/usr/lib/x86_64-linux-gnu/security/pam_systemd.so                                                                    460.8K
+/usr/libexec                                                                                                         97.4M
+/usr/libexec/dconf-service                                                                                           90.2K
+/usr/libexec/docker                                                                                                  97.3M
+/usr/libexec/docker/cli-plugins                                                                                      97.3M
+/usr/libexec/docker/cli-plugins/docker-app                                                                           35.4M
+/usr/libexec/docker/cli-plugins/docker-buildx                                                                        61.9M
+/usr/libexec/glib-pacrunner                                                                                          22.2K
+/usr/local/bin/tomlq                                                                                                 205B
+/usr/local/lib/python3.8/dist-packages/toml                                                                          84.1K
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info                                                         9.3K
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info/INSTALLER                                               4B
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info/LICENSE                                                 1.2K
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info/METADATA                                                7K
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info/RECORD                                                  1K
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info/WHEEL                                                   110B
+/usr/local/lib/python3.8/dist-packages/toml-0.10.2.dist-info/top_level.txt                                           5B
+/usr/local/lib/python3.8/dist-packages/toml/__init__.py                                                              723B
+/usr/local/lib/python3.8/dist-packages/toml/__pycache__                                                              34.6K
+/usr/local/lib/python3.8/dist-packages/toml/__pycache__/__init__.cpython-38.pyc                                      672B
+/usr/local/lib/python3.8/dist-packages/toml/__pycache__/decoder.cpython-38.pyc                                       22.7K
+/usr/local/lib/python3.8/dist-packages/toml/__pycache__/encoder.cpython-38.pyc                                       9.2K
+/usr/local/lib/python3.8/dist-packages/toml/__pycache__/ordered.cpython-38.pyc                                       911B
+/usr/local/lib/python3.8/dist-packages/toml/__pycache__/tz.cpython-38.pyc                                            1.2K
+/usr/local/lib/python3.8/dist-packages/toml/decoder.py                                                               38K
+/usr/local/lib/python3.8/dist-packages/toml/encoder.py                                                               9.7K
+/usr/local/lib/python3.8/dist-packages/toml/ordered.py                                                               354B
+/usr/local/lib/python3.8/dist-packages/toml/tz.py                                                                    701B
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info                                                           19.5K
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/INSTALLER                                                 4B
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/LICENSE                                                   10K
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/METADATA                                                  7.9K
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/RECORD                                                    1.4K
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/WHEEL                                                     110B
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/entry_points.txt                                          64B
+/usr/local/lib/python3.8/dist-packages/yq-2.12.0.dist-info/top_level.txt                                             3B
+/usr/sbin/halt                                                                                                       973.2K
+/usr/sbin/init                                                                                                       1.5M
+/usr/sbin/poweroff                                                                                                   973.2K
+/usr/sbin/reboot                                                                                                     973.2K
+/usr/sbin/runlevel                                                                                                   973.2K
+/usr/sbin/shutdown                                                                                                   973.2K
+/usr/sbin/telinit                                                                                                    973.2K
+/usr/share/GConf                                                                                                     15.3K
+/usr/share/GConf/gsettings                                                                                           15.3K
+/usr/share/GConf/gsettings/gsettings-desktop-schemas.convert                                                         8.5K
+/usr/share/GConf/gsettings/wm-schemas.convert                                                                        6.8K
+/usr/share/PackageKit                                                                                                3.6K
+/usr/share/PackageKit/helpers                                                                                        3.6K
+/usr/share/PackageKit/helpers/aptcc                                                                                  2.9K
+/usr/share/PackageKit/helpers/aptcc/pkconffile                                                                       2.3K
+/usr/share/PackageKit/helpers/aptcc/pkconffile.nodiff                                                                575B
+/usr/share/PackageKit/helpers/test_spawn                                                                             741B
+/usr/share/PackageKit/helpers/test_spawn/search-name.sh                                                              741B
+/usr/share/apport/package-hooks/systemd.py                                                                           872B
+/usr/share/bash-completion/completions/bootctl                                                                       2.8K
+/usr/share/bash-completion/completions/busctl                                                                        7.2K
+/usr/share/bash-completion/completions/gapplication                                                                  1.4K
+/usr/share/bash-completion/completions/gdbus                                                                         935B
+/usr/share/bash-completion/completions/gio                                                                           3.7K
+/usr/share/bash-completion/completions/gresource                                                                     1.3K
+/usr/share/bash-completion/completions/gsettings                                                                     2.8K
+/usr/share/bash-completion/completions/hostnamectl                                                                   2K
+/usr/share/bash-completion/completions/journalctl                                                                    5.9K
+/usr/share/bash-completion/completions/kernel-install                                                                1.6K
+/usr/share/bash-completion/completions/localectl                                                                     3.2K
+/usr/share/bash-completion/completions/loginctl                                                                      4K
+/usr/share/bash-completion/completions/networkctl                                                                    2.1K
+/usr/share/bash-completion/completions/resolvectl                                                                    5.6K
+/usr/share/bash-completion/completions/systemctl                                                                     13.3K
+/usr/share/bash-completion/completions/systemd-analyze                                                               5.2K
+/usr/share/bash-completion/completions/systemd-cat                                                                   1.7K
+/usr/share/bash-completion/completions/systemd-cgls                                                                  2K
+/usr/share/bash-completion/completions/systemd-cgtop                                                                 1.8K
+/usr/share/bash-completion/completions/systemd-delta                                                                 1.7K
+/usr/share/bash-completion/completions/systemd-detect-virt                                                           1.3K
+/usr/share/bash-completion/completions/systemd-path                                                                  1.7K
+/usr/share/bash-completion/completions/systemd-resolve                                                               2.6K
+/usr/share/bash-completion/completions/systemd-run                                                                   5.2K
+/usr/share/bash-completion/completions/timedatectl                                                                   2.9K
+/usr/share/bug/dbus                                                                                                  46B
+/usr/share/bug/dbus/control                                                                                          46B
+/usr/share/bug/libcryptsetup12                                                                                       763B
+/usr/share/bug/lsb-release                                                                                           604B
+/usr/share/bug/policykit-1                                                                                           62B
+/usr/share/bug/policykit-1/control                                                                                   62B
+/usr/share/bug/systemd                                                                                               1.5K
+/usr/share/bug/systemd/control                                                                                       74B
+/usr/share/bug/systemd/script                                                                                        1.5K
+/usr/share/dbus-1                                                                                                    160.3K
+/usr/share/dbus-1/interfaces                                                                                         107.4K
+/usr/share/dbus-1/interfaces/org.freedesktop.PackageKit.Transaction.xml                                              85.9K
+/usr/share/dbus-1/interfaces/org.freedesktop.PackageKit.xml                                                          21.5K
+/usr/share/dbus-1/services                                                                                           234B
+/usr/share/dbus-1/services/ca.desrt.dconf.service                                                                    68B
+/usr/share/dbus-1/services/org.freedesktop.systemd1.service                                                          404B
+/usr/share/dbus-1/services/org.gtk.GLib.PACRunner.service                                                            115B
+/usr/share/dbus-1/session.conf                                                                                       3.5K
+/usr/share/dbus-1/system-services                                                                                    3.9K
+/usr/share/dbus-1/system-services/com.ubuntu.SoftwareProperties.service                                              120B
+/usr/share/dbus-1/system-services/org.freedesktop.PackageKit.service                                                 130B
+/usr/share/dbus-1/system-services/org.freedesktop.PolicyKit1.service                                                 133B
+/usr/share/dbus-1/system-services/org.freedesktop.hostname1.service                                                  424B
+/usr/share/dbus-1/system-services/org.freedesktop.locale1.service                                                    455B
+/usr/share/dbus-1/system-services/org.freedesktop.login1.service                                                     453B
+/usr/share/dbus-1/system-services/org.freedesktop.network1.service                                                   457B
+/usr/share/dbus-1/system-services/org.freedesktop.resolve1.service                                                   457B
+/usr/share/dbus-1/system-services/org.freedesktop.systemd1.service                                                   404B
+/usr/share/dbus-1/system-services/org.freedesktop.timedate1.service                                                  491B
+/usr/share/dbus-1/system-services/org.freedesktop.timesync1.service                                                  459B
+/usr/share/dbus-1/system.conf                                                                                        5.6K
+/usr/share/dbus-1/system.d                                                                                           39.6K
+/usr/share/dbus-1/system.d/org.freedesktop.PolicyKit1.conf                                                           632B
+/usr/share/dbus-1/system.d/org.freedesktop.hostname1.conf                                                            985B
+/usr/share/dbus-1/system.d/org.freedesktop.locale1.conf                                                              975B
+/usr/share/dbus-1/system.d/org.freedesktop.login1.conf                                                               14.3K
+/usr/share/dbus-1/system.d/org.freedesktop.network1.conf                                                             953B
+/usr/share/dbus-1/system.d/org.freedesktop.resolve1.conf                                                             953B
+/usr/share/dbus-1/system.d/org.freedesktop.systemd1.conf                                                             18.4K
+/usr/share/dbus-1/system.d/org.freedesktop.timedate1.conf                                                            985B
+/usr/share/dbus-1/system.d/org.freedesktop.timesync1.conf                                                            1.6K
+/usr/share/distro-info                                                                                               3.1K
+/usr/share/distro-info/debian.csv                                                                                    883B
+/usr/share/distro-info/ubuntu.csv                                                                                    2.2K
+/usr/share/doc/apt-transport-https                                                                                   1.1K
+/usr/share/doc/apt-transport-https/NEWS.Debian.gz                                                                    unknown
+/usr/share/doc/apt-transport-https/changelog.gz                                                                      unknown
+/usr/share/doc/apt-transport-https/copyright                                                                         1K
+/usr/share/doc/containerd.io                                                                                         3.1K
+/usr/share/doc/containerd.io/changelog.Debian.gz                                                                     2.1K
+/usr/share/doc/containerd.io/copyright                                                                               1K
+/usr/share/doc/dbus                                                                                                  19.1K
+/usr/share/doc/dbus-user-session                                                                                     19.1K
+/usr/share/doc/dbus-user-session/AUTHORS.gz                                                                          unknown
+/usr/share/doc/dbus-user-session/NEWS.gz                                                                             unknown
+/usr/share/doc/dbus-user-session/README.gz                                                                           unknown
+/usr/share/doc/dbus-user-session/changelog.Debian.gz                                                                 2.8K
+/usr/share/doc/dbus-user-session/copyright                                                                           19K
+/usr/share/doc/dbus/AUTHORS.gz                                                                                       unknown
+/usr/share/doc/dbus/NEWS.gz                                                                                          unknown
+/usr/share/doc/dbus/README.gz                                                                                        unknown
+/usr/share/doc/dbus/changelog.Debian.gz                                                                              2.8K
+/usr/share/doc/dbus/copyright                                                                                        19K
+/usr/share/doc/dconf-gsettings-backend                                                                               1.9K
+/usr/share/doc/dconf-gsettings-backend/changelog.Debian.gz                                                           2K
+/usr/share/doc/dconf-gsettings-backend/copyright                                                                     1.9K
+/usr/share/doc/dconf-service                                                                                         1.9K
+/usr/share/doc/dconf-service/changelog.Debian.gz                                                                     2K
+/usr/share/doc/dconf-service/copyright                                                                               1.9K
+/usr/share/doc/distro-info-data                                                                                      1008B
+/usr/share/doc/distro-info-data/copyright                                                                            1008B
+/usr/share/doc/docker-ce                                                                                             144B
+/usr/share/doc/docker-ce-cli                                                                                         144B
+/usr/share/doc/docker-ce-cli/changelog.Debian.gz                                                                     144B
+/usr/share/doc/docker-ce/changelog.Debian.gz                                                                         144B
+/usr/share/doc/gir1.2-glib-2.0                                                                                       4.2K
+/usr/share/doc/gir1.2-glib-2.0/changelog.Debian.gz                                                                   2.8K
+/usr/share/doc/gir1.2-glib-2.0/copyright                                                                             4.1K
+/usr/share/doc/gir1.2-packagekitglib-1.0                                                                             6.2K
+/usr/share/doc/gir1.2-packagekitglib-1.0/changelog.Debian.gz                                                         1.7K
+/usr/share/doc/gir1.2-packagekitglib-1.0/copyright                                                                   6.1K
+/usr/share/doc/glib-networking                                                                                       4.9K
+/usr/share/doc/glib-networking-common                                                                                6.8K
+/usr/share/doc/glib-networking-common/changelog.Debian.gz                                                            1.9K
+/usr/share/doc/glib-networking-common/copyright                                                                      4.8K
+/usr/share/doc/glib-networking-services                                                                              6.8K
+/usr/share/doc/glib-networking-services/changelog.Debian.gz                                                          1.9K
+/usr/share/doc/glib-networking-services/copyright                                                                    4.8K
+/usr/share/doc/glib-networking/changelog.Debian.gz                                                                   1.9K
+/usr/share/doc/glib-networking/copyright                                                                             4.8K
+/usr/share/doc/gnupg-agent                                                                                           10.3K
+/usr/share/doc/gnupg-agent/changelog.Debian.gz                                                                       1.7K
+/usr/share/doc/gnupg-agent/copyright                                                                                 10.3K
+/usr/share/doc/gpg                                                                                                   10.4K
+/usr/share/doc/gpg-agent                                                                                             10.3K
+/usr/share/doc/gpg-agent/changelog.Debian.gz                                                                         1.7K
+/usr/share/doc/gpg-agent/copyright                                                                                   10.3K
+/usr/share/doc/gpg-agent/examples                                                                                    0
+/usr/share/doc/gpg/NEWS.Debian.gz                                                                                    unknown
+/usr/share/doc/gpg/changelog.Debian.gz                                                                               1.7K
+/usr/share/doc/gpg/copyright                                                                                         10.3K
+/usr/share/doc/gpgconf                                                                                               12K
+/usr/share/doc/gpgconf/changelog.Debian.gz                                                                           1.7K
+/usr/share/doc/gpgconf/copyright                                                                                     10.3K
+/usr/share/doc/gpgconf/examples                                                                                      0
+/usr/share/doc/gsettings-desktop-schemas                                                                             2.1K
+/usr/share/doc/gsettings-desktop-schemas/changelog.Debian.gz                                                         990B
+/usr/share/doc/gsettings-desktop-schemas/copyright                                                                   1.1K
+/usr/share/doc/iso-codes                                                                                             2.3K
+/usr/share/doc/iso-codes/changelog.Debian.gz                                                                         1K
+/usr/share/doc/iso-codes/copyright                                                                                   1.2K
+/usr/share/doc/libapparmor1                                                                                          8K
+/usr/share/doc/libapparmor1/changelog.Debian.gz                                                                      2.1K
+/usr/share/doc/libapparmor1/copyright                                                                                5.9K
+/usr/share/doc/libappstream4                                                                                         5K
+/usr/share/doc/libappstream4/changelog.Debian.gz                                                                     1.2K
+/usr/share/doc/libappstream4/copyright                                                                               3.7K
+/usr/share/doc/libargon2-1                                                                                           8.9K
+/usr/share/doc/libargon2-1/changelog.Debian.gz                                                                       1K
+/usr/share/doc/libargon2-1/copyright                                                                                 7.9K
+/usr/share/doc/libassuan0                                                                                            8K
+/usr/share/doc/libassuan0/changelog.Debian.gz                                                                        1.3K
+/usr/share/doc/libassuan0/copyright                                                                                  6.8K
+/usr/share/doc/libcryptsetup12                                                                                       10.4K
+/usr/share/doc/libcryptsetup12/changelog.Debian.gz                                                                   1.9K
+/usr/share/doc/libcryptsetup12/copyright                                                                             8.5K
+/usr/share/doc/libdbus-1-3                                                                                           21.8K
+/usr/share/doc/libdbus-1-3/changelog.Debian.gz                                                                       2.8K
+/usr/share/doc/libdbus-1-3/copyright                                                                                 19K
+/usr/share/doc/libdconf1                                                                                             3.9K
+/usr/share/doc/libdconf1/changelog.Debian.gz                                                                         2K
+/usr/share/doc/libdconf1/copyright                                                                                   1.9K
+/usr/share/doc/libgirepository-1.0-1                                                                                 6.9K
+/usr/share/doc/libgirepository-1.0-1/changelog.Debian.gz                                                             2.8K
+/usr/share/doc/libgirepository-1.0-1/copyright                                                                       4.1K
+/usr/share/doc/libglib2.0-0                                                                                          6.9K
+/usr/share/doc/libglib2.0-0/changelog.Debian.gz                                                                      2.9K
+/usr/share/doc/libglib2.0-0/copyright                                                                                4K
+/usr/share/doc/libglib2.0-bin                                                                                        4.1K
+/usr/share/doc/libglib2.0-bin/changelog.Debian.gz                                                                    2.9K
+/usr/share/doc/libglib2.0-bin/copyright                                                                              4K
+/usr/share/doc/libglib2.0-data                                                                                       6.9K
+/usr/share/doc/libglib2.0-data/changelog.Debian.gz                                                                   2.9K
+/usr/share/doc/libglib2.0-data/copyright                                                                             4K
+/usr/share/doc/libgstreamer1.0-0                                                                                     22.5K
+/usr/share/doc/libgstreamer1.0-0/changelog.Debian.gz                                                                 714B
+/usr/share/doc/libgstreamer1.0-0/copyright                                                                           21.8K
+/usr/share/doc/libicu66                                                                                              7.9K
+/usr/share/doc/libicu66/changelog.Debian.gz                                                                          799B
+/usr/share/doc/libicu66/copyright                                                                                    7.1K
+/usr/share/doc/libjson-c4                                                                                            3.9K
+/usr/share/doc/libjson-c4/changelog.Debian.gz                                                                        2K
+/usr/share/doc/libjson-c4/copyright                                                                                  2K
+/usr/share/doc/libkmod2                                                                                              1.8K
+/usr/share/doc/libkmod2/changelog.Debian.gz                                                                          1.3K
+/usr/share/doc/libkmod2/copyright                                                                                    523B
+/usr/share/doc/liblmdb0                                                                                              3.4K
+/usr/share/doc/liblmdb0/changelog.Debian.gz                                                                          868B
+/usr/share/doc/liblmdb0/copyright                                                                                    2.6K
+/usr/share/doc/libnpth0                                                                                              2.1K
+/usr/share/doc/libnpth0/changelog.Debian.gz                                                                          966B
+/usr/share/doc/libnpth0/copyright                                                                                    1.1K
+/usr/share/doc/libpackagekit-glib2-18                                                                                7.8K
+/usr/share/doc/libpackagekit-glib2-18/changelog.Debian.gz                                                            1.7K
+/usr/share/doc/libpackagekit-glib2-18/copyright                                                                      6.1K
+/usr/share/doc/libpam-systemd                                                                                        10.7K
+/usr/share/doc/libpam-systemd/changelog.Debian.gz                                                                    8.6K
+/usr/share/doc/libpam-systemd/copyright                                                                              10.7K
+/usr/share/doc/libpolkit-agent-1-0                                                                                   1.8K
+/usr/share/doc/libpolkit-agent-1-0/changelog.Debian.gz                                                               3.9K
+/usr/share/doc/libpolkit-agent-1-0/copyright                                                                         1.8K
+/usr/share/doc/libpolkit-gobject-1-0                                                                                 5.7K
+/usr/share/doc/libpolkit-gobject-1-0/changelog.Debian.gz                                                             3.9K
+/usr/share/doc/libpolkit-gobject-1-0/copyright                                                                       1.8K
+/usr/share/doc/libproxy1v5                                                                                           4.3K
+/usr/share/doc/libproxy1v5/changelog.Debian.gz                                                                       1.4K
+/usr/share/doc/libproxy1v5/copyright                                                                                 2.9K
+/usr/share/doc/libsoup2.4-1                                                                                          5.3K
+/usr/share/doc/libsoup2.4-1/changelog.Debian.gz                                                                      3.1K
+/usr/share/doc/libsoup2.4-1/copyright                                                                                2.2K
+/usr/share/doc/libstemmer0d                                                                                          3.7K
+/usr/share/doc/libstemmer0d/changelog.Debian.gz                                                                      1.6K
+/usr/share/doc/libstemmer0d/copyright                                                                                2.1K
+/usr/share/doc/libstemmer0d/examples                                                                                 0
+/usr/share/doc/libxml2                                                                                               4.8K
+/usr/share/doc/libxml2/NEWS.gz                                                                                       unknown
+/usr/share/doc/libxml2/changelog.Debian.gz                                                                           1.8K
+/usr/share/doc/libxml2/copyright                                                                                     3K
+/usr/share/doc/libyaml-0-2                                                                                           2.8K
+/usr/share/doc/libyaml-0-2/changelog.Debian.gz                                                                       1.3K
+/usr/share/doc/libyaml-0-2/copyright                                                                                 1.5K
+/usr/share/doc/lsb-release                                                                                           2.6K
+/usr/share/doc/lsb-release/copyright                                                                                 2.6K
+/usr/share/doc/packagekit                                                                                            6.2K
+/usr/share/doc/packagekit/changelog.Debian.gz                                                                        1.7K
+/usr/share/doc/packagekit/copyright                                                                                  6.1K
+/usr/share/doc/pinentry-curses                                                                                       7.1K
+/usr/share/doc/pinentry-curses/changelog.Debian.gz                                                                   1.4K
+/usr/share/doc/pinentry-curses/copyright                                                                             5.6K
+/usr/share/doc/policykit-1                                                                                           1.8K
+/usr/share/doc/policykit-1/changelog.Debian.gz                                                                       3.9K
+/usr/share/doc/policykit-1/copyright                                                                                 1.8K
+/usr/share/doc/python-apt-common                                                                                     1.8K
+/usr/share/doc/python-apt-common/copyright                                                                           1.8K
+/usr/share/doc/python3-apt                                                                                           1.8K
+/usr/share/doc/python3-apt/copyright                                                                                 1.8K
+/usr/share/doc/python3-certifi                                                                                       17.6K
+/usr/share/doc/python3-certifi/changelog.Debian.gz                                                                   747B
+/usr/share/doc/python3-certifi/copyright                                                                             16.9K
+/usr/share/doc/python3-chardet                                                                                       2.9K
+/usr/share/doc/python3-chardet/changelog.Debian.gz                                                                   1.9K
+/usr/share/doc/python3-chardet/copyright                                                                             1017B
+/usr/share/doc/python3-dbus                                                                                          14.1K
+/usr/share/doc/python3-dbus/changelog.Debian.gz                                                                      2.6K
+/usr/share/doc/python3-dbus/copyright                                                                                11.5K
+/usr/share/doc/python3-gi                                                                                            4.2K
+/usr/share/doc/python3-gi/changelog.Debian.gz                                                                        1.5K
+/usr/share/doc/python3-gi/copyright                                                                                  2.6K
+/usr/share/doc/python3-idna                                                                                          7.2K
+/usr/share/doc/python3-idna/changelog.Debian.gz                                                                      941B
+/usr/share/doc/python3-idna/copyright                                                                                6.3K
+/usr/share/doc/python3-requests                                                                                      2.4K
+/usr/share/doc/python3-requests-unixsocket                                                                           1.9K
+/usr/share/doc/python3-requests-unixsocket/changelog.Debian.gz                                                       866B
+/usr/share/doc/python3-requests-unixsocket/copyright                                                                 1K
+/usr/share/doc/python3-requests/changelog.Debian.gz                                                                  1.4K
+/usr/share/doc/python3-requests/copyright                                                                            1K
+/usr/share/doc/python3-six                                                                                           2.6K
+/usr/share/doc/python3-six/changelog.Debian.gz                                                                       1.2K
+/usr/share/doc/python3-six/copyright                                                                                 1.3K
+/usr/share/doc/python3-software-properties                                                                           3.1K
+/usr/share/doc/python3-software-properties/copyright                                                                 3.1K
+/usr/share/doc/python3-urllib3                                                                                       5.4K
+/usr/share/doc/python3-urllib3/changelog.Debian.gz                                                                   1.3K
+/usr/share/doc/python3-urllib3/copyright                                                                             4.1K
+/usr/share/doc/software-properties-common                                                                            3.2K
+/usr/share/doc/software-properties-common/changelog.gz                                                               unknown
+/usr/share/doc/software-properties-common/copyright                                                                  3.1K
+/usr/share/doc/systemd                                                                                               10.7K
+/usr/share/doc/systemd-sysv                                                                                          10.7K
+/usr/share/doc/systemd-sysv/changelog.Debian.gz                                                                      8.6K
+/usr/share/doc/systemd-sysv/copyright                                                                                10.7K
+/usr/share/doc/systemd-timesyncd                                                                                     10.7K
+/usr/share/doc/systemd-timesyncd/changelog.Debian.gz                                                                 8.6K
+/usr/share/doc/systemd-timesyncd/copyright                                                                           10.7K
+/usr/share/doc/systemd/changelog.Debian.gz                                                                           8.6K
+/usr/share/doc/systemd/copyright                                                                                     10.7K
+/usr/share/fish                                                                                                      50.9K
+/usr/share/fish/vendor_completions.d                                                                                 50.9K
+/usr/share/fish/vendor_completions.d/docker.fish                                                                     50.9K
+/usr/share/gettext                                                                                                   504B
+/usr/share/gettext/its                                                                                               504B
+/usr/share/gettext/its/polkit.its                                                                                    309B
+/usr/share/gettext/its/polkit.loc                                                                                    195B
+/usr/share/glib-2.0                                                                                                  151.4K
+/usr/share/glib-2.0/schemas                                                                                          151.4K
+/usr/share/glib-2.0/schemas/10_gsettings-desktop-schemas.gschema.override                                            276B
+/usr/share/glib-2.0/schemas/gschemas.compiled                                                                        34.7K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.a11y.applications.gschema.xml                                          845B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.a11y.gschema.xml                                                       828B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.a11y.keyboard.gschema.xml                                              4.8K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.a11y.magnifier.gschema.xml                                             9.2K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.a11y.mouse.gschema.xml                                                 2.8K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.app-folders.gschema.xml                                                1.8K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.background.gschema.xml                                                 2.5K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.calendar.gschema.xml                                                   427B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.datetime.gschema.xml                                                   439B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.default-applications.gschema.xml                                       3K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.enums.xml                                                              5.7K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.input-sources.gschema.xml                                              2.5K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.interface.gschema.xml                                                  11.2K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.lockdown.gschema.xml                                                   3.1K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.media-handling.gschema.xml                                             2.5K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.notifications.gschema.xml                                              2.8K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.peripherals.gschema.xml                                                12.7K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.privacy.gschema.xml                                                    4.4K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.screensaver.gschema.xml                                                6.5K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.search-providers.gschema.xml                                           1.9K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.session.gschema.xml                                                    695B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.sound.gschema.xml                                                      1K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.thumbnail-cache.gschema.xml                                            600B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.thumbnailers.gschema.xml                                               866B
+/usr/share/glib-2.0/schemas/org.gnome.desktop.wm.keybindings.gschema.xml                                             13.2K
+/usr/share/glib-2.0/schemas/org.gnome.desktop.wm.preferences.gschema.xml                                             12.6K
+/usr/share/glib-2.0/schemas/org.gnome.system.locale.gschema.xml                                                      448B
+/usr/share/glib-2.0/schemas/org.gnome.system.location.gschema.xml                                                    1.1K
+/usr/share/glib-2.0/schemas/org.gnome.system.proxy.gschema.xml                                                       6.2K
+/usr/share/gnupg                                                                                                     3.2K
+/usr/share/gnupg/distsigkey.gpg                                                                                      3.2K
+/usr/share/iso-codes                                                                                                 1.4M
+/usr/share/iso-codes/json                                                                                            1.4M
+/usr/share/iso-codes/json/iso_15924.json                                                                             16.7K
+/usr/share/iso-codes/json/iso_3166-1.json                                                                            35.8K
+/usr/share/iso-codes/json/iso_3166-2.json                                                                            463.2K
+/usr/share/iso-codes/json/iso_3166-3.json                                                                            5.8K
+/usr/share/iso-codes/json/iso_4217.json                                                                              15.2K
+/usr/share/iso-codes/json/iso_639-2.json                                                                             35.9K
+/usr/share/iso-codes/json/iso_639-3.json                                                                             846.8K
+/usr/share/iso-codes/json/iso_639-5.json                                                                             8.3K
+/usr/share/iso-codes/json/schema-15924.json                                                                          960B
+/usr/share/iso-codes/json/schema-3166-1.json                                                                         1.4K
+/usr/share/iso-codes/json/schema-3166-2.json                                                                         1K
+/usr/share/iso-codes/json/schema-3166-3.json                                                                         1.6K
+/usr/share/iso-codes/json/schema-4217.json                                                                           934B
+/usr/share/iso-codes/json/schema-639-2.json                                                                          1.3K
+/usr/share/iso-codes/json/schema-639-3.json                                                                          1.9K
+/usr/share/iso-codes/json/schema-639-5.json                                                                          768B
+/usr/share/lintian/overrides/dbus                                                                                    388B
+/usr/share/lintian/overrides/dbus-user-session                                                                       134B
+/usr/share/lintian/overrides/gpg-agent                                                                               239B
+/usr/share/lintian/overrides/libapparmor1                                                                            81B
+/usr/share/lintian/overrides/libdbus-1-3                                                                             129B
+/usr/share/lintian/overrides/libglib2.0-0                                                                            502B
+/usr/share/lintian/overrides/libglib2.0-bin                                                                          134B
+/usr/share/lintian/overrides/libicu66                                                                                248B
+/usr/share/lintian/overrides/libsoup2.4-1                                                                            156B
+/usr/share/lintian/overrides/libxml2                                                                                 43B
+/usr/share/lintian/overrides/policykit-1                                                                             326B
+/usr/share/lintian/overrides/python3-apt                                                                             147B
+/usr/share/lintian/overrides/python3-certifi                                                                         39B
+/usr/share/lintian/overrides/python3-dbus                                                                            169B
+/usr/share/lintian/overrides/systemd                                                                                 43B
+/usr/share/locale/ab                                                                                                 0
+/usr/share/locale/ab/LC_MESSAGES                                                                                     0
+/usr/share/locale/ace                                                                                                0
+/usr/share/locale/ace/LC_MESSAGES                                                                                    0
+/usr/share/locale/ach                                                                                                0
+/usr/share/locale/ach/LC_MESSAGES                                                                                    0
+/usr/share/locale/af                                                                                                 0
+/usr/share/locale/af/LC_MESSAGES                                                                                     0
+/usr/share/locale/ak                                                                                                 0
+/usr/share/locale/ak/LC_MESSAGES                                                                                     0
+/usr/share/locale/am                                                                                                 0
+/usr/share/locale/am/LC_MESSAGES                                                                                     0
+/usr/share/locale/an                                                                                                 0
+/usr/share/locale/an/LC_MESSAGES                                                                                     0
+/usr/share/locale/as                                                                                                 0
+/usr/share/locale/as/LC_MESSAGES                                                                                     0
+/usr/share/locale/ay                                                                                                 0
+/usr/share/locale/ay/LC_MESSAGES                                                                                     0
+/usr/share/locale/az                                                                                                 0
+/usr/share/locale/az/LC_MESSAGES                                                                                     0
+/usr/share/locale/ba                                                                                                 0
+/usr/share/locale/ba/LC_MESSAGES                                                                                     0
+/usr/share/locale/bar                                                                                                0
+/usr/share/locale/bar/LC_MESSAGES                                                                                    0
+/usr/share/locale/be                                                                                                 0
+/usr/share/locale/be/LC_MESSAGES                                                                                     0
+/usr/share/locale/bi                                                                                                 0
+/usr/share/locale/bi/LC_MESSAGES                                                                                     0
+/usr/share/locale/bn                                                                                                 0
+/usr/share/locale/bn/LC_MESSAGES                                                                                     0
+/usr/share/locale/bn_IN                                                                                              0
+/usr/share/locale/bn_IN/LC_MESSAGES                                                                                  0
+/usr/share/locale/br                                                                                                 0
+/usr/share/locale/br/LC_MESSAGES                                                                                     0
+/usr/share/locale/byn                                                                                                0
+/usr/share/locale/byn/LC_MESSAGES                                                                                    0
+/usr/share/locale/ce                                                                                                 0
+/usr/share/locale/ce/LC_MESSAGES                                                                                     0
+/usr/share/locale/ch                                                                                                 0
+/usr/share/locale/ch/LC_MESSAGES                                                                                     0
+/usr/share/locale/chr                                                                                                0
+/usr/share/locale/chr/LC_MESSAGES                                                                                    0
+/usr/share/locale/ckb                                                                                                0
+/usr/share/locale/ckb/LC_MESSAGES                                                                                    0
+/usr/share/locale/crh                                                                                                0
+/usr/share/locale/crh/LC_MESSAGES                                                                                    0
+/usr/share/locale/csb                                                                                                0
+/usr/share/locale/csb/LC_MESSAGES                                                                                    0
+/usr/share/locale/cv                                                                                                 0
+/usr/share/locale/cv/LC_MESSAGES                                                                                     0
+/usr/share/locale/dv                                                                                                 0
+/usr/share/locale/dv/LC_MESSAGES                                                                                     0
+/usr/share/locale/ee                                                                                                 0
+/usr/share/locale/ee/LC_MESSAGES                                                                                     0
+/usr/share/locale/en                                                                                                 0
+/usr/share/locale/en/LC_MESSAGES                                                                                     0
+/usr/share/locale/fa                                                                                                 0
+/usr/share/locale/fa/LC_MESSAGES                                                                                     0
+/usr/share/locale/ff                                                                                                 0
+/usr/share/locale/ff/LC_MESSAGES                                                                                     0
+/usr/share/locale/fo                                                                                                 0
+/usr/share/locale/fo/LC_MESSAGES                                                                                     0
+/usr/share/locale/frp                                                                                                0
+/usr/share/locale/frp/LC_MESSAGES                                                                                    0
+/usr/share/locale/fur                                                                                                0
+/usr/share/locale/fur/LC_MESSAGES                                                                                    0
+/usr/share/locale/fy                                                                                                 0
+/usr/share/locale/fy/LC_MESSAGES                                                                                     0
+/usr/share/locale/ga                                                                                                 0
+/usr/share/locale/ga/LC_MESSAGES                                                                                     0
+/usr/share/locale/gez                                                                                                0
+/usr/share/locale/gez/LC_MESSAGES                                                                                    0
+/usr/share/locale/gn                                                                                                 0
+/usr/share/locale/gn/LC_MESSAGES                                                                                     0
+/usr/share/locale/gu                                                                                                 0
+/usr/share/locale/gu/LC_MESSAGES                                                                                     0
+/usr/share/locale/gv                                                                                                 0
+/usr/share/locale/gv/LC_MESSAGES                                                                                     0
+/usr/share/locale/ha                                                                                                 0
+/usr/share/locale/ha/LC_MESSAGES                                                                                     0
+/usr/share/locale/haw                                                                                                0
+/usr/share/locale/haw/LC_MESSAGES                                                                                    0
+/usr/share/locale/he                                                                                                 0
+/usr/share/locale/he/LC_MESSAGES                                                                                     0
+/usr/share/locale/hi                                                                                                 0
+/usr/share/locale/hi/LC_MESSAGES                                                                                     0
+/usr/share/locale/hr                                                                                                 0
+/usr/share/locale/hr/LC_MESSAGES                                                                                     0
+/usr/share/locale/ht                                                                                                 0
+/usr/share/locale/ht/LC_MESSAGES                                                                                     0
+/usr/share/locale/hy                                                                                                 0
+/usr/share/locale/hy/LC_MESSAGES                                                                                     0
+/usr/share/locale/ia                                                                                                 0
+/usr/share/locale/ia/LC_MESSAGES                                                                                     0
+/usr/share/locale/io                                                                                                 0
+/usr/share/locale/io/LC_MESSAGES                                                                                     0
+/usr/share/locale/is                                                                                                 0
+/usr/share/locale/is/LC_MESSAGES                                                                                     0
+/usr/share/locale/iu                                                                                                 0
+/usr/share/locale/iu/LC_MESSAGES                                                                                     0
+/usr/share/locale/jam                                                                                                0
+/usr/share/locale/jam/LC_MESSAGES                                                                                    0
+/usr/share/locale/ka                                                                                                 0
+/usr/share/locale/ka/LC_MESSAGES                                                                                     0
+/usr/share/locale/kab                                                                                                0
+/usr/share/locale/kab/LC_MESSAGES                                                                                    0
+/usr/share/locale/ki                                                                                                 0
+/usr/share/locale/ki/LC_MESSAGES                                                                                     0
+/usr/share/locale/kk                                                                                                 0
+/usr/share/locale/kk/LC_MESSAGES                                                                                     0
+/usr/share/locale/kl                                                                                                 0
+/usr/share/locale/kl/LC_MESSAGES                                                                                     0
+/usr/share/locale/kn                                                                                                 0
+/usr/share/locale/kn/LC_MESSAGES                                                                                     0
+/usr/share/locale/kok                                                                                                0
+/usr/share/locale/kok/LC_MESSAGES                                                                                    0
+/usr/share/locale/kv                                                                                                 0
+/usr/share/locale/kv/LC_MESSAGES                                                                                     0
+/usr/share/locale/kw                                                                                                 0
+/usr/share/locale/kw/LC_MESSAGES                                                                                     0
+/usr/share/locale/ky                                                                                                 0
+/usr/share/locale/ky/LC_MESSAGES                                                                                     0
+/usr/share/locale/lo                                                                                                 0
+/usr/share/locale/lo/LC_MESSAGES                                                                                     0
+/usr/share/locale/lv                                                                                                 0
+/usr/share/locale/lv/LC_MESSAGES                                                                                     0
+/usr/share/locale/mai                                                                                                0
+/usr/share/locale/mai/LC_MESSAGES                                                                                    0
+/usr/share/locale/mhr                                                                                                0
+/usr/share/locale/mhr/LC_MESSAGES                                                                                    0
+/usr/share/locale/mi                                                                                                 0
+/usr/share/locale/mi/LC_MESSAGES                                                                                     0
+/usr/share/locale/mk                                                                                                 0
+/usr/share/locale/mk/LC_MESSAGES                                                                                     0
+/usr/share/locale/ml                                                                                                 0
+/usr/share/locale/ml/LC_MESSAGES                                                                                     0
+/usr/share/locale/mn                                                                                                 0
+/usr/share/locale/mn/LC_MESSAGES                                                                                     0
+/usr/share/locale/mo                                                                                                 0
+/usr/share/locale/mo/LC_MESSAGES                                                                                     0
+/usr/share/locale/ms                                                                                                 0
+/usr/share/locale/ms/LC_MESSAGES                                                                                     0
+/usr/share/locale/mt                                                                                                 0
+/usr/share/locale/mt/LC_MESSAGES                                                                                     0
+/usr/share/locale/my                                                                                                 0
+/usr/share/locale/my/LC_MESSAGES                                                                                     0
+/usr/share/locale/na                                                                                                 0
+/usr/share/locale/na/LC_MESSAGES                                                                                     0
+/usr/share/locale/nah                                                                                                0
+/usr/share/locale/nah/LC_MESSAGES                                                                                    0
+/usr/share/locale/nb_NO                                                                                              0
+/usr/share/locale/nb_NO/LC_MESSAGES                                                                                  0
+/usr/share/locale/nso                                                                                                0
+/usr/share/locale/nso/LC_MESSAGES                                                                                    0
+/usr/share/locale/nv                                                                                                 0
+/usr/share/locale/nv/LC_MESSAGES                                                                                     0
+/usr/share/locale/oc                                                                                                 0
+/usr/share/locale/oc/LC_MESSAGES                                                                                     0
+/usr/share/locale/or                                                                                                 0
+/usr/share/locale/or/LC_MESSAGES                                                                                     0
+/usr/share/locale/pap                                                                                                0
+/usr/share/locale/pap/LC_MESSAGES                                                                                    0
+/usr/share/locale/pi                                                                                                 0
+/usr/share/locale/pi/LC_MESSAGES                                                                                     0
+/usr/share/locale/ps                                                                                                 0
+/usr/share/locale/ps/LC_MESSAGES                                                                                     0
+/usr/share/locale/rw                                                                                                 0
+/usr/share/locale/rw/LC_MESSAGES                                                                                     0
+/usr/share/locale/sc                                                                                                 0
+/usr/share/locale/sc/LC_MESSAGES                                                                                     0
+/usr/share/locale/sd                                                                                                 0
+/usr/share/locale/sd/LC_MESSAGES                                                                                     0
+/usr/share/locale/si                                                                                                 0
+/usr/share/locale/si/LC_MESSAGES                                                                                     0
+/usr/share/locale/so                                                                                                 0
+/usr/share/locale/so/LC_MESSAGES                                                                                     0
+/usr/share/locale/son                                                                                                0
+/usr/share/locale/son/LC_MESSAGES                                                                                    0
+/usr/share/locale/sq                                                                                                 0
+/usr/share/locale/sq/LC_MESSAGES                                                                                     0
+/usr/share/locale/sr                                                                                                 0
+/usr/share/locale/sr/LC_MESSAGES                                                                                     0
+/usr/share/locale/sr@latin                                                                                           0
+/usr/share/locale/sr@latin/LC_MESSAGES                                                                               0
+/usr/share/locale/sw                                                                                                 0
+/usr/share/locale/sw/LC_MESSAGES                                                                                     0
+/usr/share/locale/ta                                                                                                 0
+/usr/share/locale/ta/LC_MESSAGES                                                                                     0
+/usr/share/locale/te                                                                                                 0
+/usr/share/locale/te/LC_MESSAGES                                                                                     0
+/usr/share/locale/tg                                                                                                 0
+/usr/share/locale/tg/LC_MESSAGES                                                                                     0
+/usr/share/locale/ti                                                                                                 0
+/usr/share/locale/ti/LC_MESSAGES                                                                                     0
+/usr/share/locale/tig                                                                                                0
+/usr/share/locale/tig/LC_MESSAGES                                                                                    0
+/usr/share/locale/tk                                                                                                 0
+/usr/share/locale/tk/LC_MESSAGES                                                                                     0
+/usr/share/locale/tt                                                                                                 0
+/usr/share/locale/tt/LC_MESSAGES                                                                                     0
+/usr/share/locale/tt@iqtelif                                                                                         0
+/usr/share/locale/tt@iqtelif/LC_MESSAGES                                                                             0
+/usr/share/locale/ug                                                                                                 0
+/usr/share/locale/ug/LC_MESSAGES                                                                                     0
+/usr/share/locale/ur                                                                                                 0
+/usr/share/locale/ur/LC_MESSAGES                                                                                     0
+/usr/share/locale/uz                                                                                                 0
+/usr/share/locale/uz/LC_MESSAGES                                                                                     0
+/usr/share/locale/ve                                                                                                 0
+/usr/share/locale/ve/LC_MESSAGES                                                                                     0
+/usr/share/locale/wa                                                                                                 0
+/usr/share/locale/wa/LC_MESSAGES                                                                                     0
+/usr/share/locale/wal                                                                                                0
+/usr/share/locale/wal/LC_MESSAGES                                                                                    0
+/usr/share/locale/wo                                                                                                 0
+/usr/share/locale/wo/LC_MESSAGES                                                                                     0
+/usr/share/locale/xh                                                                                                 0
+/usr/share/locale/xh/LC_MESSAGES                                                                                     0
+/usr/share/locale/yo                                                                                                 0
+/usr/share/locale/yo/LC_MESSAGES                                                                                     0
+/usr/share/locale/zh_HK                                                                                              0
+/usr/share/locale/zh_HK/LC_MESSAGES                                                                                  0
+/usr/share/locale/zh_Hant                                                                                            0
+/usr/share/locale/zh_Hant/LC_MESSAGES                                                                                0
+/usr/share/locale/zu                                                                                                 0
+/usr/share/locale/zu/LC_MESSAGES                                                                                     0
+/usr/share/pam-configs/systemd                                                                                       182B
+/usr/share/pkgconfig                                                                                                 2.3K
+/usr/share/pkgconfig/iso-codes.pc                                                                                    211B
+/usr/share/pkgconfig/systemd.pc                                                                                      2.1K
+/usr/share/polkit-1/actions/com.ubuntu.softwareproperties.policy                                                     848B
+/usr/share/polkit-1/actions/org.freedesktop.hostname1.policy                                                         3K
+/usr/share/polkit-1/actions/org.freedesktop.locale1.policy                                                           1.9K
+/usr/share/polkit-1/actions/org.freedesktop.login1.policy                                                            23.8K
+/usr/share/polkit-1/actions/org.freedesktop.network1.policy                                                          9.4K
+/usr/share/polkit-1/actions/org.freedesktop.packagekit.policy                                                        134.3K
+/usr/share/polkit-1/actions/org.freedesktop.policykit.policy                                                         1.5K
+/usr/share/polkit-1/actions/org.freedesktop.resolve1.policy                                                          7.6K
+/usr/share/polkit-1/actions/org.freedesktop.systemd1.policy                                                          3.7K
+/usr/share/polkit-1/actions/org.freedesktop.timedate1.policy                                                         3.1K
+/usr/share/polkit-1/rules.d                                                                                          756B
+/usr/share/polkit-1/rules.d/org.freedesktop.packagekit.rules                                                         334B
+/usr/share/polkit-1/rules.d/systemd-networkd.rules                                                                   422B
+/usr/share/pyshared                                                                                                  14.6K
+/usr/share/pyshared/lsb_release.py                                                                                   14.6K
+/usr/share/python-apt                                                                                                162.9K
+/usr/share/python-apt/templates                                                                                      162.9K
+/usr/share/python-apt/templates/Blankon.info                                                                         11.3K
+/usr/share/python-apt/templates/Blankon.mirrors                                                                      590B
+/usr/share/python-apt/templates/Debian.info                                                                          8K
+/usr/share/python-apt/templates/Debian.mirrors                                                                       12.8K
+/usr/share/python-apt/templates/Kali.info                                                                            973B
+/usr/share/python-apt/templates/Kali.mirrors                                                                         54B
+/usr/share/python-apt/templates/Tanglu.info                                                                          1.1K
+/usr/share/python-apt/templates/Tanglu.mirrors                                                                       115B
+/usr/share/python-apt/templates/Ubuntu.info                                                                          90K
+/usr/share/python-apt/templates/Ubuntu.mirrors                                                                       20.5K
+/usr/share/python-apt/templates/gNewSense.info                                                                       1.6K
+/usr/share/python-apt/templates/gNewSense.mirrors                                                                    16K
+/usr/share/python3/dist                                                                                              24B
+/usr/share/python3/dist/python3-six                                                                                  24B
+/usr/share/systemd                                                                                                   4.5K
+/usr/share/systemd/kbd-model-map                                                                                     3.5K
+/usr/share/systemd/language-fallback-map                                                                             218B
+/usr/share/systemd/tmp.mount                                                                                         805B
+/usr/share/xml                                                                                                       1.4M
+/usr/share/xml/iso-codes                                                                                             1.4M
+/usr/share/xml/iso-codes/iso_15924.xml                                                                               17.3K
+/usr/share/xml/iso-codes/iso_3166-1.xml                                                                              38.7K
+/usr/share/xml/iso-codes/iso_3166-2.xml                                                                              310.4K
+/usr/share/xml/iso-codes/iso_3166-3.xml                                                                              0
+/usr/share/xml/iso-codes/iso_3166.xml                                                                                38.7K
+/usr/share/xml/iso-codes/iso_3166_2.xml                                                                              310.4K
+/usr/share/xml/iso-codes/iso_4217.xml                                                                                29.8K
+/usr/share/xml/iso-codes/iso_639-2.xml                                                                               47.6K
+/usr/share/xml/iso-codes/iso_639-3.xml                                                                               983.8K
+/usr/share/xml/iso-codes/iso_639-5.xml                                                                               8.3K
+/usr/share/xml/iso-codes/iso_639.xml                                                                                 47.6K
+/usr/share/xml/iso-codes/iso_639_3.xml                                                                               983.8K
+/usr/share/xml/iso-codes/iso_639_5.xml                                                                               8.3K
+/usr/share/zsh/vendor-completions/_bootctl                                                                           2K
+/usr/share/zsh/vendor-completions/_busctl                                                                            9.4K
+/usr/share/zsh/vendor-completions/_hostnamectl                                                                       2.5K
+/usr/share/zsh/vendor-completions/_journalctl                                                                        6.7K
+/usr/share/zsh/vendor-completions/_kernel-install                                                                    811B
+/usr/share/zsh/vendor-completions/_localectl                                                                         3.7K
+/usr/share/zsh/vendor-completions/_loginctl                                                                          6.1K
+/usr/share/zsh/vendor-completions/_networkctl                                                                        1.4K
+/usr/share/zsh/vendor-completions/_resolvectl                                                                        3.8K
+/usr/share/zsh/vendor-completions/_sd_hosts_or_user_at_host                                                          120B
+/usr/share/zsh/vendor-completions/_sd_outputmodes                                                                    298B
+/usr/share/zsh/vendor-completions/_sd_unit_files                                                                     255B
+/usr/share/zsh/vendor-completions/_systemctl                                                                         18.5K
+/usr/share/zsh/vendor-completions/_systemd                                                                           3.8K
+/usr/share/zsh/vendor-completions/_systemd-analyze                                                                   3.5K
+/usr/share/zsh/vendor-completions/_systemd-delta                                                                     665B
+/usr/share/zsh/vendor-completions/_systemd-inhibit                                                                   1.2K
+/usr/share/zsh/vendor-completions/_systemd-run                                                                       3.2K
+/usr/share/zsh/vendor-completions/_systemd-tmpfiles                                                                  776B
+/usr/share/zsh/vendor-completions/_timedatectl                                                                       2K
+/var/cache/PackageKit                                                                                                0
+/var/cache/PackageKit/downloads                                                                                      0
+/var/cache/private                                                                                                   0
+/var/lib/PackageKit                                                                                                  0
+/var/lib/dbus                                                                                                        33B
+/var/lib/dbus/machine-id                                                                                             33B
+/var/lib/dpkg/alternatives/pinentry                                                                                  142B
+/var/lib/dpkg/info/apt-transport-https.list                                                                          212B
+/var/lib/dpkg/info/apt-transport-https.md5sums                                                                       78B
+/var/lib/dpkg/info/containerd.io.conffiles                                                                           28B
+/var/lib/dpkg/info/containerd.io.list                                                                                635B
+/var/lib/dpkg/info/containerd.io.md5sums                                                                             850B
+/var/lib/dpkg/info/containerd.io.postinst                                                                            1.3K
+/var/lib/dpkg/info/containerd.io.postrm                                                                              655B
+/var/lib/dpkg/info/containerd.io.prerm                                                                               231B
+/var/lib/dpkg/info/dbus-user-session.conffiles                                                                       39B
+/var/lib/dpkg/info/dbus-user-session.list                                                                            674B
+/var/lib/dpkg/info/dbus-user-session.md5sums                                                                         291B
+/var/lib/dpkg/info/dbus.conffiles                                                                                    35B
+/var/lib/dpkg/info/dbus.list                                                                                         1.6K
+/var/lib/dpkg/info/dbus.md5sums                                                                                      1.6K
+/var/lib/dpkg/info/dbus.postinst                                                                                     4.6K
+/var/lib/dpkg/info/dbus.postrm                                                                                       727B
+/var/lib/dpkg/info/dbus.preinst                                                                                      272B
+/var/lib/dpkg/info/dbus.prerm                                                                                        588B
+/var/lib/dpkg/info/dbus.triggers                                                                                     133B
+/var/lib/dpkg/info/dconf-gsettings-backend:amd64.list                                                                342B
+/var/lib/dpkg/info/dconf-gsettings-backend:amd64.md5sums                                                             173B
+/var/lib/dpkg/info/dconf-service.list                                                                                360B
+/var/lib/dpkg/info/dconf-service.md5sums                                                                             287B
+/var/lib/dpkg/info/distro-info-data.list                                                                             290B
+/var/lib/dpkg/info/distro-info-data.md5sums                                                                          366B
+/var/lib/dpkg/info/docker-ce-cli.list                                                                                8.6K
+/var/lib/dpkg/info/docker-ce-cli.md5sums                                                                             14.5K
+/var/lib/dpkg/info/docker-ce.conffiles                                                                               61B
+/var/lib/dpkg/info/docker-ce.list                                                                                    416B
+/var/lib/dpkg/info/docker-ce.md5sums                                                                                 440B
+/var/lib/dpkg/info/docker-ce.postinst                                                                                2.9K
+/var/lib/dpkg/info/docker-ce.postrm                                                                                  1.2K
+/var/lib/dpkg/info/docker-ce.prerm                                                                                   200B
+/var/lib/dpkg/info/gir1.2-glib-2.0:amd64.list                                                                        548B
+/var/lib/dpkg/info/gir1.2-glib-2.0:amd64.md5sums                                                                     552B
+/var/lib/dpkg/info/gir1.2-packagekitglib-1.0.list                                                                    275B
+/var/lib/dpkg/info/gir1.2-packagekitglib-1.0.md5sums                                                                 170B
+/var/lib/dpkg/info/glib-networking-common.list                                                                       178B
+/var/lib/dpkg/info/glib-networking-common.md5sums                                                                    172B
+/var/lib/dpkg/info/glib-networking-services.list                                                                     421B
+/var/lib/dpkg/info/glib-networking-services.md5sums                                                                  406B
+/var/lib/dpkg/info/glib-networking:amd64.list                                                                        467B
+/var/lib/dpkg/info/glib-networking:amd64.md5sums                                                                     413B
+/var/lib/dpkg/info/gnupg-agent.list                                                                                  187B
+/var/lib/dpkg/info/gnupg-agent.md5sums                                                                               145B
+/var/lib/dpkg/info/gpg-agent.conffiles                                                                               72B
+/var/lib/dpkg/info/gpg-agent.list                                                                                    1.3K
+/var/lib/dpkg/info/gpg-agent.md5sums                                                                                 1.4K
+/var/lib/dpkg/info/gpg-agent.postinst                                                                                3.6K
+/var/lib/dpkg/info/gpg-agent.postrm                                                                                  719B
+/var/lib/dpkg/info/gpg.list                                                                                          241B
+/var/lib/dpkg/info/gpg.md5sums                                                                                       170B
+/var/lib/dpkg/info/gpgconf.list                                                                                      461B
+/var/lib/dpkg/info/gpgconf.md5sums                                                                                   608B
+/var/lib/dpkg/info/gsettings-desktop-schemas.list                                                                    2.6K
+/var/lib/dpkg/info/gsettings-desktop-schemas.md5sums                                                                 3.6K
+/var/lib/dpkg/info/iso-codes.list                                                                                    55.3K
+/var/lib/dpkg/info/iso-codes.md5sums                                                                                 49K
+/var/lib/dpkg/info/libapparmor1:amd64.list                                                                           363B
+/var/lib/dpkg/info/libapparmor1:amd64.md5sums                                                                        307B
+/var/lib/dpkg/info/libapparmor1:amd64.shlibs                                                                         39B
+/var/lib/dpkg/info/libapparmor1:amd64.symbols                                                                        3.1K
+/var/lib/dpkg/info/libapparmor1:amd64.triggers                                                                       73B
+/var/lib/dpkg/info/libappstream4:amd64.list                                                                          280B
+/var/lib/dpkg/info/libappstream4:amd64.md5sums                                                                       237B
+/var/lib/dpkg/info/libappstream4:amd64.shlibs                                                                        42B
+/var/lib/dpkg/info/libappstream4:amd64.symbols                                                                       21.5K
+/var/lib/dpkg/info/libappstream4:amd64.triggers                                                                      72B
+/var/lib/dpkg/info/libargon2-1:amd64.list                                                                            221B
+/var/lib/dpkg/info/libargon2-1:amd64.md5sums                                                                         224B
+/var/lib/dpkg/info/libargon2-1:amd64.shlibs                                                                          91B
+/var/lib/dpkg/info/libargon2-1:amd64.symbols                                                                         780B
+/var/lib/dpkg/info/libargon2-1:amd64.triggers                                                                        70B
+/var/lib/dpkg/info/libassuan0:amd64.list                                                                             263B
+/var/lib/dpkg/info/libassuan0:amd64.md5sums                                                                          226B
+/var/lib/dpkg/info/libassuan0:amd64.shlibs                                                                           34B
+/var/lib/dpkg/info/libassuan0:amd64.symbols                                                                          4K
+/var/lib/dpkg/info/libassuan0:amd64.triggers                                                                         74B
+/var/lib/dpkg/info/libcryptsetup12:amd64.list                                                                        318B
+/var/lib/dpkg/info/libcryptsetup12:amd64.md5sums                                                                     301B
+/var/lib/dpkg/info/libcryptsetup12:amd64.shlibs                                                                      103B
+/var/lib/dpkg/info/libcryptsetup12:amd64.symbols                                                                     4.7K
+/var/lib/dpkg/info/libcryptsetup12:amd64.triggers                                                                    73B
+/var/lib/dpkg/info/libdbus-1-3:amd64.list                                                                            451B
+/var/lib/dpkg/info/libdbus-1-3:amd64.md5sums                                                                         509B
+/var/lib/dpkg/info/libdbus-1-3:amd64.shlibs                                                                          85B
+/var/lib/dpkg/info/libdbus-1-3:amd64.symbols                                                                         27.5K
+/var/lib/dpkg/info/libdbus-1-3:amd64.triggers                                                                        73B
+/var/lib/dpkg/info/libdconf1:amd64.list                                                                              353B
+/var/lib/dpkg/info/libdconf1:amd64.md5sums                                                                           354B
+/var/lib/dpkg/info/libdconf1:amd64.shlibs                                                                            33B
+/var/lib/dpkg/info/libdconf1:amd64.symbols                                                                           1.4K
+/var/lib/dpkg/info/libdconf1:amd64.triggers                                                                          72B
+/var/lib/dpkg/info/libgirepository-1.0-1:amd64.list                                                                  316B
+/var/lib/dpkg/info/libgirepository-1.0-1:amd64.md5sums                                                               258B
+/var/lib/dpkg/info/libgirepository-1.0-1:amd64.shlibs                                                                56B
+/var/lib/dpkg/info/libgirepository-1.0-1:amd64.symbols                                                               8K
+/var/lib/dpkg/info/libgirepository-1.0-1:amd64.triggers                                                              73B
+/var/lib/dpkg/info/libglib2.0-0:amd64.list                                                                           1.1K
+/var/lib/dpkg/info/libglib2.0-0:amd64.md5sums                                                                        1K
+/var/lib/dpkg/info/libglib2.0-0:amd64.postinst                                                                       1.8K
+/var/lib/dpkg/info/libglib2.0-0:amd64.postrm                                                                         837B
+/var/lib/dpkg/info/libglib2.0-0:amd64.shlibs                                                                         451B
+/var/lib/dpkg/info/libglib2.0-0:amd64.symbols                                                                        156.7K
+/var/lib/dpkg/info/libglib2.0-0:amd64.triggers                                                                       209B
+/var/lib/dpkg/info/libglib2.0-bin.list                                                                               994B
+/var/lib/dpkg/info/libglib2.0-bin.md5sums                                                                            1.3K
+/var/lib/dpkg/info/libglib2.0-data.list                                                                              157B
+/var/lib/dpkg/info/libglib2.0-data.md5sums                                                                           158B
+/var/lib/dpkg/info/libgstreamer1.0-0:amd64.list                                                                      1.2K
+/var/lib/dpkg/info/libgstreamer1.0-0:amd64.md5sums                                                                   1.3K
+/var/lib/dpkg/info/libgstreamer1.0-0:amd64.postinst                                                                  824B
+/var/lib/dpkg/info/libgstreamer1.0-0:amd64.shlibs                                                                    243B
+/var/lib/dpkg/info/libgstreamer1.0-0:amd64.symbols                                                                   86.8K
+/var/lib/dpkg/info/libgstreamer1.0-0:amd64.triggers                                                                  74B
+/var/lib/dpkg/info/libicu66:amd64.list                                                                               773B
+/var/lib/dpkg/info/libicu66:amd64.md5sums                                                                            677B
+/var/lib/dpkg/info/libicu66:amd64.shlibs                                                                             245B
+/var/lib/dpkg/info/libicu66:amd64.triggers                                                                           72B
+/var/lib/dpkg/info/libjson-c4:amd64.list                                                                             334B
+/var/lib/dpkg/info/libjson-c4:amd64.md5sums                                                                          363B
+/var/lib/dpkg/info/libjson-c4:amd64.shlibs                                                                           91B
+/var/lib/dpkg/info/libjson-c4:amd64.symbols                                                                          4.4K
+/var/lib/dpkg/info/libjson-c4:amd64.triggers                                                                         73B
+/var/lib/dpkg/info/libkmod2:amd64.list                                                                               253B
+/var/lib/dpkg/info/libkmod2:amd64.md5sums                                                                            220B
+/var/lib/dpkg/info/libkmod2:amd64.shlibs                                                                             65B
+/var/lib/dpkg/info/libkmod2:amd64.symbols                                                                            2.9K
+/var/lib/dpkg/info/libkmod2:amd64.triggers                                                                           72B
+/var/lib/dpkg/info/liblmdb0:amd64.list                                                                               253B
+/var/lib/dpkg/info/liblmdb0:amd64.md5sums                                                                            220B
+/var/lib/dpkg/info/liblmdb0:amd64.shlibs                                                                             19B
+/var/lib/dpkg/info/liblmdb0:amd64.symbols                                                                            1.9K
+/var/lib/dpkg/info/liblmdb0:amd64.triggers                                                                           72B
+/var/lib/dpkg/info/libnpth0:amd64.list                                                                               253B
+/var/lib/dpkg/info/libnpth0:amd64.md5sums                                                                            220B
+/var/lib/dpkg/info/libnpth0:amd64.shlibs                                                                             28B
+/var/lib/dpkg/info/libnpth0:amd64.symbols                                                                            1.1K
+/var/lib/dpkg/info/libnpth0:amd64.triggers                                                                           74B
+/var/lib/dpkg/info/libpackagekit-glib2-18:amd64.list                                                                 321B
+/var/lib/dpkg/info/libpackagekit-glib2-18:amd64.md5sums                                                              261B
+/var/lib/dpkg/info/libpackagekit-glib2-18:amd64.shlibs                                                               58B
+/var/lib/dpkg/info/libpackagekit-glib2-18:amd64.symbols                                                              19.1K
+/var/lib/dpkg/info/libpackagekit-glib2-18:amd64.triggers                                                             73B
+/var/lib/dpkg/info/libpam-systemd:amd64.list                                                                         384B
+/var/lib/dpkg/info/libpam-systemd:amd64.md5sums                                                                      286B
+/var/lib/dpkg/info/libpam-systemd:amd64.postinst                                                                     47B
+/var/lib/dpkg/info/libpam-systemd:amd64.prerm                                                                        721B
+/var/lib/dpkg/info/libpolkit-agent-1-0:amd64.list                                                                    306B
+/var/lib/dpkg/info/libpolkit-agent-1-0:amd64.md5sums                                                                 164B
+/var/lib/dpkg/info/libpolkit-agent-1-0:amd64.shlibs                                                                  51B
+/var/lib/dpkg/info/libpolkit-agent-1-0:amd64.symbols                                                                 781B
+/var/lib/dpkg/info/libpolkit-agent-1-0:amd64.triggers                                                                72B
+/var/lib/dpkg/info/libpolkit-gobject-1-0:amd64.list                                                                  316B
+/var/lib/dpkg/info/libpolkit-gobject-1-0:amd64.md5sums                                                               258B
+/var/lib/dpkg/info/libpolkit-gobject-1-0:amd64.shlibs                                                                55B
+/var/lib/dpkg/info/libpolkit-gobject-1-0:amd64.symbols                                                               6.9K
+/var/lib/dpkg/info/libpolkit-gobject-1-0:amd64.triggers                                                              72B
+/var/lib/dpkg/info/libproxy1v5:amd64.list                                                                            299B
+/var/lib/dpkg/info/libproxy1v5:amd64.md5sums                                                                         295B
+/var/lib/dpkg/info/libproxy1v5:amd64.shlibs                                                                          35B
+/var/lib/dpkg/info/libproxy1v5:amd64.triggers                                                                        73B
+/var/lib/dpkg/info/libsoup2.4-1:amd64.list                                                                           470B
+/var/lib/dpkg/info/libsoup2.4-1:amd64.md5sums                                                                        513B
+/var/lib/dpkg/info/libsoup2.4-1:amd64.shlibs                                                                         39B
+/var/lib/dpkg/info/libsoup2.4-1:amd64.symbols                                                                        25K
+/var/lib/dpkg/info/libsoup2.4-1:amd64.triggers                                                                       73B
+/var/lib/dpkg/info/libstemmer0d:amd64.list                                                                           521B
+/var/lib/dpkg/info/libstemmer0d:amd64.md5sums                                                                        608B
+/var/lib/dpkg/info/libstemmer0d:amd64.shlibs                                                                         41B
+/var/lib/dpkg/info/libstemmer0d:amd64.symbols                                                                        197B
+/var/lib/dpkg/info/libstemmer0d:amd64.triggers                                                                       72B
+/var/lib/dpkg/info/libxml2:amd64.list                                                                                465B
+/var/lib/dpkg/info/libxml2:amd64.md5sums                                                                             486B
+/var/lib/dpkg/info/libxml2:amd64.shlibs                                                                              29B
+/var/lib/dpkg/info/libxml2:amd64.symbols                                                                             72.4K
+/var/lib/dpkg/info/libxml2:amd64.triggers                                                                            73B
+/var/lib/dpkg/info/libyaml-0-2:amd64.list                                                                            266B
+/var/lib/dpkg/info/libyaml-0-2:amd64.md5sums                                                                         228B
+/var/lib/dpkg/info/libyaml-0-2:amd64.shlibs                                                                          35B
+/var/lib/dpkg/info/libyaml-0-2:amd64.symbols                                                                         1.9K
+/var/lib/dpkg/info/libyaml-0-2:amd64.triggers                                                                        72B
+/var/lib/dpkg/info/lsb-release.list                                                                                  581B
+/var/lib/dpkg/info/lsb-release.md5sums                                                                               469B
+/var/lib/dpkg/info/lsb-release.postinst                                                                              304B
+/var/lib/dpkg/info/lsb-release.postrm                                                                                300B
+/var/lib/dpkg/info/packagekit.conffiles                                                                              146B
+/var/lib/dpkg/info/packagekit.list                                                                                   2.6K
+/var/lib/dpkg/info/packagekit.md5sums                                                                                2.3K
+/var/lib/dpkg/info/packagekit.postinst                                                                               1.6K
+/var/lib/dpkg/info/packagekit.postrm                                                                                 1.3K
+/var/lib/dpkg/info/packagekit.preinst                                                                                304B
+/var/lib/dpkg/info/packagekit.prerm                                                                                  304B
+/var/lib/dpkg/info/pinentry-curses.list                                                                              390B
+/var/lib/dpkg/info/pinentry-curses.md5sums                                                                           512B
+/var/lib/dpkg/info/pinentry-curses.postinst                                                                          256B
+/var/lib/dpkg/info/pinentry-curses.prerm                                                                             124B
+/var/lib/dpkg/info/policykit-1.conffiles                                                                             136B
+/var/lib/dpkg/info/policykit-1.list                                                                                  2K
+/var/lib/dpkg/info/policykit-1.md5sums                                                                               1.6K
+/var/lib/dpkg/info/policykit-1.postinst                                                                              2.5K
+/var/lib/dpkg/info/policykit-1.postrm                                                                                713B
+/var/lib/dpkg/info/policykit-1.preinst                                                                               318B
+/var/lib/dpkg/info/policykit-1.prerm                                                                                 528B
+/var/lib/dpkg/info/python-apt-common.list                                                                            760B
+/var/lib/dpkg/info/python-apt-common.md5sums                                                                         1.1K
+/var/lib/dpkg/info/python3-apt.list                                                                                  1.8K
+/var/lib/dpkg/info/python3-apt.md5sums                                                                               2.1K
+/var/lib/dpkg/info/python3-apt.postinst                                                                              248B
+/var/lib/dpkg/info/python3-apt.prerm                                                                                 397B
+/var/lib/dpkg/info/python3-certifi.list                                                                              897B
+/var/lib/dpkg/info/python3-certifi.md5sums                                                                           992B
+/var/lib/dpkg/info/python3-certifi.postinst                                                                          256B
+/var/lib/dpkg/info/python3-certifi.prerm                                                                             405B
+/var/lib/dpkg/info/python3-chardet.list                                                                              3K
+/var/lib/dpkg/info/python3-chardet.md5sums                                                                           4.2K
+/var/lib/dpkg/info/python3-chardet.postinst                                                                          256B
+/var/lib/dpkg/info/python3-chardet.prerm                                                                             405B
+/var/lib/dpkg/info/python3-dbus.list                                                                                 1.8K
+/var/lib/dpkg/info/python3-dbus.md5sums                                                                              2.4K
+/var/lib/dpkg/info/python3-dbus.postinst                                                                             250B
+/var/lib/dpkg/info/python3-dbus.prerm                                                                                399B
+/var/lib/dpkg/info/python3-gi.list                                                                                   2.2K
+/var/lib/dpkg/info/python3-gi.md5sums                                                                                3.1K
+/var/lib/dpkg/info/python3-gi.postinst                                                                               246B
+/var/lib/dpkg/info/python3-gi.prerm                                                                                  395B
+/var/lib/dpkg/info/python3-idna.list                                                                                 862B
+/var/lib/dpkg/info/python3-idna.md5sums                                                                              1.1K
+/var/lib/dpkg/info/python3-idna.postinst                                                                             249B
+/var/lib/dpkg/info/python3-idna.prerm                                                                                398B
+/var/lib/dpkg/info/python3-requests-unixsocket.list                                                                  957B
+/var/lib/dpkg/info/python3-requests-unixsocket.md5sums                                                               1K
+/var/lib/dpkg/info/python3-requests-unixsocket.postinst                                                              280B
+/var/lib/dpkg/info/python3-requests-unixsocket.prerm                                                                 429B
+/var/lib/dpkg/info/python3-requests.list                                                                             1.6K
+/var/lib/dpkg/info/python3-requests.md5sums                                                                          2.2K
+/var/lib/dpkg/info/python3-requests.postinst                                                                         257B
+/var/lib/dpkg/info/python3-requests.prerm                                                                            406B
+/var/lib/dpkg/info/python3-six.list                                                                                  567B
+/var/lib/dpkg/info/python3-six.md5sums                                                                               586B
+/var/lib/dpkg/info/python3-six.postinst                                                                              248B
+/var/lib/dpkg/info/python3-six.prerm                                                                                 397B
+/var/lib/dpkg/info/python3-software-properties.list                                                                  1.2K
+/var/lib/dpkg/info/python3-software-properties.md5sums                                                               1.6K
+/var/lib/dpkg/info/python3-software-properties.postinst                                                              280B
+/var/lib/dpkg/info/python3-software-properties.prerm                                                                 429B
+/var/lib/dpkg/info/python3-urllib3.list                                                                              2.9K
+/var/lib/dpkg/info/python3-urllib3.md5sums                                                                           3.7K
+/var/lib/dpkg/info/python3-urllib3.postinst                                                                          256B
+/var/lib/dpkg/info/python3-urllib3.prerm                                                                             405B
+/var/lib/dpkg/info/software-properties-common.conffiles                                                              56B
+/var/lib/dpkg/info/software-properties-common.list                                                                   1.1K
+/var/lib/dpkg/info/software-properties-common.md5sums                                                                727B
+/var/lib/dpkg/info/software-properties-common.postinst                                                               278B
+/var/lib/dpkg/info/software-properties-common.prerm                                                                  427B
+/var/lib/dpkg/info/systemd-sysv.list                                                                                 530B
+/var/lib/dpkg/info/systemd-sysv.md5sums                                                                              397B
+/var/lib/dpkg/info/systemd-sysv.postinst                                                                             255B
+/var/lib/dpkg/info/systemd-timesyncd.conffiles                                                                       70B
+/var/lib/dpkg/info/systemd-timesyncd.list                                                                            919B
+/var/lib/dpkg/info/systemd-timesyncd.md5sums                                                                         651B
+/var/lib/dpkg/info/systemd-timesyncd.postinst                                                                        2.2K
+/var/lib/dpkg/info/systemd-timesyncd.postrm                                                                          758B
+/var/lib/dpkg/info/systemd-timesyncd.prerm                                                                           238B
+/var/lib/dpkg/info/systemd.conffiles                                                                                 269B
+/var/lib/dpkg/info/systemd.list                                                                                      31.4K
+/var/lib/dpkg/info/systemd.md5sums                                                                                   38.8K
+/var/lib/dpkg/info/systemd.postinst                                                                                  7.3K
+/var/lib/dpkg/info/systemd.postrm                                                                                    2.3K
+/var/lib/dpkg/info/systemd.preinst                                                                                   1.8K
+/var/lib/dpkg/info/systemd.prerm                                                                                     1.2K
+/var/lib/dpkg/info/systemd.triggers                                                                                  71B
+/var/lib/dpkg/statoverride-old                                                                                       0
+/var/lib/polkit-1                                                                                                    451B
+/var/lib/polkit-1/localauthority                                                                                     451B
+/var/lib/polkit-1/localauthority/10-vendor.d                                                                         451B
+/var/lib/polkit-1/localauthority/10-vendor.d/org.freedesktop.packagekit.pkla                                         209B
+/var/lib/polkit-1/localauthority/10-vendor.d/systemd-networkd.pkla                                                   242B
+/var/lib/polkit-1/localauthority/20-org.d                                                                            0
+/var/lib/polkit-1/localauthority/30-site.d                                                                           0
+/var/lib/polkit-1/localauthority/50-local.d                                                                          0
+/var/lib/polkit-1/localauthority/90-mandatory.d                                                                      0
+/var/lib/private                                                                                                     0
+/var/lib/systemd/catalog                                                                                             136.8K
+/var/lib/systemd/catalog/database                                                                                    136.8K
+/var/lib/systemd/coredump                                                                                            0
+/var/lib/systemd/deb-systemd-helper-enabled/dbus-org.freedesktop.timesync1.service                                   0
+/var/lib/systemd/deb-systemd-helper-enabled/docker.service.dsh-also                                                  59B
+/var/lib/systemd/deb-systemd-helper-enabled/multi-user.target.wants/docker.service                                   0
+/var/lib/systemd/deb-systemd-helper-enabled/sysinit.target.wants                                                     0
+/var/lib/systemd/deb-systemd-helper-enabled/sysinit.target.wants/systemd-timesyncd.service                           0
+/var/lib/systemd/deb-systemd-helper-enabled/systemd-timesyncd.service.dsh-also                                       126B
+/var/lib/systemd/deb-systemd-user-helper-enabled                                                                     306B
+/var/lib/systemd/deb-systemd-user-helper-enabled/gpg-agent-browser.socket.dsh-also                                   64B
+/var/lib/systemd/deb-systemd-user-helper-enabled/gpg-agent-extra.socket.dsh-also                                     62B
+/var/lib/systemd/deb-systemd-user-helper-enabled/gpg-agent-ssh.socket.dsh-also                                       60B
+/var/lib/systemd/deb-systemd-user-helper-enabled/gpg-agent.socket.dsh-also                                           56B
+/var/lib/systemd/deb-systemd-user-helper-enabled/pk-debconf-helper.socket.dsh-also                                   64B
+/var/lib/systemd/deb-systemd-user-helper-enabled/sockets.target.wants                                                0
+/var/lib/systemd/deb-systemd-user-helper-enabled/sockets.target.wants/gpg-agent-browser.socket                       0
+/var/lib/systemd/deb-systemd-user-helper-enabled/sockets.target.wants/gpg-agent-extra.socket                         0
+/var/lib/systemd/deb-systemd-user-helper-enabled/sockets.target.wants/gpg-agent-ssh.socket                           0
+/var/lib/systemd/deb-systemd-user-helper-enabled/sockets.target.wants/gpg-agent.socket                               0
+/var/lib/systemd/deb-systemd-user-helper-enabled/sockets.target.wants/pk-debconf-helper.socket                       0
+/var/log/journal                                                                                                     0
+/var/log/private                                                                                                     0
 
-These entries have been deleted from gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346:
-FILE                                                                                                       SIZE
-/etc/ssl/certs/2c543cd1.0                                                                                  unknown
-/etc/ssl/certs/2e4eed3c.0                                                                                  unknown
-/etc/ssl/certs/480720ec.0                                                                                  unknown
-/etc/ssl/certs/7d0b38bd.0                                                                                  unknown
-/etc/ssl/certs/8867006a.0                                                                                  unknown
-/etc/ssl/certs/GeoTrust_Global_CA.pem                                                                      unknown
-/etc/ssl/certs/GeoTrust_Primary_Certification_Authority.pem                                                unknown
-/etc/ssl/certs/GeoTrust_Primary_Certification_Authority_-_G3.pem                                           unknown
-/etc/ssl/certs/GeoTrust_Universal_CA.pem                                                                   unknown
-/etc/ssl/certs/GeoTrust_Universal_CA_2.pem                                                                 unknown
-/etc/ssl/certs/VeriSign_Class_3_Public_Primary_Certification_Authority_-_G4.pem                            unknown
-/etc/ssl/certs/VeriSign_Class_3_Public_Primary_Certification_Authority_-_G5.pem                            unknown
-/etc/ssl/certs/ad088e1d.0                                                                                  unknown
-/etc/ssl/certs/b204d74a.0                                                                                  unknown
-/etc/ssl/certs/ba89ed3b.0                                                                                  unknown
-/etc/ssl/certs/c089bbbd.0                                                                                  unknown
-/etc/ssl/certs/e2799e36.0                                                                                  unknown
-/etc/ssl/certs/thawte_Primary_Root_CA.pem                                                                  unknown
-/etc/ssl/certs/thawte_Primary_Root_CA_-_G2.pem                                                             unknown
-/etc/ssl/certs/thawte_Primary_Root_CA_-_G3.pem                                                             unknown
-/usr/share/ca-certificates/mozilla/GeoTrust_Global_CA.crt                                                  1.2K
-/usr/share/ca-certificates/mozilla/GeoTrust_Primary_Certification_Authority.crt                            1.2K
-/usr/share/ca-certificates/mozilla/GeoTrust_Primary_Certification_Authority_-_G3.crt                       1.4K
-/usr/share/ca-certificates/mozilla/GeoTrust_Universal_CA.crt                                               1.9K
-/usr/share/ca-certificates/mozilla/GeoTrust_Universal_CA_2.crt                                             1.9K
-/usr/share/ca-certificates/mozilla/VeriSign_Class_3_Public_Primary_Certification_Authority_-_G4.crt        1.3K
-/usr/share/ca-certificates/mozilla/VeriSign_Class_3_Public_Primary_Certification_Authority_-_G5.crt        1.7K
-/usr/share/ca-certificates/mozilla/thawte_Primary_Root_CA.crt                                              1.5K
-/usr/share/ca-certificates/mozilla/thawte_Primary_Root_CA_-_G2.crt                                         940B
-/usr/share/ca-certificates/mozilla/thawte_Primary_Root_CA_-_G3.crt                                         1.5K
+These entries have been deleted from gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c:
+FILE                                                                               SIZE
+/etc/docker                                                                        0
+/usr/bin/containerd-stress                                                         23.9M
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info                         19.1K
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/INSTALLER               4B
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/LICENSE                 10K
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/METADATA                7.5K
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/RECORD                  1.4K
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/WHEEL                   110B
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/entry_points.txt        46B
+/usr/local/lib/python3.8/dist-packages/yq-2.11.1.dist-info/top_level.txt           3B
+/usr/local/lib/python3.8/dist-packages/yq/__pycache__/compat.cpython-38.pyc        401B
+/usr/local/lib/python3.8/dist-packages/yq/compat.py                                261B
+/usr/sbin/recvtty                                                                  3.4M
+/usr/sbin/runc                                                                     7.1M
+/usr/share/doc/containerd                                                          29.6K
+/usr/share/doc/containerd/changelog.Debian.gz                                      1K
+/usr/share/doc/containerd/copyright                                                28.5K
+/usr/share/doc/docker.io                                                           43.6K
+/usr/share/doc/docker.io/changelog.Debian.gz                                       1.3K
+/usr/share/doc/docker.io/copyright                                                 42.3K
+/usr/share/doc/runc                                                                4.5K
+/usr/share/doc/runc/changelog.Debian.gz                                            1.1K
+/usr/share/doc/runc/copyright                                                      3.4K
+/usr/share/docker.io                                                               11.5K
+/usr/share/docker.io/contrib                                                       11.5K
+/usr/share/docker.io/contrib/check-config.sh                                       10.1K
+/usr/share/docker.io/contrib/nuke-graph-directory.sh                               1.4K
+/usr/share/lintian/overrides/runc                                                  31B
+/var/lib/dpkg/info/containerd.list                                                 1022B
+/var/lib/dpkg/info/containerd.md5sums                                              1.6K
+/var/lib/dpkg/info/containerd.postinst                                             1.6K
+/var/lib/dpkg/info/containerd.postrm                                               816B
+/var/lib/dpkg/info/containerd.prerm                                                380B
+/var/lib/dpkg/info/docker.io.list                                                  8.9K
+/var/lib/dpkg/info/docker.io.md5sums                                               15.2K
+/var/lib/dpkg/info/docker.io.postinst                                              6.5K
+/var/lib/dpkg/info/docker.io.postrm                                                2.6K
+/var/lib/dpkg/info/docker.io.preinst                                               927B
+/var/lib/dpkg/info/docker.io.prerm                                                 1.8K
+/var/lib/dpkg/info/docker.io.templates                                             737B
+/var/lib/dpkg/info/runc.list                                                       953B
+/var/lib/dpkg/info/runc.md5sums                                                    1.6K
 
-These entries have been changed between gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346 and /tmp/build/4f61ea48/image/image.tar:
+These entries have been changed between gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c and /tmp/build/4f61ea48/image/image.tar:
 FILE                                                                                                       SIZE1         SIZE2
-/etc/ssl/certs/ca-certificates.crt                                                                         208.1K        195.6K
-/var/log/dpkg.log                                                                                          192.5K        192.4K
-/var/lib/dpkg/status-old                                                                                   166.1K        166.1K
-/var/lib/dpkg/status                                                                                       166K          166K
-/usr/share/zoneinfo-icu/44/le/zoneinfo64.res                                                               152.2K        152.2K
-/usr/share/zoneinfo-icu/44/be/zoneinfo64.res                                                               152.2K        152.2K
-/usr/share/zoneinfo/tzdata.zi                                                                              110.9K        110.9K
-/var/lib/dpkg/info/tzdata.md5sums                                                                          83.8K         83.8K
+/usr/bin/dockerd                                                                                           97.4M         110.9M
+/usr/bin/docker                                                                                            81.1M         68.3M
+/usr/bin/containerd                                                                                        50.8M         54.5M
+/usr/bin/ctr                                                                                               25.7M         29M
+/usr/bin/containerd-shim-runc-v2                                                                           8.4M          9.5M
+/usr/bin/containerd-shim-runc-v1                                                                           8.4M          9.5M
+/usr/bin/containerd-shim                                                                                   6.8M          6.9M
+/usr/bin/docker-proxy                                                                                      2.8M          3.6M
+/usr/bin/docker-init                                                                                       809.1K        809.1K
+/var/cache/debconf/templates.dat                                                                           789.2K        788.5K
+/var/cache/debconf/templates.dat-old                                                                       788.5K        762.1K
+/usr/lib/x86_64-linux-gnu/libldap_r-2.4.so.2.10.12                                                         331.5K        331.5K
+/var/log/dpkg.log                                                                                          192.4K        225K
+/var/lib/dpkg/status-old                                                                                   166.1K        228.5K
+/var/lib/dpkg/status                                                                                       166K          228.6K
+/usr/share/zsh/vendor-completions/_docker                                                                  123.1K        124.1K
+/usr/share/bash-completion/completions/docker                                                              113.6K        113.4K
 /usr/lib/python3.8/__pycache__/pydoc.cpython-38.pyc                                                        82.4K         82.4K
-/usr/lib/python3.8/unittest/__pycache__/mock.cpython-38.pyc                                                75.6K         75.6K
+/usr/lib/x86_64-linux-gnu/liblber-2.4.so.2.10.12                                                           62.4K         62.4K
 /usr/lib/python3.8/__pycache__/difflib.cpython-38.pyc                                                      58K           58K
-/usr/lib/python3.8/__pycache__/pathlib.cpython-38.pyc                                                      42.5K         42.5K
-/usr/share/zoneinfo-icu/44/be/metaZones.res                                                                40.8K         40.8K
-/usr/share/zoneinfo-icu/44/le/metaZones.res                                                                40.8K         40.8K
+/var/log/lastlog                                                                                           28.8K         29.9K
 /usr/lib/python3.8/__pycache__/ftplib.cpython-38.pyc                                                       27.2K         27.2K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/emitter.cpython-38.pyc                             24.8K         24.8K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/scanner.cpython-38.pyc                             24.7K         24.7K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/__init__.cpython-38.pyc                     23.8K         23.8K
-/usr/share/zoneinfo-icu/44/be/windowsZones.res                                                             22.1K         22.1K
-/usr/share/zoneinfo-icu/44/le/windowsZones.res                                                             22.1K         22.1K
-/var/log/apt/term.log                                                                                      21.2K         21.2K
-/var/log/apt/history.log                                                                                   20.5K         20.5K
+/var/log/apt/term.log                                                                                      21.2K         39.4K
+/var/log/apt/history.log                                                                                   20.5K         23.7K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/constructor.cpython-38.pyc                         20.3K         20.3K
-/var/cache/debconf/config.dat                                                                              16.4K         15.5K
-/var/cache/debconf/config.dat-old                                                                          16.3K         15.5K
-/var/lib/dpkg/info/ca-certificates.md5sums                                                                 15.2K         14.3K
+/var/cache/debconf/config.dat                                                                              15.5K         15.5K
+/var/cache/debconf/config.dat-old                                                                          15.5K         4.7K
 /usr/lib/python3/dist-packages/pip/_internal/index/__pycache__/collector.cpython-38.pyc                    13.8K         13.8K
 /usr/local/lib/python3.8/dist-packages/__pycache__/xmltodict.cpython-38.pyc                                12.7K         12.7K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/parser.cpython-38.pyc                              11.7K         11.7K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/__init__.cpython-38.pyc                            11.6K         11.6K
-/var/lib/dpkg/info/ca-certificates.list                                                                    10.8K         10.1K
-/usr/share/zoneinfo/leap-seconds.list                                                                      10.4K         10.4K
+/usr/local/lib/python3.8/dist-packages/yq/__init__.py                                                      10.6K         10K
+/etc/ld.so.cache                                                                                           9.9K          12.8K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/representer.cpython-38.pyc                         9.8K          9.8K
-/var/lib/dpkg/info/ca-certificates.config                                                                  9.6K          9.2K
-/var/log/apt/eipp.log.xz                                                                                   8.4K          8.4K
-/var/cache/ldconfig/aux-cache                                                                              8.2K          8.2K
-/usr/local/lib/python3.8/dist-packages/yq/__pycache__/__init__.cpython-38.pyc                              7.7K          7.7K
+/usr/lib/python3.8/json/__pycache__/decoder.cpython-38.pyc                                                 9.6K          9.6K
+/var/log/apt/eipp.log.xz                                                                                   8.4K          10.5K
+/var/cache/ldconfig/aux-cache                                                                              8.2K          10.5K
+/usr/local/lib/python3.8/dist-packages/yq/__pycache__/__init__.cpython-38.pyc                              7.7K          7.4K
 /usr/lib/python3.8/__pycache__/_markupbase.cpython-38.pyc                                                  7.6K          7.6K
 /usr/lib/python3.8/__pycache__/hashlib.cpython-38.pyc                                                      6.6K          6.6K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/my_argparse.cpython-38.pyc                  6.4K          6.4K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/my_shlex.cpython-38.pyc                     6.1K          6.1K
-/etc/ca-certificates.conf                                                                                  5.9K          5.5K
 /usr/lib/python3.8/__pycache__/rlcompleter.cpython-38.pyc                                                  5.6K          5.6K
-/var/log/alternatives.log                                                                                  5.6K          5.6K
+/var/log/alternatives.log                                                                                  5.6K          5.9K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/resolver.cpython-38.pyc                            5.4K          5.4K
+/usr/local/lib/python3.8/dist-packages/yq/parser.py                                                        5.1K          5.1K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/tokens.cpython-38.pyc                              4.8K          4.8K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/completers.cpython-38.pyc                   4.6K          4.6K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/reader.cpython-38.pyc                              4.4K          4.4K
+/var/lib/apt/extended_states                                                                               4.2K          7.8K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/shell_integration.cpython-38.pyc            3.9K          3.9K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/events.cpython-38.pyc                              3.9K          3.9K
 /usr/local/lib/python3.8/dist-packages/yq/__pycache__/parser.cpython-38.pyc                                3.7K          3.7K
 /usr/lib/python3.8/__pycache__/netrc.cpython-38.pyc                                                        3.7K          3.7K
+/usr/lib/python3/dist-packages/pip/_internal/__pycache__/pep425tags.cpython-38.pyc                         3.5K          3.5K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/composer.cpython-38.pyc                            3.5K          3.5K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/cyaml.cpython-38.pyc                               3.3K          3.3K
-/usr/share/zoneinfo/leapseconds                                                                            3.3K          3.3K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/serializer.cpython-38.pyc                          3.2K          3.2K
+/usr/local/lib/python3.8/dist-packages/yq/dumper.py                                                        3.2K          3.1K
+/var/log/faillog                                                                                           3.2K          3.3K
 /usr/lib/python3.8/asyncio/__pycache__/__main__.cpython-38.pyc                                             3.1K          3.1K
-/usr/local/lib/python3.8/dist-packages/yq/__pycache__/loader.cpython-38.pyc                                2.8K          2.8K
-/usr/local/lib/python3.8/dist-packages/yq/__pycache__/dumper.cpython-38.pyc                                2.6K          2.6K
+/usr/local/lib/python3.8/dist-packages/yq/loader.py                                                        2.8K          2.7K
+/usr/share/doc/libldap-common/changelog.Debian.gz                                                          2.8K          3.2K
+/usr/share/doc/libldap-2.4-2/changelog.Debian.gz                                                           2.8K          3.2K
+/usr/local/lib/python3.8/dist-packages/yq/__pycache__/loader.cpython-38.pyc                                2.8K          2.6K
+/etc/apt/sources.list                                                                                      2.7K          2.8K
+/usr/local/lib/python3.8/dist-packages/yq/__pycache__/dumper.cpython-38.pyc                                2.6K          2.5K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/_check_module.cpython-38.pyc                2.4K          2.4K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/error.cpython-38.pyc                               2.3K          2.3K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/loader.cpython-38.pyc                              2.1K          2.1K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/_check_console_script.cpython-38.pyc        1.9K          1.9K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/dumper.cpython-38.pyc                              1.8K          1.8K
 /usr/local/lib/python3.8/dist-packages/yaml/__pycache__/nodes.cpython-38.pyc                               1.7K          1.7K
-/usr/share/doc/tzdata/changelog.Debian.gz                                                                  1.6K          1.5K
-/usr/share/zoneinfo/right/Africa/Juba                                                                      1.2K          1.2K
+/usr/lib/systemd/system/docker.service                                                                     1.6K          1.7K
+/usr/lib/python3.8/lib2to3/fixes/__pycache__/fix_apply.cpython-38.pyc                                      1.6K          1.6K
+/etc/pam.d/common-session                                                                                  1.4K          1.4K
+/usr/lib/python3.8/lib2to3/fixes/__pycache__/fix_reload.cpython-38.pyc                                     1.1K          1.1K
+/usr/lib/python3.8/lib2to3/fixes/__pycache__/fix_intern.cpython-38.pyc                                     1.1K          1.1K
+/etc/passwd                                                                                                926B          1.2K
 /usr/local/lib/python3.8/dist-packages/argcomplete/__pycache__/compat.cpython-38.pyc                       761B          761B
 /usr/local/lib/python3.8/dist-packages/_yaml/__pycache__/__init__.cpython-38.pyc                           705B          705B
-/usr/share/zoneinfo/posix/Africa/Juba                                                                      669B          699B
-/usr/share/zoneinfo/Africa/Juba                                                                            669B          699B
-/usr/local/lib/python3.8/dist-packages/yq/__pycache__/compat.cpython-38.pyc                                401B          401B
+/usr/lib/systemd/system/containerd.service                                                                 635B          1.2K
+/etc/shadow                                                                                                501B          645B
+/var/lib/dpkg/info/libldap-2.4-2:amd64.md5sums                                                             472B          472B
+/etc/group                                                                                                 460B          571B
+/etc/group-                                                                                                446B          557B
+/etc/gshadow                                                                                               385B          481B
+/etc/gshadow-                                                                                              374B          470B
+/var/lib/dpkg/info/libldap-common.md5sums                                                                  224B          224B
 /usr/local/lib/python3.8/dist-packages/yq/__pycache__/__main__.cpython-38.pyc                              215B          215B
+/usr/lib/systemd/system/docker.socket                                                                      197B          175B
 /usr/local/lib/python3.8/dist-packages/yq/__pycache__/version.cpython-38.pyc                               159B          159B
+/var/lib/dpkg/triggers/File                                                                                89B           439B
+/var/lib/pam/session                                                                                       75B           115B
+/usr/local/lib/python3.8/dist-packages/yq/version.py                                                       23B           23B
+/var/lib/pam/seen                                                                                          15B           23B
+/etc/machine-id                                                                                            0             33B
+/var/lib/dpkg/statoverride                                                                                 0             65B
 
 
 -----History-----
 
-Docker history lines found only in gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346:
--RUN |3 BASE_IMAGE=ubuntu@sha256:3093096ee188f8ff4531949b8f6115af4747ec1c58858c091c8cb4579c39cc4e KIND_ON_C_VERSION=a9a782f DEBIAN_FRONTEND=noninteractive /bin/sh -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     bash     curl     iptables     ca-certificates     util-linux     iproute2     tar     rsync     make     git     tzdata     python3-pip     python3-setuptools     jq     docker.io   && rm -rf /var/lib/apt/lists/* # buildkit
--RUN |3 BASE_IMAGE=ubuntu@sha256:3093096ee188f8ff4531949b8f6115af4747ec1c58858c091c8cb4579c39cc4e KIND_ON_C_VERSION=a9a782f DEBIAN_FRONTEND=noninteractive /bin/sh -c pip3 install --no-cache-dir yq # buildkit
--LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:3093096ee188f8ff4531949b8f6115af4747ec1c58858c091c8cb4579c39cc4e
+Docker history lines found only in gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c:
+-RUN |3 BASE_IMAGE=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715 KIND_ON_C_VERSION=a9a782f DEBIAN_FRONTEND=noninteractive /bin/sh -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     bash     curl     iptables     ca-certificates     util-linux     iproute2     tar     rsync     make     git     tzdata     python3-pip     python3-setuptools     jq     docker.io   && rm -rf /var/lib/apt/lists/* # buildkit
+-RUN |3 BASE_IMAGE=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715 KIND_ON_C_VERSION=a9a782f DEBIAN_FRONTEND=noninteractive /bin/sh -c pip3 install --no-cache-dir yq # buildkit
+-LABEL org.opencontainers.image.x.kind-on-c=a9a782f
 
 
 Docker history lines found only in /tmp/build/4f61ea48/image/image.tar:
--RUN |3 BASE_IMAGE=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715 KIND_ON_C_VERSION=a9a782f DEBIAN_FRONTEND=noninteractive /bin/sh -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     bash     curl     iptables     ca-certificates     util-linux     iproute2     tar     rsync     make     git     tzdata     python3-pip     python3-setuptools     jq     docker.io   && rm -rf /var/lib/apt/lists/* # buildkit
--RUN |3 BASE_IMAGE=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715 KIND_ON_C_VERSION=a9a782f DEBIAN_FRONTEND=noninteractive /bin/sh -c pip3 install --no-cache-dir yq # buildkit
--LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715
+-RUN |3 BASE_IMAGE=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715 KIND_ON_C_VERSION=9548a52 DEBIAN_FRONTEND=noninteractive /bin/sh -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     python3-pip     python3-setuptools     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && rm -rf /var/lib/apt/lists/* # buildkit
+-RUN |3 BASE_IMAGE=ubuntu@sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715 KIND_ON_C_VERSION=9548a52 DEBIAN_FRONTEND=noninteractive /bin/sh -c pip3 install --no-cache-dir yq # buildkit
+-LABEL org.opencontainers.image.x.kind-on-c=9548a52
 
 
 -----Pip-----
 
-Packages found only in gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346: None
+Packages found only in gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c: None
 
-Packages found only in /tmp/build/4f61ea48/image/image.tar: None
+Packages found only in /tmp/build/4f61ea48/image/image.tar:
+NAME         VERSION        SIZE
+-toml        0.10.2         84.1K
 
-Version differences: None
+Version differences:
+PACKAGE        IMAGE1 (gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
+-yq            2.11.1, 39.6K                                                                                                                            2.12.0, 37.5K
+
 
 -----Size-----
 
-Image size difference between gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:3369709c658297c5239ce61813fce6f50d961946124fafdc68e90a211c996346 and /tmp/build/4f61ea48/image/image.tar:
+Image size difference between gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c@sha256:e3c1492f6b13dcba858e7bf12dfefe2af2db96fa1f37be6228a1e885d43c115c and /tmp/build/4f61ea48/image/image.tar:
 SIZE1        SIZE2
-526M         526M
+526M         684.3M
 
 ```
