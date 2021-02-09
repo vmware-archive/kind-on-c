@@ -4,6 +4,8 @@ FROM ${BASE_IMAGE}
 ARG BASE_IMAGE
 ARG KIND_ON_C_VERSION
 
+SHELL [ "bash", "-e", "-u", "-o", "pipefail", "-c" ]
+
 # Install alpine packages
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update \
@@ -18,8 +20,6 @@ RUN apt-get -y update \
     iptables \
     jq \
     make \
-    python3-pip \
-    python3-setuptools \
     rsync \
     software-properties-common \
     tar \
@@ -34,10 +34,17 @@ RUN apt-get -y update \
     containerd.io \
     docker-ce \
     docker-ce-cli \
+  && apt-get -y purge python\* \
+  && apt-get -y autopurge \
   && rm -rf /var/lib/apt/lists/*
 
-# Install yq
-RUN pip3 install --no-cache-dir yq
+# Install latest oq
+RUN \
+    dlURL="$( \
+      curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1" \
+        | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]' \
+    )" \
+  && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq
 
 LABEL org.opencontainers.image.title         "kind-on-c"
 LABEL org.opencontainers.image.x.base-image  "${BASE_IMAGE}"

@@ -379,7 +379,7 @@ kind::hack::genMetalConfig() {
 
   # shellcheck disable=SC2016
   config="$(
-    </dev/null yq -y -n --arg ip0 "$ip0" --arg ip1 "$ip1" '{
+    </dev/null oq -i yaml -o yaml -n --arg ip0 "$ip0" --arg ip1 "$ip1" '{
       "address-pools": [{
         "name": "default",
         "protocol": "layer2",
@@ -391,7 +391,7 @@ kind::hack::genMetalConfig() {
   )"
 
   # shellcheck disable=SC2016
-  yq -y -r --arg c "$config" '.data.config = $c' "${orgConfig}"
+  oq -i yaml -o yaml -r --arg c "$config" '.data.config = $c' "${orgConfig}"
 }
 
 kind::hack::cidrToNetmask() {

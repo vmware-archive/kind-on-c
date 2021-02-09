@@ -12,8 +12,8 @@ trap 'rm -rf -- "$tmpDir"' EXIT
 chmod 0750 bin/container-diff
 export PATH="${PATH}:${PWD}/bin"
 
-c0Repo="$( yq -r '.image_resource.source.repository' "$taskConf" )"
-c0Digest="$( yq -r '.image_resource.version.digest' "$taskConf" )"
+c0Repo="$( oq -i yaml -r '.image_resource.source.repository' "$taskConf" )"
+c0Digest="$( oq -i yaml -r '.image_resource.version.digest' "$taskConf" )"
 c1Digest="$( cat "image-push/digest" )"
 
 c0="remote://${c0Repo}@${c0Digest}"
@@ -28,7 +28,7 @@ diffCmd=(
 tmpTaskConf="${tmpDir}/task.yml"
 
 # shellcheck disable=SC2016
-yq -y --arg d "${c1Digest}" '.image_resource.version.digest = $d' "$taskConf" > "$tmpTaskConf"
+oq -i yaml -o yaml --arg d "${c1Digest}" '.image_resource.version.digest = $d' "$taskConf" > "$tmpTaskConf"
 cat "$tmpTaskConf" > "$taskConf"
 
 {
