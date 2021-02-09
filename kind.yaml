@@ -1,35 +1,36 @@
+---
 platform: linux
 image_resource:
   type: registry-image
   source:
     repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:76d06d18b59d9089e316bd889c734226cd0885be2ca6aa84682eb51d067b8341
+    digest: sha256:114fb10216e1aba882919220ba73b745b9315c47bfcdb14e04206c894634c868
 inputs:
-  - name: kind-on-c
-  - name: kind-release
-  - name: node-image
-    optional: true
-  - name: k8s-git
-    optional: true
-    path: go/src/k8s.io/kubernetes
-  - name: inputs
-    optional: true
+- name: kind-on-c
+- name: kind-release
+- name: node-image
+  optional: true
+- name: k8s-git
+  optional: true
+  path: go/src/k8s.io/kubernetes
+- name: inputs
+  optional: true
 outputs:
-  - name: exported-node-rootfs
-  - name: exported-node-image
-  - name: outputs
+- name: exported-node-rootfs
+- name: exported-node-image
+- name: outputs
 run:
   path: kind-on-c/entrypoint.sh
 params:
-  KIND_TESTS: null
-  KIND_CONFIG: null
-  EXPORT_NODE_ROOTFS: null
-  EXPORT_NODE_IMAGE: null
-  INSTALL_METALLB: null
-  KIND_PRE_START: null
-  DOCKERD_OPTS: null
-  DOCKERD_TIMEOUT: null
-  KINDONC_DEBUG: null
-  KIND_LOGLEVEL: null
-  KIND_CLUSTER_NAME: null
+  KIND_TESTS: 
+  KIND_CONFIG: 
+  EXPORT_NODE_ROOTFS: 
+  EXPORT_NODE_IMAGE: 
+  INSTALL_METALLB: 
+  KIND_PRE_START: 
+  DOCKERD_OPTS: 
+  DOCKERD_TIMEOUT: 
+  KINDONC_DEBUG: 
+  KIND_LOGLEVEL: 
+  KIND_CLUSTER_NAME: 
