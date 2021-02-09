@@ -8,21 +8,32 @@ ARG KIND_ON_C_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update \
   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0 \
+    apt-transport-https \
     bash \
-    curl \
-    iptables \
     ca-certificates \
-    util-linux \
-    iproute2 \
-    tar \
-    rsync \
-    make \
+    curl \
     git \
-    tzdata \
+    gnupg-agent \
+    iproute2 \
+    iptables \
+    jq \
+    make \
     python3-pip \
     python3-setuptools \
-    jq \
-    docker.io \
+    rsync \
+    software-properties-common \
+    tar \
+    tzdata \
+    util-linux \
+  && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+      | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add - \
+  && add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  && apt-get -y update \
+  && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0 \
+    containerd.io \
+    docker-ce \
+    docker-ce-cli \
   && rm -rf /var/lib/apt/lists/*
 
 # Install yq
