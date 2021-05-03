@@ -140,13 +140,14 @@ resources:
     repository: kind
     access_token: ((github.token))
     pre_release: true
-- name: kind-git-master
+- name: kind-git-main
+  old_name: kind-git-master
   <<: *resourceDefaults
   type: git
   icon: source-fork
   source:
     uri: https://github.com/kubernetes-sigs/kind
-    branch: master
+    branch: main
 - name: k8s-git-current-minus-2
   <<: *resourceDefaults
   type: git
@@ -326,7 +327,7 @@ jobs:
     - get: kind-on-c
       resource: kind-build-tasks
       trigger: true
-    - get: kind-git-master
+    - get: kind-git-main
       trigger: true
   - task: build
     file: kind-on-c/ci/tasks/build-kind.task.yaml

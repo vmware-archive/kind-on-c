@@ -4,7 +4,7 @@ image_resource:
   source:
     repository: "golang"
 inputs:
-- name: kind-git-master
+- name: kind-git-main
   path: src
 - name: kind-on-c
 outputs:
