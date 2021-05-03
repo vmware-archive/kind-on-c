@@ -22,9 +22,9 @@ config:
 - &gitBotEmail   hhorl+kindonc@pivotal.io
 - k8s-branches:
   - &k8sBranchMaster        master
-  - &k8sBranchCurrent       release-1.20
-  - &k8sBranchCurrentMinus1 release-1.19
-  - &k8sBranchCurrentMinus2 release-1.18
+  - &k8sBranchCurrent       release-1.21
+  - &k8sBranchCurrentMinus1 release-1.20
+  - &k8sBranchCurrentMinus2 release-1.19
 - &imageBuildingFiles
   - Dockerfile
   - ci/tasks/build-image.*
