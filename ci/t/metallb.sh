@@ -10,7 +10,7 @@ PORT=8080
 NAME='echo'
 IMG='inanimate/echo-server'
 
-kubectl run --generator=run-pod/v1 "$NAME" --image="$IMG" --port="$PORT"
+kubectl run "$NAME" --image="$IMG" --port="$PORT"
 kubectl expose pod "$NAME" --type=LoadBalancer
 
 connectFromExt() {
