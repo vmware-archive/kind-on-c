@@ -1,0 +1,23 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source: { repository: concourse/oci-build-task }
+caches:
+- path: cache
+inputs:
+- name: files
+outputs:
+- name: image
+params:
+  DOCKERFILE: Dockerfile
+  CONTEXT: files
+run:
+  path: sh
+  args:
+  - -euc
+  - |
+    cat <<'EOF' > "$DOCKERFILE"
+      FROM scratch
+      COPY . .
+    EOF
+    build

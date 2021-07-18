@@ -1,0 +1,16 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source: { repository: bash }
+inputs:
+- name: image
+outputs:
+- name: files
+run:
+  path: bash
+  args:
+  - -euc
+  - |
+    cp -a image/rootfs/. files/
+    cd files
+    find . -type f -exec ls -lah '{}' \+

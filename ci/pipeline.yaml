@@ -1,8 +1,3 @@
-resource_types:
-- name: google-cloud-storage
-  type: registry-image
-  source:
-    repository: frodenas/gcs-resource
 - name: file-url
   type: registry-image
   source:
@@ -15,8 +10,10 @@ resource_types:
 
 config:
 - &allIsPublic   true
-- &imageRepo     gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+- &imageRepo     ghrc.io/pivotal-k8s/kind-on-c/kind-on-c
 - &imageTag      ci-latest
+- &artefactRepo  ghrc.io/pivotal-k8s/kind-on-c/build-artefacts
+- &artefactTag   ci-build
 - &baseImageRepo ubuntu
 - &gitBotName    kind-on-c pipeline
 - &gitBotEmail   hhorl+kindonc@pivotal.io
@@ -47,6 +44,13 @@ config:
   privileged: true
   params:
     KIND_TESTS: *defaultTest
+- &artefactImageExtractTask
+  task: artefact-image-extract
+  file: kind-on-c/ci/task/artefact-image-extract.yaml
+- &artefactImageBakeTask
+  task: artefact-image-bake
+  privileged: true
+  file: kind-on-c/ci/task/artefact-image-bake.yaml
 - &notify
   on_success:
     put: success-message
@@ -91,17 +95,18 @@ resources:
   icon: layers-triple
   source:
     repository: *imageRepo
-    username: ((registry.username))
-    password: ((registry.password))
     tag: *imageTag
-- name: kind-build
+    username: ((crs.kind-on-c.username))
+    password: ((crs.kind-on-c.password))
+- name: build-artefacts
   <<: *resourceDefaults
-  type: google-cloud-storage
   icon: application-export
+  type: registry-image
   source:
-    bucket: kind-on-c-pipeline
-    json_key: ((bucket.key))
-    versioned_file: "pipeline-builds/kind-linux-amd64"
+    repository: *artefactRepo
+    tag: *artefactTag
+    username: ((crs.build-artefacts.username))
+    password: ((crs.build-artefacts.password))
 - name: kind-build-tasks
   <<: *resourceDefaults
   type: git
@@ -331,9 +336,12 @@ jobs:
       trigger: true
   - task: build
     file: kind-on-c/ci/tasks/build-kind.task.yaml
-  - put: kind-build
+  - <<: *artefactImageBakeTask
+    input_mapping:
+      files: kind-bin
+  - put: build-artefacts
     params:
-      file: kind-bin/kind-linux-amd64
+      image: image/image.tar
 
 - name: kind-master
   <<: *jobDefaults
@@ -343,10 +351,15 @@ jobs:
       resource: kind-on-c-dev
       trigger: true
       passed: *allFeatureTests
-    - get: kind-release
-      passed: [ build-kind-from-master ]
-      resource: kind-build
-      trigger: true
+    - do:
+      - get: build-artefacts
+        passed: [ build-kind-from-master ]
+        trigger: true
+      - <<: *artefactImageExtractTask
+        input_mapping:
+          image: build-artefacts
+        output_mapping:
+          files: kind-release
   - *testTask
 - name: kind-master-with-k8s-current-minus-2
   <<: *jobDefaults

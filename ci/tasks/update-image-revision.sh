@@ -14,6 +14,7 @@ export PATH="${PATH}:${PWD}/bin"
 
 c0Repo="$( oq -i yaml -r '.image_resource.source.repository' "$taskConf" )"
 c0Digest="$( oq -i yaml -r '.image_resource.version.digest' "$taskConf" )"
+c1Repo="$( cat "image-push/repository" )"
 c1Digest="$( cat "image-push/digest" )"
 
 c0="remote://${c0Repo}@${c0Digest}"
@@ -32,7 +33,7 @@ oq -i yaml -o yaml --arg d "${c1Digest}" '.image_resource.version.digest = $d' "
 cat "$tmpTaskConf" > "$taskConf"
 
 {
-  echo "Current image: \"${c0Repo}@${c1Digest}\""
+  echo "Current image: \"${c1Repo}@${c1Digest}\""
   echo "Previous image: \"${c0Repo}@${c0Digest}\""
   echo
 
