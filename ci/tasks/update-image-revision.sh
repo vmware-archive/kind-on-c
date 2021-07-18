@@ -17,37 +17,41 @@ c0Digest="$( oq -i yaml -r '.image_resource.version.digest' "$taskConf" )"
 c1Repo="$( cat "image-push/repository" )"
 c1Digest="$( cat "image-push/digest" )"
 
-c0="remote://${c0Repo}@${c0Digest}"
-c1="${PWD}/image/image.tar"
-
-diffCmd=(
-  container-diff diff "$c0" "$c1"
-    --type pip --type apt --type file --type size --type history
-    --cache-dir "${PWD}/cache" --verbosity info
-)
+# c0="remote://${c0Repo}@${c0Digest}"
+# c1="${PWD}/image/image.tar"
+#
+# diffCmd=(
+#   container-diff diff "$c0" "$c1"
+#     --type pip --type apt --type file --type size --type history
+#     --cache-dir "${PWD}/cache" --verbosity info
+# )
 
 tmpTaskConf="${tmpDir}/task.yml"
 
 # shellcheck disable=SC2016
-oq -i yaml -o yaml --arg d "${c1Digest}" '.image_resource.version.digest = $d' "$taskConf" > "$tmpTaskConf"
+oq -i yaml -o yaml \
+  --arg d "${c1Digest}" \
+  --arg r "${c1Repo}" \
+  '.image_resource.version.digest = $d | .image_resource.source.repository = $r' "$taskConf" \
+  > "$tmpTaskConf"
 cat "$tmpTaskConf" > "$taskConf"
 
-{
-  echo "Current image: \"${c1Repo}@${c1Digest}\""
-  echo "Previous image: \"${c0Repo}@${c0Digest}\""
-  echo
-
-  echo 'Command:'
-  echo '```'
-  echo "${diffCmd[*]}"
-  echo '```'
-  echo
-
-  echo 'Diff:'
-  echo '```'
-  "${diffCmd[@]}"
-  echo '```'
-} > "${imageLog}"
+# {
+#   echo "Current image: \"${c1Repo}@${c1Digest}\""
+#   echo "Previous image: \"${c0Repo}@${c0Digest}\""
+#   echo
+#
+#   echo 'Command:'
+#   echo '```'
+#   echo "${diffCmd[*]}"
+#   echo '```'
+#   echo
+#
+#   echo 'Diff:'
+#   echo '```'
+#   "${diffCmd[@]}"
+#   echo '```'
+# } > "${imageLog}"
 
 cd kind-on-c-dev
 
