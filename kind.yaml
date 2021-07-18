@@ -3,9 +3,9 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: gcr.io/cf-london-servces-k8s/kind-on-c/kind-on-c
+    repository: ghcr.io/pivotal-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:2261e2581fff8d46dcdab4b547d3b7867ec6b86b5175198c41124007228e6a21
+    digest: sha256:44152ea7e7cfbc0c03e6c89059cfeab889c06dbdb76575449c706d5274eca27e
 inputs:
 - name: kind-on-c
 - name: kind-release
@@ -23,14 +23,14 @@ outputs:
 run:
   path: kind-on-c/entrypoint.sh
 params:
-  KIND_TESTS:
-  KIND_CONFIG:
-  EXPORT_NODE_ROOTFS:
-  EXPORT_NODE_IMAGE:
-  INSTALL_METALLB:
-  KIND_PRE_START:
-  DOCKERD_OPTS:
-  DOCKERD_TIMEOUT:
-  KINDONC_DEBUG:
-  KIND_LOGLEVEL:
-  KIND_CLUSTER_NAME:
+  KIND_TESTS: 
+  KIND_CONFIG: 
+  EXPORT_NODE_ROOTFS: 
+  EXPORT_NODE_IMAGE: 
+  INSTALL_METALLB: 
+  KIND_PRE_START: 
+  DOCKERD_OPTS: 
+  DOCKERD_TIMEOUT: 
+  KINDONC_DEBUG: 
+  KIND_LOGLEVEL: 
+  KIND_CLUSTER_NAME: 
