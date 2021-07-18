@@ -236,7 +236,8 @@ jobs:
 - name: latest-kind-release
   <<: *jobDefaults
   plan:
-  - in_parallel: &commonTestInputsForKindRelease
+  - &commonTestInputsForKindRelease
+    in_parallel:
     - get: kind-on-c
       resource: kind-on-c-dev
       trigger: true
@@ -258,7 +259,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindRelease
+    - *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-master
   - << : *testTask
@@ -266,7 +267,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindRelease
+    - *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-current
   - << : *testTask
@@ -274,7 +275,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindRelease
+    - *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-current-minus-1
   - << : *testTask
@@ -282,7 +283,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindRelease
+    - *commonTestInputsForKindRelease
     - get: k8s-git
       resource: k8s-git-current-minus-2
   - << : *testTask
@@ -336,26 +337,28 @@ jobs:
 - name: kind-master
   <<: *jobDefaults
   plan:
-  - in_parallel: &commonTestInputsForKindMaster
-    - get: kind-on-c
-      resource: kind-on-c-dev
-      trigger: true
-      passed: *allFeatureTests
-    - do:
-      - get: build-artefacts
-        passed: [ build-kind-from-master ]
-        trigger: true
-      - <<: *artefactImageExtractTask
-        input_mapping:
-          image: build-artefacts
-        output_mapping:
-          files: kind-release
+  - &commonTestInputsForKindMaster
+    do:
+    - in_parallel:
+        steps:
+        - get: kind-on-c
+          resource: kind-on-c-dev
+          trigger: true
+          passed: *allFeatureTests
+        - get: build-artefacts
+          passed: [ build-kind-from-master ]
+          trigger: true
+    - <<: *artefactImageExtractTask
+      input_mapping:
+        image: build-artefacts
+      output_mapping:
+        files: kind-release
   - *testTask
 - name: kind-master-with-k8s-current-minus-2
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindMaster
+    - *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-current-minus-2
   - << : *testTask
@@ -363,7 +366,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindMaster
+    - *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-current-minus-1
   - << : *testTask
@@ -371,7 +374,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindMaster
+    - *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-current
   - << : *testTask
@@ -379,7 +382,7 @@ jobs:
   <<: *jobDefaults
   plan:
   - in_parallel:
-    - in_parallel: *commonTestInputsForKindMaster
+    - *commonTestInputsForKindMaster
     - get: k8s-git
       resource: k8s-git-master
   - << : *testTask
