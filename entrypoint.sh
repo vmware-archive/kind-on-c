@@ -345,8 +345,8 @@ metallb::install() {
 
   local metallbConfigMap="${PWD}/kind-on-c/metallb-cm.yaml"
   local metallbSystemConfs=(
-    'https://raw.githubusercontent.com/metallb/metallb/v0.9/manifests/namespace.yaml'
-    'https://raw.githubusercontent.com/metallb/metallb/v0.9/manifests/metallb.yaml'
+    'https://raw.githubusercontent.com/metallb/metallb/v0.10/manifests/namespace.yaml'
+    'https://raw.githubusercontent.com/metallb/metallb/v0.10/manifests/metallb.yaml'
   )
 
   {
