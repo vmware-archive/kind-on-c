@@ -10,11 +10,10 @@
 
 ## Pipeline setup
 
-On changes to the [Dockerfile](../Dockerfile) or a new upstream alpine image we
-build a new images and tag it with a unique hash. (We use a tag and not the
-digest directly, because we cannot pin a task image to a digest yet, but only
-to a tag). After the image is built and pushed to the registry, we update the
-[task config](../kind.yaml) to use this new tag in the `dev` branch.
+On changes to the [Dockerfile](../Dockerfile) or a new upstream image we build
+a new kind-on-c image. After the image is built and pushed to the registry, we
+update the [task config](../kind.yaml) to use this new version of the image in
+the `dev` branch.
 
 This new commit triggers the pipeline with all the tests. When all tests come
 back green, the pipeline promotes the current state by merging `dev` into
@@ -35,11 +34,17 @@ The secure note should have a notes field like:
 github:
   token: <the github token for pulling the kind releases> 
   push_key: <private SSH key for pushing into kind-on-c's master>
-registry:
-  username: <the container registry's username>
-  password: <the container registry's password>
-bucket:
-  key: <the service account key json for the google bucket>
+crs:
+  kind-on-c: # everything about the main kind-on-c image
+    repository: <repo>
+    tag: <tag>
+    username: <user>
+    password: <pass>
+  build-artefacts: # everything about the artefact image for kind-on-c
+    repository: <repo>
+    tag: <tag>
+    username: <user>
+    password: <pass>
 slack:
   url: <slack webhook url>
 ```

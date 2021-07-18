@@ -1,3 +1,4 @@
+resource_types:
 - name: file-url
   type: registry-image
   source:
@@ -10,10 +11,6 @@
 
 config:
 - &allIsPublic   true
-- &imageRepo     ghrc.io/pivotal-k8s/kind-on-c/kind-on-c
-- &imageTag      ci-latest
-- &artefactRepo  ghrc.io/pivotal-k8s/kind-on-c/build-artefacts
-- &artefactTag   ci-build
 - &baseImageRepo ubuntu
 - &gitBotName    kind-on-c pipeline
 - &gitBotEmail   hhorl+kindonc@pivotal.io
@@ -93,20 +90,12 @@ resources:
   <<: *resourceDefaults
   type: registry-image
   icon: layers-triple
-  source:
-    repository: *imageRepo
-    tag: *imageTag
-    username: ((crs.kind-on-c.username))
-    password: ((crs.kind-on-c.password))
+  source: ((crs.kind-on-c))
 - name: build-artefacts
   <<: *resourceDefaults
   icon: application-export
   type: registry-image
-  source:
-    repository: *artefactRepo
-    tag: *artefactTag
-    username: ((crs.build-artefacts.username))
-    password: ((crs.build-artefacts.password))
+  source: ((crs.build-artefacts))
 - name: kind-build-tasks
   <<: *resourceDefaults
   type: git
@@ -481,8 +470,8 @@ jobs:
     file: kind-on-c/ci/tasks/build-custom-image.task.yaml
     privileged: true
     params:
-      BASE_REPO: *imageRepo
-      BASE_TAG: *imageTag
+      BASE_REPO: ((crs.kind-on-c.repository))
+      BASE_TAG: ((crs.kind-on-c.tag))
       CUSTOM_FILE: &customFile /can_we_haz_custom_image
       CUSTOM_CONTENT: &customContent 'yes, u can haz custom image!'
     output_mapping:
