@@ -24,6 +24,7 @@ config:
   - ci/tasks/build-image.*
   - ci/tasks/update-image-revision.*
 - &kindBuildingFiles
+  - ci/tasks/artefact-image-*
   - ci/tasks/build-kind.*
 - &kindOnCGitSource
   uri: git@github.com:pivotal-k8s/kind-on-c
@@ -43,11 +44,11 @@ config:
     KIND_TESTS: *defaultTest
 - &artefactImageExtractTask
   task: artefact-image-extract
-  file: kind-on-c/ci/task/artefact-image-extract.yaml
+  file: kind-on-c/ci/tasks/artefact-image-extract.yaml
 - &artefactImageBakeTask
   task: artefact-image-bake
   privileged: true
-  file: kind-on-c/ci/task/artefact-image-bake.yaml
+  file: kind-on-c/ci/tasks/artefact-image-bake.yaml
 - &notify
   on_success:
     put: success-message
