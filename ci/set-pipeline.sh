@@ -36,9 +36,28 @@ waitForAll() {
   done
 }
 
+ensureAllGroup() {
+  local oq=(oq -i yaml -o yaml -e -r)
+  local allGroup='all'
+  local diff rc=0
+
+  diff="$(
+    diff -Naur \
+      <( "${oq[@]}" --arg allGroup "$allGroup" '.groups[] | select(.name == $allGroup) | .jobs | sort' "$1" ) \
+      <( "${oq[@]}" '[.jobs[].name] | sort' "$1" )
+  )" || {
+    rc=$?
+    echo "Group '${allGroup}' does not hold all jobs:"
+    echo "$diff" | sed 's/^/  /g'
+    return $rc
+  } >&2
+}
+
 main() {
   local varsFile="${TMP_DIR}/vars.yaml"
   local pipelineFile="${CI_DIR}/pipeline.yaml"
+
+  ensureAllGroup "$pipelineFile"
 
   flySync "$@" >/dev/null
 

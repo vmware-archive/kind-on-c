@@ -492,7 +492,7 @@ jobs:
         ./kind-on-c/ci/t/custom-image.sh && "${DEFAULT_TEST}"
 
 groups:
-- name: all
+- name: main
   jobs:
   - promote
   - latest-kind-release
@@ -541,3 +541,24 @@ groups:
 - name: promote
   jobs:
   - promote
+- name: all
+  jobs:
+  - update-image
+  - latest-kind-release
+  - latest-kind-release-with-k8s-master
+  - latest-kind-release-with-k8s-current
+  - latest-kind-release-with-k8s-current-minus-1
+  - latest-kind-release-with-k8s-current-minus-2
+  - promote
+  - build-kind-from-master
+  - kind-master
+  - kind-master-with-k8s-current-minus-2
+  - kind-master-with-k8s-current-minus-1
+  - kind-master-with-k8s-current
+  - kind-master-with-k8s-master
+  - feature--ha-control-plane
+  - feature--custom-kind-config
+  - feature--output-node-image-and-rootfs
+  - feature--user-inputs-and-outputs
+  - feature--metal-lb-and-exposed-services
+  - feature--bring-your-own-image
