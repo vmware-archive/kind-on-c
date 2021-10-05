@@ -1,9 +1,9 @@
-Current image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db"
-Previous image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236"
+Current image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:a4286c0b07e591eba520723a82395e6b9be68caa44659ef4cb391077825cfc4a"
+Previous image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db"
 
 Command:
 ```
-container-diff diff remote://ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236 /tmp/build/4f61ea48/image/image.tar --type pip --type apt --type file --type size --type history --cache-dir /tmp/build/4f61ea48/cache --verbosity info
+container-diff diff remote://ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db /tmp/build/4f61ea48/image/image.tar --type pip --type apt --type file --type size --type history --cache-dir /tmp/build/4f61ea48/cache --verbosity info
 ```
 
 Diff:
@@ -11,28 +11,28 @@ Diff:
 
 -----Apt-----
 
-Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236: None
+Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db: None
 
 Packages found only in /tmp/build/4f61ea48/image/image.tar: None
 
 Version differences:
-PACKAGE                 IMAGE1 (ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
+PACKAGE                 IMAGE1 (ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
 -base-files             11ubuntu5.4, 392K                                                                                                               11ubuntu5.3, 392K
 -ca-certificates        20210119~20.04.2, 380K                                                                                                          20210119~20.04.1, 381K
--containerd.io          1.4.10-1, 104.8M                                                                                                                1.4.6-1, 124.5M
--curl                   7.68.0-1ubuntu2.7, 402K                                                                                                         7.68.0-1ubuntu2.5, 401K
+-containerd.io          1.4.10-1, 104.8M                                                                                                                1.4.8-1, 107.7M
+-curl                   7.68.0-1ubuntu2.7, 402K                                                                                                         7.68.0-1ubuntu2.6, 401K
 -docker-ce              5:20.10.8~3-0~ubuntu-focal, 96.2M                                                                                               5:20.10.7~3-0~ubuntu-focal, 115.4M
 -docker-ce-cli          5:20.10.8~3-0~ubuntu-focal, 150.3M                                                                                              5:20.10.7~3-0~ubuntu-focal, 166.1M
 -git                    1:2.25.1-1ubuntu3.2, 34.8M                                                                                                      1:2.25.1-1ubuntu3.1, 34.8M
 -git-man                1:2.25.1-1ubuntu3.2, 1.7M                                                                                                       1:2.25.1-1ubuntu3.1, 1.7M
--libcurl3-gnutls        7.68.0-1ubuntu2.7, 685K                                                                                                         7.68.0-1ubuntu2.5, 684K
--libcurl4               7.68.0-1ubuntu2.7, 689K                                                                                                         7.68.0-1ubuntu2.5, 688K
+-libcurl3-gnutls        7.68.0-1ubuntu2.7, 685K                                                                                                         7.68.0-1ubuntu2.6, 684K
+-libcurl4               7.68.0-1ubuntu2.7, 689K                                                                                                         7.68.0-1ubuntu2.6, 688K
 -libgcrypt20            1.8.5-5ubuntu1.1, 1.2M                                                                                                          1.8.5-5ubuntu1, 1.2M
 -libgnutls30            3.6.13-2ubuntu1.6, 2.1M                                                                                                         3.6.13-2ubuntu1.3, 2.1M
 -libprocps8             2:3.3.16-1ubuntu2.3, 128K                                                                                                       2:3.3.16-1ubuntu2.2, 128K
 -libssh-4               0.9.3-2ubuntu2.2, 491K                                                                                                          0.9.3-2ubuntu2.1, 490K
 -libssl1.1              1.1.1f-1ubuntu2.8, 3.9M                                                                                                         1.1.1f-1ubuntu2.4, 3.9M
--libsystemd0            245.4-4ubuntu3.13, 875K                                                                                                         245.4-4ubuntu3.7, 873K
+-libsystemd0            245.4-4ubuntu3.13, 875K                                                                                                         245.4-4ubuntu3.11, 874K
 -libudev1               245.4-4ubuntu3.13, 337K                                                                                                         245.4-4ubuntu3.7, 335K
 -login                  1:4.8.1-1ubuntu5.20.04.1, 932K                                                                                                  1:4.8.1-1ubuntu5.20.04, 932K
 -openssl                1.1.1f-1ubuntu2.8, 1.2M                                                                                                         1.1.1f-1ubuntu2.4, 1.2M
@@ -42,31 +42,31 @@ PACKAGE                 IMAGE1 (ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:2
 
 -----File-----
 
-These entries have been added to ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236:
+These entries have been added to ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db:
 FILE                                                         SIZE
 /etc/ssl/certs/2e5ac55d.0                                    18B
 /etc/ssl/certs/DST_Root_CA_X3.pem                            53B
-/tmp/tmpybtqn0db                                             9B
-/tmp/tmpybtqn0db/apt.conf                                    9B
+/tmp/tmptf5e5x0j                                             9B
+/tmp/tmptf5e5x0j/apt.conf                                    9B
 /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt        1.2K
 
-These entries have been deleted from ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236:
+These entries have been deleted from ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db:
 FILE                             SIZE
-/tmp/tmplqyi75ij                 9B
-/tmp/tmplqyi75ij/apt.conf        9B
+/tmp/tmp3t5jy9ha                 9B
+/tmp/tmp3t5jy9ha/apt.conf        9B
 
-These entries have been changed between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236 and /tmp/build/4f61ea48/image/image.tar:
+These entries have been changed between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db and /tmp/build/4f61ea48/image/image.tar:
 FILE                                                      SIZE1         SIZE2
 /usr/bin/dockerd                                          92.2M         111M
 /usr/bin/docker                                           59M           68.3M
 /usr/libexec/docker/cli-plugins/docker-buildx             58.6M         61.9M
-/usr/bin/containerd                                       46.6M         54.5M
+/usr/bin/containerd                                       46.6M         47M
 /usr/libexec/docker/cli-plugins/docker-app                32.1M         35.4M
-/usr/bin/ctr                                              24.6M         29M
-/usr/bin/runc                                             10.9M         15M
-/usr/bin/containerd-shim-runc-v2                          8.2M          9.5M
-/usr/bin/containerd-shim-runc-v1                          8.2M          9.5M
-/usr/bin/containerd-shim                                  6.2M          6.9M
+/usr/bin/ctr                                              24.6M         24.8M
+/usr/bin/runc                                             10.9M         12.1M
+/usr/bin/containerd-shim-runc-v2                          8.2M          8.7M
+/usr/bin/containerd-shim-runc-v1                          8.2M          8.7M
+/usr/bin/containerd-shim                                  6.2M          6.4M
 /usr/bin/docker-proxy                                     3.1M          3.6M
 /usr/lib/git-core/git                                     2.9M          2.9M
 /usr/bin/git                                              2.9M          2.9M
@@ -93,7 +93,7 @@ FILE                                                      SIZE1         SIZE2
 /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0                574.6K        574.6K
 /usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4.6.0         566.6K        566.6K
 /usr/lib/x86_64-linux-gnu/libssh.so.4.8.4                 435.5K        435.5K
-/var/log/dpkg.log                                         261.3K        260.5K
+/var/log/dpkg.log                                         261.3K        261.3K
 /etc/ssl/certs/ca-certificates.crt                        194.4K        195.6K
 /usr/lib/x86_64-linux-gnu/libudev.so.1.6.17               174.3K        174.3K
 /var/lib/dpkg/status-old                                  158.7K        158.7K
@@ -125,7 +125,7 @@ FILE                                                      SIZE1         SIZE2
 /usr/sbin/pwunconv                                        54.1K         54.1K
 /usr/sbin/pwconv                                          54K           54K
 /usr/bin/chsh                                             51.8K         51.8K
-/var/log/apt/term.log                                     45.4K         45.4K
+/var/log/apt/term.log                                     45.4K         46.2K
 /usr/bin/newgrp                                           43.7K         43.7K
 /var/lib/dpkg/info/git.md5sums                            41.1K         41.1K
 /usr/bin/vmstat                                           38.2K         38.2K
@@ -161,20 +161,20 @@ FILE                                                      SIZE1         SIZE2
 /var/cache/ldconfig/aux-cache                             8.2K          8.2K
 /var/log/alternatives.log                                 6.1K          6.1K
 /usr/share/doc/libudev1/changelog.Debian.gz               6K            5.7K
-/usr/share/doc/libsystemd0/changelog.Debian.gz            6K            5.7K
+/usr/share/doc/libsystemd0/changelog.Debian.gz            6K            6.4K
 /var/lib/dpkg/info/login.md5sums                          5.9K          5.9K
 /var/lib/dpkg/info/openssl.md5sums                        5.6K          5.6K
 /etc/ca-certificates.conf                                 5.5K          5.5K
 /usr/share/doc/libssl1.1/changelog.Debian.gz              2.9K          2.3K
 /var/lib/dpkg/info/procps.md5sums                         2.7K          2.7K
-/usr/share/doc/containerd.io/changelog.Debian.gz          2.3K          2.2K
+/usr/share/doc/containerd.io/changelog.Debian.gz          2.3K          2.3K
 /var/lib/dpkg/info/base-files.md5sums                     2.1K          2.1K
 /usr/share/doc/libssh-4/changelog.Debian.gz               2K            2K
 /usr/share/doc/libprocps8/changelog.Debian.gz             2K            2K
 /usr/share/doc/login/changelog.Debian.gz                  1.8K          1.8K
 /usr/share/doc/passwd/changelog.Debian.gz                 1.8K          1.8K
-/usr/share/doc/libcurl3-gnutls/changelog.Debian.gz        1.7K          1.4K
-/usr/share/doc/libcurl4/changelog.Debian.gz               1.7K          1.4K
+/usr/share/doc/libcurl3-gnutls/changelog.Debian.gz        1.7K          1.6K
+/usr/share/doc/libcurl4/changelog.Debian.gz               1.7K          1.6K
 /usr/share/doc/git-man/changelog.Debian.gz                1.7K          1.6K
 /usr/share/doc/git/changelog.Debian.gz                    1.7K          1.6K
 /usr/share/doc/libgcrypt20/changelog.Debian.gz            1.6K          1.5K
@@ -205,21 +205,21 @@ FILE                                                      SIZE1         SIZE2
 
 -----History-----
 
-Docker history lines found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236:
--RUN |3 BASE_IMAGE=ubuntu@sha256:63df0a0add3714e5f4cba025b1c68e2b9ecefa67ea4fcd16ee9783a8aba97358 KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && apt-get -y purge python\*   && apt-get -y autopurge   && rm -rf /var/lib/apt/lists/* # buildkit
--RUN |3 BASE_IMAGE=ubuntu@sha256:63df0a0add3714e5f4cba025b1c68e2b9ecefa67ea4fcd16ee9783a8aba97358 KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c dlURL="$(       curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1"         | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]'     )"   && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq # buildkit
--LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:63df0a0add3714e5f4cba025b1c68e2b9ecefa67ea4fcd16ee9783a8aba97358
-
-
-Docker history lines found only in /tmp/build/4f61ea48/image/image.tar:
+Docker history lines found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db:
 -RUN |3 BASE_IMAGE=ubuntu@sha256:65de08a8dabf289ef114053ab32f79e0c333a4fbfa1fe3778bb13ae921a7849b KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && apt-get -y purge python\*   && apt-get -y autopurge   && rm -rf /var/lib/apt/lists/* # buildkit
 -RUN |3 BASE_IMAGE=ubuntu@sha256:65de08a8dabf289ef114053ab32f79e0c333a4fbfa1fe3778bb13ae921a7849b KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c dlURL="$(       curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1"         | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]'     )"   && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq # buildkit
 -LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:65de08a8dabf289ef114053ab32f79e0c333a4fbfa1fe3778bb13ae921a7849b
 
 
+Docker history lines found only in /tmp/build/4f61ea48/image/image.tar:
+-RUN |3 BASE_IMAGE=ubuntu@sha256:44ab2c3b26363823dcb965498ab06abf74a1e6af20a732902250743df0d4172d KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && apt-get -y purge python\*   && apt-get -y autopurge   && rm -rf /var/lib/apt/lists/* # buildkit
+-RUN |3 BASE_IMAGE=ubuntu@sha256:44ab2c3b26363823dcb965498ab06abf74a1e6af20a732902250743df0d4172d KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c dlURL="$(       curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1"         | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]'     )"   && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq # buildkit
+-LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:44ab2c3b26363823dcb965498ab06abf74a1e6af20a732902250743df0d4172d
+
+
 -----Pip-----
 
-Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236: None
+Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db: None
 
 Packages found only in /tmp/build/4f61ea48/image/image.tar: None
 
@@ -227,8 +227,8 @@ Version differences: None
 
 -----Size-----
 
-Image size difference between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:23c860f5ea022e4700f6a205697592cc66af930e320784f23f63ac3121614236 and /tmp/build/4f61ea48/image/image.tar:
+Image size difference between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:b8ff1dd2e256603b50e3066018aa7ef1d77152af3d51815621a1bc88998f81db and /tmp/build/4f61ea48/image/image.tar:
 SIZE1         SIZE2
-527.7M        582.6M
+527.7M        565.8M
 
 ```
