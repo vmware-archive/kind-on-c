@@ -12,6 +12,7 @@ resource_types:
 config:
 - &allIsPublic   true
 - &baseImageRepo ubuntu
+- &baseImageTag  latest
 - &gitBotName    kind-on-c pipeline
 - &gitBotEmail   hhorl+kindonc@pivotal.io
 - k8s-branches:
@@ -87,6 +88,7 @@ resources:
   icon: layers-triple-outline
   source:
     repository: *baseImageRepo
+    tag: *baseImageTag
 - name: image
   <<: *resourceDefaults
   type: registry-image
