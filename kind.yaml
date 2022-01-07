@@ -5,7 +5,7 @@ image_resource:
   source:
     repository: ghcr.io/pivotal-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:99e72bbadc91b8695ac910e4bf442fc9a5c4ac24329c1d72a35f555fdd30ae26
+    digest: sha256:bfc65b5984dce10756b05b916949e6b0d28d090f9a2f25282c4aa44d7cce956a
 inputs:
 - name: kind-on-c
 - name: kind-release
@@ -23,14 +23,14 @@ outputs:
 run:
   path: kind-on-c/entrypoint.sh
 params:
-  KIND_TESTS:
-  KIND_CONFIG:
-  EXPORT_NODE_ROOTFS:
-  EXPORT_NODE_IMAGE:
-  INSTALL_METALLB:
-  KIND_PRE_START:
-  DOCKERD_OPTS:
-  DOCKERD_TIMEOUT:
-  KINDONC_DEBUG:
-  KIND_LOGLEVEL:
-  KIND_CLUSTER_NAME:
+  KIND_TESTS: 
+  KIND_CONFIG: 
+  EXPORT_NODE_ROOTFS: 
+  EXPORT_NODE_IMAGE: 
+  INSTALL_METALLB: 
+  KIND_PRE_START: 
+  DOCKERD_OPTS: 
+  DOCKERD_TIMEOUT: 
+  KINDONC_DEBUG: 
+  KIND_LOGLEVEL: 
+  KIND_CLUSTER_NAME: 
