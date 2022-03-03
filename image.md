@@ -1,9 +1,9 @@
-Current image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc"
-Previous image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed"
+Current image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:a00665edb7f86eb830acaec266a5fc359798ddf61b9c4dbcd6054c77452e8f0c"
+Previous image: "ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc"
 
 Command:
 ```
-container-diff diff remote://ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed /tmp/build/4f61ea48/image/image.tar --type pip --type apt --type file --type size --type history --cache-dir /tmp/build/4f61ea48/cache --verbosity info
+container-diff diff remote://ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc /tmp/build/4f61ea48/image/image.tar --type pip --type apt --type file --type size --type history --cache-dir /tmp/build/4f61ea48/cache --verbosity info
 ```
 
 Diff:
@@ -11,12 +11,12 @@ Diff:
 
 -----Apt-----
 
-Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed: None
+Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc: None
 
 Packages found only in /tmp/build/4f61ea48/image/image.tar: None
 
 Version differences:
-PACKAGE                    IMAGE1 (ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
+PACKAGE                    IMAGE1 (ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc)        IMAGE2 (/tmp/build/4f61ea48/image/image.tar)
 -base-files                11ubuntu5.4, 392K                                                                                                               11ubuntu5.3, 392K
 -ca-certificates           20210119~20.04.2, 380K                                                                                                          20210119~20.04.1, 381K
 -containerd.io             1.4.12-1, 104.8M                                                                                                                1.4.8-1, 107.7M
@@ -49,7 +49,7 @@ PACKAGE                    IMAGE1 (ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha25
 
 -----File-----
 
-These entries have been added to ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed:
+These entries have been added to ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc:
 FILE                                                         SIZE
 /etc/ssl/certs/2e5ac55d.0                                    18B
 /etc/ssl/certs/DST_Root_CA_X3.pem                            53B
@@ -57,15 +57,15 @@ FILE                                                         SIZE
 /tmp/tmp2a0mwhf4/apt.conf                                    9B
 /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt        1.2K
 
-These entries have been deleted from ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed:
+These entries have been deleted from ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc:
 FILE                                            SIZE
-/tmp/tmpi6leqm_t                                9B
-/tmp/tmpi6leqm_t/apt.conf                       9B
+/tmp/tmpvg4_2675                                9B
+/tmp/tmpvg4_2675/apt.conf                       9B
 /usr/share/zoneinfo/Pacific/Kanton              250B
 /usr/share/zoneinfo/posix/Pacific/Kanton        250B
 /usr/share/zoneinfo/right/Pacific/Kanton        790B
 
-These entries have been changed between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed and /tmp/build/4f61ea48/image/image.tar:
+These entries have been changed between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc and /tmp/build/4f61ea48/image/image.tar:
 FILE                                                        SIZE1         SIZE2
 /usr/bin/dockerd                                            92.2M         111M
 /usr/libexec/docker/cli-plugins/docker-buildx               64.8M         61.9M
@@ -381,21 +381,21 @@ FILE                                                        SIZE1         SIZE2
 
 -----History-----
 
-Docker history lines found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed:
--RUN |3 BASE_IMAGE=ubuntu@sha256:fa16ff8fe65bbacb710cd2b32048724801bcd039a0de2797aef043a91d6cc667 KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && apt-get -y purge python\*   && apt-get -y autopurge   && rm -rf /var/lib/apt/lists/* # buildkit
--RUN |3 BASE_IMAGE=ubuntu@sha256:fa16ff8fe65bbacb710cd2b32048724801bcd039a0de2797aef043a91d6cc667 KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c dlURL="$(       curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1"         | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]'     )"   && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq # buildkit
--LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:fa16ff8fe65bbacb710cd2b32048724801bcd039a0de2797aef043a91d6cc667
-
-
-Docker history lines found only in /tmp/build/4f61ea48/image/image.tar:
+Docker history lines found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc:
 -RUN |3 BASE_IMAGE=ubuntu@sha256:669e010b58baf5beb2836b253c1fd5768333f0d1dbcb834f7c07a4dc93f474be KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && apt-get -y purge python\*   && apt-get -y autopurge   && rm -rf /var/lib/apt/lists/* # buildkit
 -RUN |3 BASE_IMAGE=ubuntu@sha256:669e010b58baf5beb2836b253c1fd5768333f0d1dbcb834f7c07a4dc93f474be KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c dlURL="$(       curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1"         | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]'     )"   && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq # buildkit
 -LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:669e010b58baf5beb2836b253c1fd5768333f0d1dbcb834f7c07a4dc93f474be
 
 
+Docker history lines found only in /tmp/build/4f61ea48/image/image.tar:
+-RUN |3 BASE_IMAGE=ubuntu@sha256:96f1ef8fa4b9c58ece47b142de05b99f4d832f73ecad425e6112331703df7dc9 KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     apt-transport-https     bash     ca-certificates     curl     git     gnupg-agent     iproute2     iptables     jq     make     rsync     software-properties-common     tar     tzdata     util-linux   && curl -fsSL https://download.docker.com/linux/ubuntu/gpg       | apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -   && add-apt-repository       "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"   && apt-get -y update   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0     containerd.io     docker-ce     docker-ce-cli   && apt-get -y purge python\*   && apt-get -y autopurge   && rm -rf /var/lib/apt/lists/* # buildkit
+-RUN |3 BASE_IMAGE=ubuntu@sha256:96f1ef8fa4b9c58ece47b142de05b99f4d832f73ecad425e6112331703df7dc9 KIND_ON_C_VERSION=cf38482 DEBIAN_FRONTEND=noninteractive bash -e -u -o pipefail -c dlURL="$(       curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1"         | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]'     )"   && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq # buildkit
+-LABEL org.opencontainers.image.x.base-image=ubuntu@sha256:96f1ef8fa4b9c58ece47b142de05b99f4d832f73ecad425e6112331703df7dc9
+
+
 -----Pip-----
 
-Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed: None
+Packages found only in ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc: None
 
 Packages found only in /tmp/build/4f61ea48/image/image.tar: None
 
@@ -403,7 +403,7 @@ Version differences: None
 
 -----Size-----
 
-Image size difference between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:16e5371120f29a6bf8020b03f772aa88612ab14b6e98a0621b95ca57d187caed and /tmp/build/4f61ea48/image/image.tar:
+Image size difference between ghcr.io/pivotal-k8s/kind-on-c/kind-on-c@sha256:901461b5735fd7021965541ec78c3a004ebd62826efebb7c734f3490182fa0fc and /tmp/build/4f61ea48/image/image.tar:
 SIZE1        SIZE2
 534M         565.8M
 
