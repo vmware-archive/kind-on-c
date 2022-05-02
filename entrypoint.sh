@@ -399,19 +399,6 @@ kind::hack::cidrToNetmask() {
   echo "$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8) & 0xff )).$(( value & 0xff ))"
 }
 
-# With https://github.com/kubernetes-sigs/kind/pull/1029 kind broke the way how
-# to handle the kube config file. This approach should work for both, how it
-# was handled before and after that change.
-kind::kubeconfig::write() {
-  local clusterName="$1"
-  local file
-
-  file="$( mktemp )"
-  kind get kubeconfig --name "$clusterName" > "$file"
-
-  echo "$file"
-}
-
 kind::hack::loglevel() {
   local level="$1"
   local kindVersion
@@ -460,10 +447,6 @@ kind::start() {
   kind::hack::node_prepper "$clusterName" &
   kind create cluster "${kindOpts[@]}"
 
-  # make kubeconfig available
-  KUBECONFIG="$( kind::kubeconfig::write "$clusterName" )"
-  export KUBECONFIG
-
   # wait until the default service account is available, so pods can actually
   # be scheduled
   retry 60 1 kubectl -n default get serviceaccount default -o name
@@ -474,7 +457,6 @@ kind::start() {
   log::info "cluster available"
   log::info "$( kubectl version | sed 's/^/  /g' )"
   log::info "  kind Version: $(kind version)"
-  log::info "  \$KUBECONFIG: ${KUBECONFIG}"
 }
 
 kind::image::prepare() {
@@ -548,6 +530,10 @@ main() {
   local binPath="${PWD}/bin"
   mkdir -p "$binPath"
   export PATH="${PATH}:${binPath}"
+
+  # add some useful thingies to the bashrc to ease debugging
+  echo "export PATH=\"\${PATH}:${binPath}\"" >> ~/.bashrc
+  echo 'alias k=kubectl' >> ~/.bashrc
 
   # install kind
   kind::install "$binPath"
