@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 log::init() {
-  local xtraceSetter
-  xtraceSetter="$( set +o | grep xtrace )"
-
+  local -
   set +x
 
   _colr='' ; _colg='' ; _colb='' ; _nocol=''
@@ -20,8 +18,6 @@ log::init() {
   log::info()  { log::_log "${_colg}[INF]${_nocol}" "$*" ; }
   log::warn()  { log::_log "${_colb}[WRN]${_nocol}" "$*" ; }
   log::error() { log::_log "${_colr}[ERR]${_nocol}" "$*" ; }
-
-  eval "$xtraceSetter"
 }
 
 retry() {
@@ -48,8 +44,4 @@ retry() {
   return $rc
 }
 
-_init() {
-  log::init
-}
-
-_init "$@"
+log::init
