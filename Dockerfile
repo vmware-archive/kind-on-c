@@ -6,7 +6,11 @@ ARG KIND_ON_C_VERSION
 
 SHELL [ "bash", "-e", "-u", "-o", "pipefail", "-c" ]
 
-# Install alpine packages
+# Should be the binary from https://github.com/Blacksmoke16/oq/releases
+COPY external/oq/oq-v*-linux-x86_64 /usr/local/bin/oq
+RUN chmod 0750 /usr/local/bin/oq \
+  && ls -lh /usr/local/bin/oq
+
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update \
   && apt-get -y install -o APT::Install-Suggests=0 -o APT::Install-Recommends=0 \
@@ -37,14 +41,6 @@ RUN apt-get -y update \
   && apt-get -y purge python\* \
   && apt-get -y autopurge \
   && rm -rf /var/lib/apt/lists/*
-
-# Install latest oq
-RUN \
-    dlURL="$( \
-      curl -fsSL "https://api.github.com/repos/blacksmoke16/oq/releases?pages=1" \
-        | jq --arg re "oq.*linux-x86_64" -r '[ .[].assets[] | select(.name|test($re)) | .browser_download_url ][0]' \
-    )" \
-  && install -m 0750 <(curl -fsSL "$dlURL") /usr/local/bin/oq
 
 LABEL org.opencontainers.image.title         "kind-on-c"
 LABEL org.opencontainers.image.x.base-image  "${BASE_IMAGE}"

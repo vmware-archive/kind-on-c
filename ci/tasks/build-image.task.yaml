@@ -6,9 +6,12 @@ image_resource:
 params:
   CONTEXT: image-build
   UNPACK_ROOTFS: true
+  BASE_IMAGE_REPO: ubuntu
 inputs:
 - name: base-image
 - name: image-build
+- name: oq-bin
+  path: image-build/external/oq
 outputs:
 - name: image
 caches:

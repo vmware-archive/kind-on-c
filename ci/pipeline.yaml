@@ -89,6 +89,15 @@ resources:
   source:
     repository: *baseImageRepo
     tag: *baseImageTag
+- name: oq-bin
+  <<: *resourceDefaults
+  type: github-release
+  icon: cog-box
+  source:
+    owner: blacksmoke16
+    repository: oq
+    access_token: ((github.token))
+    pre_release: true
 - name: image
   <<: *resourceDefaults
   type: registry-image
@@ -210,6 +219,11 @@ jobs:
         trigger: true
       - get: image-build
         trigger: true
+      - get: oq-bin
+        trigger: true
+        params:
+          globs:
+          - oq-v*-linux-x86_64
       - get: kind-on-c-dev
       - get: container-diff-bin
   - task: build
