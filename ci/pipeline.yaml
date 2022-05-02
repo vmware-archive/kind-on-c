@@ -56,16 +56,19 @@ config:
     resource: slack
     params:
       alert_type: fixed
+    inputs: []
   on_failure:
     put: failure-message
     resource: slack
     params:
       alert_type: broke
+    inputs: []
   on_error:
     put: error-message
     resource: slack
     params:
       alert_type: broke
+    inputs: []
 - &jobDefaults
   public: *allIsPublic
   serial: true
@@ -211,6 +214,7 @@ jobs:
     params:
       alert_type: success
       message: New kind-on-c image pushed and promoted
+    inputs: []
   plan:
   - in_parallel:
       fail_fast: true
@@ -248,6 +252,8 @@ jobs:
     params:
       repository: kind-on-c-dev
       rebase: true
+    inputs:
+    - kind-on-c-dev
 
 - name: latest-kind-release
   <<: *jobDefaults
@@ -312,6 +318,7 @@ jobs:
     params:
       alert_type: success
       message: New kind-on-c promoted from dev to master
+    inputs: []
   plan:
   - get: kind-on-c-dev
     trigger: true
@@ -349,6 +356,8 @@ jobs:
   - put: build-artefacts
     params:
       image: image/image.tar
+    inputs:
+    - image
 
 - name: kind-master
   <<: *jobDefaults
