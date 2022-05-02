@@ -5,7 +5,7 @@ image_resource:
   source:
     repository: ghcr.io/pivotal-k8s/kind-on-c/kind-on-c
   version:
-    digest: sha256:65b6715993a941c0fbb0e016244c7f9ff4f2846de5dc190d3324daa5f1b0e1b1
+    digest: sha256:dbc6c2d2749faebeb344e11cb79b5354e5b1fee2bc115bfda8858413935de963
 inputs:
 - name: kind-on-c
 - name: kind-release
